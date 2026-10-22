@@ -1,0 +1,124 @@
+{
+    "module": "Site",
+    "title": "基本设置",
+    "apis": [
+        {
+            "key": "site.config",
+            "title": "基本设置 配置",
+            "method": "post",
+            "url": "site/config",
+            "scope": "site.write",
+            "permission": "Module\\Site\\Admin\\Controller\\ConfigController@setting",
+            "params": [
+                {
+                    "name": "siteLogo",
+                    "type": "string",
+                    "required": false,
+                    "desc": "siteLogo"
+                },
+                {
+                    "name": "siteName",
+                    "type": "string",
+                    "required": false,
+                    "desc": "siteName"
+                },
+                {
+                    "name": "siteSlogan",
+                    "type": "string",
+                    "required": false,
+                    "desc": "siteSlogan"
+                },
+                {
+                    "name": "siteDomain",
+                    "type": "string",
+                    "required": false,
+                    "desc": "siteDomain"
+                },
+                {
+                    "name": "siteUrl",
+                    "type": "string",
+                    "required": false,
+                    "desc": "siteUrl"
+                },
+                {
+                    "name": "siteKeywords",
+                    "type": "string",
+                    "required": false,
+                    "desc": "siteKeywords"
+                },
+                {
+                    "name": "siteDescription",
+                    "type": "string",
+                    "required": false,
+                    "desc": "siteDescription"
+                },
+                {
+                    "name": "siteFavIco",
+                    "type": "string",
+                    "required": false,
+                    "desc": "siteFavIco"
+                },
+                {
+                    "name": "sitePrimaryColor",
+                    "type": "string",
+                    "required": false,
+                    "desc": "sitePrimaryColor"
+                },
+                {
+                    "name": "siteTemplate",
+                    "type": "string",
+                    "required": false,
+                    "desc": "siteTemplate"
+                },
+                {
+                    "name": "siteBeian",
+                    "type": "string",
+                    "required": false,
+                    "desc": "siteBeian"
+                },
+                {
+                    "name": "siteBeianGonganText",
+                    "type": "string",
+                    "required": false,
+                    "desc": "siteBeianGonganText"
+                },
+                {
+                    "name": "siteBeianGonganLink",
+                    "type": "string",
+                    "required": false,
+                    "desc": "siteBeianGonganLink"
+                },
+                {
+                    "name": "Site_CopyrightOthers",
+                    "type": "string",
+                    "required": false,
+                    "desc": "Site_CopyrightOthers"
+                },
+                {
+                    "name": "Site_ContactEmail",
+                    "type": "string",
+                    "required": false,
+                    "desc": "Site_ContactEmail"
+                },
+                {
+                    "name": "Site_ContactPhone",
+                    "type": "string",
+                    "required": false,
+                    "desc": "Site_ContactPhone"
+                },
+                {
+                    "name": "Site_ContactAddress",
+                    "type": "string",
+                    "required": false,
+                    "desc": "Site_ContactAddress"
+                },
+                {
+                    "name": "Site_ContactQrcode",
+                    "type": "string",
+                    "required": false,
+                    "desc": "Site_ContactQrcode"
+                }
+            ]
+        }
+    ]
+}

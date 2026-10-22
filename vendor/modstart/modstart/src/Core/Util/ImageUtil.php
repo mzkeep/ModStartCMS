@@ -2,10 +2,10 @@
 
 namespace ModStart\Core\Util;
 
-use Intervention\Image\ImageManagerStatic as Image;
 use ModStart\Core\Exception\BizException;
 use ModStart\Core\Input\Response;
 use ModStart\Core\Provider\FontProvider;
+use ModStart\Core\Util\Gd\GdImage as Image;
 
 /**
  * @Util 图片工具类
@@ -235,7 +235,7 @@ class ImageUtil
     /**
      * 压缩图片（等比缩放 + 质量优化）
      * 用于截图压缩等场景，自动按 maxWidth / maxHeight 等比缩放并优化压缩质量。
-     * 优先使用系统级图像库 Imagick（ImageMagick，效率更高），不可用时回退 Intervention Image（GD）。
+     * 优先使用系统级图像库 Imagick（ImageMagick，效率更高），不可用时回退 GD。
      * @param string $path 图片绝对路径（jpg/jpeg/png/gif）
      * @param array $option [ 'maxWidth'=>1100, 'maxHeight'=>800, 'quality'=>80 ]
      * @return bool 压缩成功返回 true，文件不存在/格式不支持/失败返回 false
@@ -262,11 +262,11 @@ class ImageUtil
             try {
                 return self::compressImagick($path, $ext, $option);
             } catch (\Exception $e) {
-                // 失败回退到 Intervention Image
+                // 失败回退到 GD
             }
         }
         try {
-            return self::compressIntervention($path, $ext, $option);
+            return self::compressGd($path, $ext, $option);
         } catch (\Exception $e) {
             return false;
         }
@@ -290,7 +290,14 @@ class ImageUtil
         if (in_array($ext, ['jpg', 'jpeg'])) {
             $image->setImageFormat('JPEG');
             $image->setImageBackgroundColor('white');
-            $image->mergeImageLayers(\Imagick::LAYERMERGE_FLATTEN);
+            // 不同 ImageMagick 版本常量名不同：LAYERMETHOD_FLATTEN（新版）/ LAYERMERGE_FLATTEN（旧版）
+            if (defined('Imagick::LAYERMETHOD_FLATTEN')) {
+                $image->mergeImageLayers(\Imagick::LAYERMETHOD_FLATTEN);
+            } else if (defined('Imagick::LAYERMERGE_FLATTEN')) {
+                $image->mergeImageLayers(\Imagick::LAYERMERGE_FLATTEN);
+            } else {
+                $image->flattenImages();
+            }
         } else if ('png' == $ext) {
             $image->setImageFormat('PNG');
             $image->setImageCompression(\Imagick::COMPRESSION_ZIP);
@@ -302,9 +309,9 @@ class ImageUtil
     }
 
     /**
-     * 使用 Intervention Image 压缩图片（回退方案）
+     * 使用 GD 压缩图片（回退方案）
      */
-    private static function compressIntervention($path, $ext, $option)
+    private static function compressGd($path, $ext, $option)
     {
         $image = Image::make($path);
         $width = $image->width();

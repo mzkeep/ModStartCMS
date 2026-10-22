@@ -1,0 +1,136 @@
+{
+    "module": "Article",
+    "title": "通用文章",
+    "apis": [
+        {
+            "key": "article.index",
+            "title": "通用文章 列表",
+            "method": "post",
+            "url": "article/index",
+            "scope": "article.read",
+            "permission": "\\Module\\Article\\Admin\\Controller\\ArticleController@index",
+            "params": [
+                {
+                    "name": "page",
+                    "type": "int",
+                    "required": false,
+                    "desc": "页码"
+                },
+                {
+                    "name": "pageSize",
+                    "type": "int",
+                    "required": false,
+                    "desc": "每页数量"
+                },
+                {
+                    "name": "keyword",
+                    "type": "string",
+                    "required": false,
+                    "desc": "关键词"
+                }
+            ]
+        },
+        {
+            "key": "article.add",
+            "title": "通用文章 新增",
+            "method": "post",
+            "url": "article/add",
+            "scope": "article.write",
+            "permission": "\\Module\\Article\\Admin\\Controller\\ArticleController@add",
+            "params": [
+                {
+                    "name": "position",
+                    "type": "string",
+                    "required": false,
+                    "desc": "position"
+                },
+                {
+                    "name": "title",
+                    "type": "string",
+                    "required": false,
+                    "desc": "title"
+                },
+                {
+                    "name": "content",
+                    "type": "string",
+                    "required": false,
+                    "desc": "content"
+                },
+                {
+                    "name": "sort",
+                    "type": "int",
+                    "required": false,
+                    "desc": "sort"
+                },
+                {
+                    "name": "alias",
+                    "type": "string",
+                    "required": false,
+                    "desc": "alias"
+                }
+            ]
+        },
+        {
+            "key": "article.edit",
+            "title": "通用文章 编辑",
+            "method": "post",
+            "url": "article/edit",
+            "scope": "article.write",
+            "permission": "\\Module\\Article\\Admin\\Controller\\ArticleController@edit",
+            "params": [
+                {
+                    "name": "id",
+                    "type": "int",
+                    "required": true,
+                    "desc": "记录ID"
+                },
+                {
+                    "name": "position",
+                    "type": "string",
+                    "required": false,
+                    "desc": "position"
+                },
+                {
+                    "name": "title",
+                    "type": "string",
+                    "required": false,
+                    "desc": "title"
+                },
+                {
+                    "name": "content",
+                    "type": "string",
+                    "required": false,
+                    "desc": "content"
+                },
+                {
+                    "name": "sort",
+                    "type": "int",
+                    "required": false,
+                    "desc": "sort"
+                },
+                {
+                    "name": "alias",
+                    "type": "string",
+                    "required": false,
+                    "desc": "alias"
+                }
+            ]
+        },
+        {
+            "key": "article.delete",
+            "title": "通用文章 删除",
+            "method": "post",
+            "url": "article/delete",
+            "scope": "article.write",
+            "permission": "\\Module\\Article\\Admin\\Controller\\ArticleController@delete",
+            "params": [
+                {
+                    "name": "ids",
+                    "type": "string",
+                    "required": true,
+                    "desc": "记录ID，多个用逗号分隔"
+                }
+            ]
+        }
+    ]
+}

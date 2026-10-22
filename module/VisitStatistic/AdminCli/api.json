@@ -1,0 +1,164 @@
+{
+    "module": "VisitStatistic",
+    "title": "网站访问记录",
+    "apis": [
+        {
+            "key": "visit_statistic.config",
+            "title": "网站访问记录 配置",
+            "method": "post",
+            "url": "visit_statistic/config",
+            "scope": "visit_statistic.write",
+            "permission": "\\Module\\VisitStatistic\\Admin\\Controller\\ConfigController@index",
+            "params": [
+                {
+                    "name": "VisitStatistic_Enable",
+                    "type": "string",
+                    "required": false,
+                    "desc": "VisitStatistic_Enable"
+                },
+                {
+                    "name": "VisitStatistic_TickEnable",
+                    "type": "string",
+                    "required": false,
+                    "desc": "VisitStatistic_TickEnable"
+                },
+                {
+                    "name": "VisitStatistic_MaxHistoryDay",
+                    "type": "string",
+                    "required": false,
+                    "desc": "VisitStatistic_MaxHistoryDay"
+                },
+                {
+                    "name": "VisitStatistic_UaDisable",
+                    "type": "string",
+                    "required": false,
+                    "desc": "VisitStatistic_UaDisable"
+                },
+                {
+                    "name": "VisitStatistic_IgnoreRobot",
+                    "type": "string",
+                    "required": false,
+                    "desc": "VisitStatistic_IgnoreRobot"
+                }
+            ]
+        },
+        {
+            "key": "visit_statistic.item.index",
+            "title": "网站访问记录 列表",
+            "method": "post",
+            "url": "visit_statistic/item/index",
+            "scope": "visit_statistic.read",
+            "permission": "\\Module\\VisitStatistic\\Admin\\Controller\\VisitStatisticItemController@index",
+            "params": [
+                {
+                    "name": "page",
+                    "type": "int",
+                    "required": false,
+                    "desc": "页码"
+                },
+                {
+                    "name": "pageSize",
+                    "type": "int",
+                    "required": false,
+                    "desc": "每页数量"
+                },
+                {
+                    "name": "keyword",
+                    "type": "string",
+                    "required": false,
+                    "desc": "关键词"
+                }
+            ]
+        },
+        {
+            "key": "visit_statistic.item.add",
+            "title": "网站访问记录 新增",
+            "method": "post",
+            "url": "visit_statistic/item/add",
+            "scope": "visit_statistic.write",
+            "permission": "\\Module\\VisitStatistic\\Admin\\Controller\\VisitStatisticItemController@add",
+            "params": [
+                {
+                    "name": "url",
+                    "type": "string",
+                    "required": false,
+                    "desc": "url"
+                },
+                {
+                    "name": "ip",
+                    "type": "string",
+                    "required": false,
+                    "desc": "ip"
+                },
+                {
+                    "name": "device",
+                    "type": "string",
+                    "required": false,
+                    "desc": "device"
+                },
+                {
+                    "name": "ua",
+                    "type": "string",
+                    "required": false,
+                    "desc": "ua"
+                }
+            ]
+        },
+        {
+            "key": "visit_statistic.item.edit",
+            "title": "网站访问记录 编辑",
+            "method": "post",
+            "url": "visit_statistic/item/edit",
+            "scope": "visit_statistic.write",
+            "permission": "\\Module\\VisitStatistic\\Admin\\Controller\\VisitStatisticItemController@edit",
+            "params": [
+                {
+                    "name": "id",
+                    "type": "int",
+                    "required": true,
+                    "desc": "记录ID"
+                },
+                {
+                    "name": "url",
+                    "type": "string",
+                    "required": false,
+                    "desc": "url"
+                },
+                {
+                    "name": "ip",
+                    "type": "string",
+                    "required": false,
+                    "desc": "ip"
+                },
+                {
+                    "name": "device",
+                    "type": "string",
+                    "required": false,
+                    "desc": "device"
+                },
+                {
+                    "name": "ua",
+                    "type": "string",
+                    "required": false,
+                    "desc": "ua"
+                }
+            ]
+        },
+        {
+            "key": "visit_statistic.item.delete",
+            "title": "网站访问记录 删除",
+            "method": "post",
+            "url": "visit_statistic/item/delete",
+            "scope": "visit_statistic.write",
+            "permission": "\\Module\\VisitStatistic\\Admin\\Controller\\VisitStatisticItemController@delete",
+            "params": [
+                {
+                    "name": "ids",
+                    "type": "string",
+                    "required": true,
+                    "desc": "记录ID，多个用逗号分隔"
+                }
+            ]
+        }
+    ]
+}

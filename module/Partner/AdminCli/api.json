@@ -1,0 +1,164 @@
+{
+    "module": "Partner",
+    "title": "友情链接",
+    "apis": [
+        {
+            "key": "partner.index",
+            "title": "友情链接 列表",
+            "method": "post",
+            "url": "partner/index",
+            "scope": "partner.read",
+            "permission": "\\Module\\Partner\\Admin\\Controller\\PartnerController@index",
+            "params": [
+                {
+                    "name": "page",
+                    "type": "int",
+                    "required": false,
+                    "desc": "页码"
+                },
+                {
+                    "name": "pageSize",
+                    "type": "int",
+                    "required": false,
+                    "desc": "每页数量"
+                },
+                {
+                    "name": "keyword",
+                    "type": "string",
+                    "required": false,
+                    "desc": "关键词"
+                }
+            ]
+        },
+        {
+            "key": "partner.add",
+            "title": "友情链接 新增",
+            "method": "post",
+            "url": "partner/add",
+            "scope": "partner.write",
+            "permission": "\\Module\\Partner\\Admin\\Controller\\PartnerController@add",
+            "params": [
+                {
+                    "name": "position",
+                    "type": "string",
+                    "required": false,
+                    "desc": "position"
+                },
+                {
+                    "name": "sort",
+                    "type": "int",
+                    "required": false,
+                    "desc": "sort"
+                },
+                {
+                    "name": "title",
+                    "type": "string",
+                    "required": false,
+                    "desc": "title"
+                },
+                {
+                    "name": "logo",
+                    "type": "string",
+                    "required": false,
+                    "desc": "logo"
+                },
+                {
+                    "name": "link",
+                    "type": "string",
+                    "required": false,
+                    "desc": "link"
+                },
+                {
+                    "name": "enable",
+                    "type": "string",
+                    "required": false,
+                    "desc": "enable"
+                }
+            ]
+        },
+        {
+            "key": "partner.edit",
+            "title": "友情链接 编辑",
+            "method": "post",
+            "url": "partner/edit",
+            "scope": "partner.write",
+            "permission": "\\Module\\Partner\\Admin\\Controller\\PartnerController@edit",
+            "params": [
+                {
+                    "name": "id",
+                    "type": "int",
+                    "required": true,
+                    "desc": "记录ID"
+                },
+                {
+                    "name": "position",
+                    "type": "string",
+                    "required": false,
+                    "desc": "position"
+                },
+                {
+                    "name": "sort",
+                    "type": "int",
+                    "required": false,
+                    "desc": "sort"
+                },
+                {
+                    "name": "title",
+                    "type": "string",
+                    "required": false,
+                    "desc": "title"
+                },
+                {
+                    "name": "logo",
+                    "type": "string",
+                    "required": false,
+                    "desc": "logo"
+                },
+                {
+                    "name": "link",
+                    "type": "string",
+                    "required": false,
+                    "desc": "link"
+                },
+                {
+                    "name": "enable",
+                    "type": "string",
+                    "required": false,
+                    "desc": "enable"
+                }
+            ]
+        },
+        {
+            "key": "partner.delete",
+            "title": "友情链接 删除",
+            "method": "post",
+            "url": "partner/delete",
+            "scope": "partner.write",
+            "permission": "\\Module\\Partner\\Admin\\Controller\\PartnerController@delete",
+            "params": [
+                {
+                    "name": "ids",
+                    "type": "string",
+                    "required": true,
+                    "desc": "记录ID，多个用逗号分隔"
+                }
+            ]
+        },
+        {
+            "key": "partner.sort",
+            "title": "友情链接 排序",
+            "method": "post",
+            "url": "partner/sort",
+            "scope": "partner.write",
+            "permission": "\\Module\\Partner\\Admin\\Controller\\PartnerController@sort",
+            "params": [
+                {
+                    "name": "ids",
+                    "type": "string",
+                    "required": true,
+                    "desc": "记录ID，按目标顺序用逗号分隔"
+                }
+            ]
+        }
+    ]
+}

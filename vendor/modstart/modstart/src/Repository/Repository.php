@@ -2,8 +2,8 @@
 
 namespace ModStart\Repository;
 
-use Doctrine\DBAL\Query\QueryBuilder;
 use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Traits\Macroable;
 use ModStart\Detail\Detail;
@@ -127,7 +127,7 @@ abstract class Repository implements RepositoryInterface, SortRepositoryInterfac
     /**
      * get built model query for conditions
      * @param Model $model
-     * @return QueryBuilder
+     * @return Builder
      */
     public function getQuery(Model $model)
     {

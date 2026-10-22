@@ -5,7 +5,7 @@
     <style type="text/css">
         body{
             min-height:100vh;
-            background-color:#FFFFFF;
+            background-color:var(--color-body-bg);
             background-repeat: no-repeat;
             background-position: center;
             background-size: cover;
@@ -48,12 +48,12 @@
                         <div class="line">
                             <i class="iconfont icon-user"></i>
                             {{ L('Username') }}
-                            <input type="text" name="username" value="{{\Illuminate\Support\Facades\Input::get('username','')}}" placeholder="{{ L('PleaseInput') }}"/>
+                            <input type="text" class="form-lg" name="username" value="{{\Illuminate\Support\Facades\Input::get('username','')}}" placeholder="{{ L('PleaseInput') }}"/>
                         </div>
                         <div class="line">
                             <i class="iconfont icon-lock"></i>
                             {{ L('Password') }}
-                            <input type="password" name="password" value="{{\Illuminate\Support\Facades\Input::get('password','')}}" placeholder="{{ L('PleaseInput') }}"/>
+                            <input type="password" class="form-lg" name="password" value="{{\Illuminate\Support\Facades\Input::get('password','')}}" placeholder="{{ L('PleaseInput') }}"/>
                         </div>
                     @endif
                     @if(config('modstart.admin.login.captcha',false))
@@ -65,12 +65,14 @@
                             <div class="line">
                                 <i class="iconfont icon-robot"></i>
                                 {{ L('Captcha') }}
-                                <div class="row">
-                                    <div class="col-6">
-                                        <input type="text" name="captcha" value="" autocomplete="off" placeholder="{{ L('PleaseInput') }}"/>
-                                    </div>
-                                    <div class="col-6">
-                                        <img data-captcha style="height:40px;width:100%;border:1px solid #CCC;border-radius:3px;" data-uk-tooltip title="{{ L('ClickToRefresh') }}" src="{{modstart_admin_url('login/captcha')}}?{{time()}}" onclick="this.src='{{modstart_admin_url('login/captcha')}}?'+Math.random();" />
+                                <div class="field">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <input type="text" class="form-lg" name="captcha" value="" autocomplete="off" placeholder="{{ L('PleaseInput') }}"/>
+                                        </div>
+                                        <div class="col-6">
+                                            <img class="captcha captcha-lg" data-captcha title="{{ L('ClickToRefresh') }}" src="{{modstart_admin_url('login/captcha')}}?{{time()}}" onclick="this.src='{{modstart_admin_url('login/captcha')}}?'+Math.random();" />
+                                        </div>
                                     </div>
                                 </div>
                             </div>

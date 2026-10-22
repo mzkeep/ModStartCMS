@@ -24,7 +24,7 @@ use Illuminate\Support\Str;
  */
 abstract class SmartRedisSessionHandlerBase
 {
-    /** @var mixed Redis 连接对象（Predis\Client 或 Illuminate\Redis\Connections\Connection） */
+    /** @var mixed Redis 连接对象（\Redis 扩展实例或 Illuminate\Redis\Connections\Connection） */
     protected $redis;
 
     /** @var string Session key 前缀 */
@@ -136,28 +136,36 @@ abstract class SmartRedisSessionHandlerBase
     /**
      * 创建 Redis 连接。
      *
-     * 直接使用 Predis\Client（modstart 依赖 predis/predis），并显式关闭连接级前缀，
-     * 使最终 key 完全由 handler 的 prefix 控制（<APP_NAME>:sess:<sessionId>），
-     * 不受 Laravel database.redis.options.prefix / config 缓存影响。
+     * 不依赖任何第三方 Redis 客户端库：
+     *   1. phpredis 扩展（推荐，config('database.redis.client') = phpredis）
+     *   2. Laravel Redis 连接（由宿主项目自行安装的客户端/扩展提供，modstart 不直接引用）
+     *
+     * 使用 phpredis 时显式关闭连接级前缀，使最终 key 完全由 handler 的 prefix 控制
+     * （<APP_NAME>:sess:<sessionId>），不受 Laravel database.redis.options.prefix 影响。
      *
      * @param string $connection config('database.redis') 中的连接名
-     * @return \Predis\Client
+     * @return mixed
      */
     protected static function createRedisClient($connection = 'default')
     {
         $config = config('database.redis.' . $connection, array());
-        $parameters = array(
-            'scheme' => 'tcp',
-            'host' => isset($config['host']) ? $config['host'] : '127.0.0.1',
-            'port' => isset($config['port']) ? intval($config['port']) : 6379,
-            'database' => isset($config['database']) ? intval($config['database']) : 0,
-        );
-        if (!empty($config['password'])) {
-            $parameters['password'] = $config['password'];
+        $host = isset($config['host']) ? $config['host'] : '127.0.0.1';
+        $port = isset($config['port']) ? intval($config['port']) : 6379;
+        $database = isset($config['database']) ? intval($config['database']) : 0;
+        $password = isset($config['password']) ? $config['password'] : null;
+        if (extension_loaded('redis')) {
+            $client = new \Redis();
+            $client->connect($host, $port, 2.0);
+            if (!empty($password)) {
+                $client->auth($password);
+            }
+            if ($database > 0) {
+                $client->select($database);
+            }
+            return $client;
         }
-        return new \Predis\Client($parameters, array(
-            'prefix' => '', // 关闭连接级前缀
-        ));
+        // 兜底：使用 Laravel 的 Redis 连接（客户端由宿主项目自行提供）
+        return \Illuminate\Support\Facades\Redis::connection($connection);
     }
 }
 

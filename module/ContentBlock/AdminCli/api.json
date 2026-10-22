@@ -1,0 +1,248 @@
+{
+    "module": "ContentBlock",
+    "title": "内容区块",
+    "apis": [
+        {
+            "key": "content_block.index",
+            "title": "内容区块 列表",
+            "method": "post",
+            "url": "content_block/index",
+            "scope": "content_block.read",
+            "permission": "\\Module\\ContentBlock\\Admin\\Controller\\ContentBlockController@index",
+            "params": [
+                {
+                    "name": "page",
+                    "type": "int",
+                    "required": false,
+                    "desc": "页码"
+                },
+                {
+                    "name": "pageSize",
+                    "type": "int",
+                    "required": false,
+                    "desc": "每页数量"
+                },
+                {
+                    "name": "keyword",
+                    "type": "string",
+                    "required": false,
+                    "desc": "关键词"
+                }
+            ]
+        },
+        {
+            "key": "content_block.add",
+            "title": "内容区块 新增",
+            "method": "post",
+            "url": "content_block/add",
+            "scope": "content_block.write",
+            "permission": "\\Module\\ContentBlock\\Admin\\Controller\\ContentBlockController@add",
+            "params": [
+                {
+                    "name": "type",
+                    "type": "int",
+                    "required": false,
+                    "desc": "type"
+                },
+                {
+                    "name": "name",
+                    "type": "string",
+                    "required": false,
+                    "desc": "name"
+                },
+                {
+                    "name": "title",
+                    "type": "string",
+                    "required": false,
+                    "desc": "title"
+                },
+                {
+                    "name": "image",
+                    "type": "string",
+                    "required": false,
+                    "desc": "image"
+                },
+                {
+                    "name": "link",
+                    "type": "string",
+                    "required": false,
+                    "desc": "link"
+                },
+                {
+                    "name": "content",
+                    "type": "string",
+                    "required": false,
+                    "desc": "content"
+                },
+                {
+                    "name": "sort",
+                    "type": "int",
+                    "required": false,
+                    "desc": "sort"
+                },
+                {
+                    "name": "startTime",
+                    "type": "string",
+                    "required": false,
+                    "desc": "startTime"
+                },
+                {
+                    "name": "endTime",
+                    "type": "string",
+                    "required": false,
+                    "desc": "endTime"
+                },
+                {
+                    "name": "enable",
+                    "type": "string",
+                    "required": false,
+                    "desc": "enable"
+                },
+                {
+                    "name": "remark",
+                    "type": "string",
+                    "required": false,
+                    "desc": "remark"
+                },
+                {
+                    "name": "texts",
+                    "type": "string",
+                    "required": false,
+                    "desc": "texts"
+                },
+                {
+                    "name": "images",
+                    "type": "string",
+                    "required": false,
+                    "desc": "images"
+                }
+            ]
+        },
+        {
+            "key": "content_block.edit",
+            "title": "内容区块 编辑",
+            "method": "post",
+            "url": "content_block/edit",
+            "scope": "content_block.write",
+            "permission": "\\Module\\ContentBlock\\Admin\\Controller\\ContentBlockController@edit",
+            "params": [
+                {
+                    "name": "id",
+                    "type": "int",
+                    "required": true,
+                    "desc": "记录ID"
+                },
+                {
+                    "name": "type",
+                    "type": "int",
+                    "required": false,
+                    "desc": "type"
+                },
+                {
+                    "name": "name",
+                    "type": "string",
+                    "required": false,
+                    "desc": "name"
+                },
+                {
+                    "name": "title",
+                    "type": "string",
+                    "required": false,
+                    "desc": "title"
+                },
+                {
+                    "name": "image",
+                    "type": "string",
+                    "required": false,
+                    "desc": "image"
+                },
+                {
+                    "name": "link",
+                    "type": "string",
+                    "required": false,
+                    "desc": "link"
+                },
+                {
+                    "name": "content",
+                    "type": "string",
+                    "required": false,
+                    "desc": "content"
+                },
+                {
+                    "name": "sort",
+                    "type": "int",
+                    "required": false,
+                    "desc": "sort"
+                },
+                {
+                    "name": "startTime",
+                    "type": "string",
+                    "required": false,
+                    "desc": "startTime"
+                },
+                {
+                    "name": "endTime",
+                    "type": "string",
+                    "required": false,
+                    "desc": "endTime"
+                },
+                {
+                    "name": "enable",
+                    "type": "string",
+                    "required": false,
+                    "desc": "enable"
+                },
+                {
+                    "name": "remark",
+                    "type": "string",
+                    "required": false,
+                    "desc": "remark"
+                },
+                {
+                    "name": "texts",
+                    "type": "string",
+                    "required": false,
+                    "desc": "texts"
+                },
+                {
+                    "name": "images",
+                    "type": "string",
+                    "required": false,
+                    "desc": "images"
+                }
+            ]
+        },
+        {
+            "key": "content_block.delete",
+            "title": "内容区块 删除",
+            "method": "post",
+            "url": "content_block/delete",
+            "scope": "content_block.write",
+            "permission": "\\Module\\ContentBlock\\Admin\\Controller\\ContentBlockController@delete",
+            "params": [
+                {
+                    "name": "ids",
+                    "type": "string",
+                    "required": true,
+                    "desc": "记录ID，多个用逗号分隔"
+                }
+            ]
+        },
+        {
+            "key": "content_block.sort",
+            "title": "内容区块 排序",
+            "method": "post",
+            "url": "content_block/sort",
+            "scope": "content_block.write",
+            "permission": "\\Module\\ContentBlock\\Admin\\Controller\\ContentBlockController@sort",
+            "params": [
+                {
+                    "name": "ids",
+                    "type": "string",
+                    "required": true,
+                    "desc": "记录ID，按目标顺序用逗号分隔"
+                }
+            ]
+        }
+    ]
+}

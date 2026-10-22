@@ -1,0 +1,184 @@
+{
+    "module": "AigcBase",
+    "title": "AI平台对接",
+    "apis": [
+        {
+            "key": "aigc_base.aigc_key_pool.index",
+            "title": "AI平台对接 列表",
+            "method": "post",
+            "url": "aigc_base/aigc_key_pool/index",
+            "scope": "aigc_base.read",
+            "permission": "\\Module\\AigcBase\\Admin\\Controller\\AigcKeyPoolController@index",
+            "params": [
+                {
+                    "name": "page",
+                    "type": "int",
+                    "required": false,
+                    "desc": "页码"
+                },
+                {
+                    "name": "pageSize",
+                    "type": "int",
+                    "required": false,
+                    "desc": "每页数量"
+                },
+                {
+                    "name": "keyword",
+                    "type": "string",
+                    "required": false,
+                    "desc": "关键词"
+                }
+            ]
+        },
+        {
+            "key": "aigc_base.aigc_key_pool.add",
+            "title": "AI平台对接 新增",
+            "method": "post",
+            "url": "aigc_base/aigc_key_pool/add",
+            "scope": "aigc_base.write",
+            "permission": "\\Module\\AigcBase\\Admin\\Controller\\AigcKeyPoolController@add",
+            "params": [
+                {
+                    "name": "type",
+                    "type": "int",
+                    "required": false,
+                    "desc": "type"
+                },
+                {
+                    "name": "status",
+                    "type": "int",
+                    "required": false,
+                    "desc": "status"
+                },
+                {
+                    "name": "priority",
+                    "type": "string",
+                    "required": false,
+                    "desc": "priority"
+                },
+                {
+                    "name": "param",
+                    "type": "string",
+                    "required": false,
+                    "desc": "param"
+                },
+                {
+                    "name": "remark",
+                    "type": "string",
+                    "required": false,
+                    "desc": "remark"
+                },
+                {
+                    "name": "lastCallTime",
+                    "type": "string",
+                    "required": false,
+                    "desc": "lastCallTime"
+                },
+                {
+                    "name": "callCount",
+                    "type": "string",
+                    "required": false,
+                    "desc": "callCount"
+                },
+                {
+                    "name": "successCount",
+                    "type": "string",
+                    "required": false,
+                    "desc": "successCount"
+                },
+                {
+                    "name": "failCount",
+                    "type": "string",
+                    "required": false,
+                    "desc": "failCount"
+                }
+            ]
+        },
+        {
+            "key": "aigc_base.aigc_key_pool.edit",
+            "title": "AI平台对接 编辑",
+            "method": "post",
+            "url": "aigc_base/aigc_key_pool/edit",
+            "scope": "aigc_base.write",
+            "permission": "\\Module\\AigcBase\\Admin\\Controller\\AigcKeyPoolController@edit",
+            "params": [
+                {
+                    "name": "id",
+                    "type": "int",
+                    "required": true,
+                    "desc": "记录ID"
+                },
+                {
+                    "name": "type",
+                    "type": "int",
+                    "required": false,
+                    "desc": "type"
+                },
+                {
+                    "name": "status",
+                    "type": "int",
+                    "required": false,
+                    "desc": "status"
+                },
+                {
+                    "name": "priority",
+                    "type": "string",
+                    "required": false,
+                    "desc": "priority"
+                },
+                {
+                    "name": "param",
+                    "type": "string",
+                    "required": false,
+                    "desc": "param"
+                },
+                {
+                    "name": "remark",
+                    "type": "string",
+                    "required": false,
+                    "desc": "remark"
+                },
+                {
+                    "name": "lastCallTime",
+                    "type": "string",
+                    "required": false,
+                    "desc": "lastCallTime"
+                },
+                {
+                    "name": "callCount",
+                    "type": "string",
+                    "required": false,
+                    "desc": "callCount"
+                },
+                {
+                    "name": "successCount",
+                    "type": "string",
+                    "required": false,
+                    "desc": "successCount"
+                },
+                {
+                    "name": "failCount",
+                    "type": "string",
+                    "required": false,
+                    "desc": "failCount"
+                }
+            ]
+        },
+        {
+            "key": "aigc_base.aigc_key_pool.delete",
+            "title": "AI平台对接 删除",
+            "method": "post",
+            "url": "aigc_base/aigc_key_pool/delete",
+            "scope": "aigc_base.write",
+            "permission": "\\Module\\AigcBase\\Admin\\Controller\\AigcKeyPoolController@delete",
+            "params": [
+                {
+                    "name": "ids",
+                    "type": "string",
+                    "required": true,
+                    "desc": "记录ID，多个用逗号分隔"
+                }
+            ]
+        }
+    ]
+}

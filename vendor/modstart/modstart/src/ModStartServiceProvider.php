@@ -16,6 +16,7 @@ use ModStart\Admin\ModStartAdmin;
 use ModStart\App\Api\ModStartApi;
 use ModStart\App\OpenApi\ModStartOpenApi;
 use ModStart\App\Web\ModStartWeb;
+use ModStart\Core\Compat\Schema\SchemaCompat;
 use ModStart\Core\Input\Request;
 use ModStart\Core\Monitor\DatabaseMonitor;
 use ModStart\Core\Monitor\HttpMonitor;
@@ -81,6 +82,11 @@ class ModStartServiceProvider extends ServiceProvider
 
     public function register()
     {
+        // Redis 客户端兜底：宿主项目未显式配置 database.redis.client 时，
+        // 若已安装 phpredis 扩展则优先使用（避免默认依赖 predis 客户端库）
+        if (null === config('database.redis.client') && extension_loaded('redis')) {
+            config(['database.redis.client' => 'phpredis']);
+        }
         $this->mergeConfigFrom(__DIR__ . '/../config/modstart.php', 'modstart');
         $this->mergeConfigFrom(__DIR__ . '/../config/env.php', 'env');
         $this->mergeConfigFrom(__DIR__ . '/../config/module.php', 'module');
@@ -113,6 +119,9 @@ class ModStartServiceProvider extends ServiceProvider
 
         $this->app->singleton('modstartConfig', config('modstart.config.driver'));
 
+        // 注册内置验证码服务（ModStart\Misc\Captcha），不再依赖第三方 mews/captcha
+        $this->app->register(\ModStart\Misc\Captcha\CaptchaServiceProvider::class);
+
         $this->registerRouteMiddleware();
 
         $this->commands($this->commands);
@@ -122,6 +131,9 @@ class ModStartServiceProvider extends ServiceProvider
         $this->registerRoutePattern();
 
         $this->setupMonitor();
+
+        // 未安装 doctrine/dbal 时，使用自带 Schema 语法实现 renameColumn / change
+        SchemaCompat::register($this->app['db']);
 
 
         if (config('modstart.xForwardedHostVisitRedirect', true)) {

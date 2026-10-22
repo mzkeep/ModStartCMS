@@ -34,6 +34,9 @@ class SeedTestCommand extends Command
 
     public function handle()
     {
+        // 全量测试（尤其 UI 阶段的真实浏览器交互）耗时可能超过 CLI 默认执行上限，
+        // 这里显式取消执行时间限制，避免测试被 60 秒上限中断
+        @set_time_limit(0);
         // 同一时间只允许一个 seed-test 运行，避免并发操作数据库互相干扰
         if (!$this->acquireRunLock()) {
             return 1;

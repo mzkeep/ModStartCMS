@@ -59,9 +59,14 @@
                     </div>
                     <div class="line">
                         <div class="field">
+                            <input type="text" class="form-lg" name="phone" placeholder="输入手机" />
+                        </div>
+                    </div>
+                    <div class="line">
+                        <div class="field">
                             <div class="row no-gutters">
                                 <div class="col-7">
-                                    <input type="text" class="form-lg" name="phone" placeholder="输入手机" />
+                                    <input type="text" class="form-lg" name="verify" placeholder="手机验证码" />
                                 </div>
                                 <div class="col-5">
                                     <button class="btn btn-round btn-lg btn-block" type="button" data-phone-verify-generate>获取验证码</button>
@@ -69,11 +74,6 @@
                                     <button class="btn btn-round btn-lg btn-block" type="button" data-phone-verify-regenerate style="display:none;margin:0;">重新获取</button>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="line">
-                        <div class="field">
-                            <input type="text" class="form-lg" name="verify" placeholder="手机验证码" />
                         </div>
                     </div>
                     <div class="line">

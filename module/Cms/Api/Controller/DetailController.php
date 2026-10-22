@@ -55,7 +55,7 @@ class DetailController extends ModuleBaseController
         }
         CmsContentUtil::increaseView($data['record']['id']);
         $cat = CmsCatUtil::get($data['record']['catId']);
-        BizException::throwsIfEmpty('栏目不存在', $cat);
+        BizException::throwsIfEmpty('栏目不存在', $cat, ['statusCode' => 404]);
         $record = $data['record'];
         $view = $record['detailTemplate'];
         if (empty($view)) {

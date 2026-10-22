@@ -6,78 +6,74 @@
         </div>
     </div>
     <div class="body">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="tw-flex tw-p-2">
-                    <div class="tw-w-24 tw-flex-shrink-0 tw-font-bold">📢 安全公告</div>
-                    <div class="tw-flex-grow" data-system-notice></div>
+<?php
+// Friendly names for values that are not readable to end users
+$serverInfoOs = PHP_OS;
+if ($serverInfoOs == 'Darwin') {
+    $serverInfoOs = 'macOS（Darwin）';
+} elseif ($serverInfoOs == 'WINNT') {
+    $serverInfoOs = 'Windows';
+}
+$serverInfoRuntime = PHP_SAPI;
+if (PHP_SAPI == 'fpm-fcgi') {
+    $serverInfoRuntime = 'Nginx（FPM）';
+} elseif (PHP_SAPI == 'cgi-fcgi') {
+    $serverInfoRuntime = 'Nginx（FastCGI）';
+} elseif (PHP_SAPI == 'apache2handler') {
+    $serverInfoRuntime = 'Apache';
+} elseif (PHP_SAPI == 'cli-server') {
+    $serverInfoRuntime = 'PHP 内置服务器';
+}
+$serverInfoFramework = strtolower(ModStart\ModStart::env());
+if (strpos($serverInfoFramework, 'laravel') === 0) {
+    $serverInfoFramework = 'Laravel ' . substr($serverInfoFramework, 7);
+} else {
+    $serverInfoFramework = strtoupper($serverInfoFramework);
+}
+$serverInfoKernel = 'ModStart v' . ModStart\ModStart::$version;
+if (!empty($serverInfoFramework)) {
+    $serverInfoKernel .= ' · ' . $serverInfoFramework;
+}
+$serverInfoItems = array(
+    array('icon' => 'icon-cube', 'label' => '系统内核', 'value' => $serverInfoKernel),
+    array('icon' => 'icon-desktop', 'label' => '操作系统', 'value' => $serverInfoOs),
+    array('icon' => 'icon-code', 'label' => 'PHP 版本', 'value' => 'v' . PHP_VERSION . ' · ' . (PHP_INT_SIZE == 8 ? '64' : '32') . ' 位'),
+    array('icon' => 'icon-pc', 'label' => '运行环境', 'value' => $serverInfoRuntime),
+    array('icon' => 'icon-tools', 'label' => '内存限制', 'value' => @ini_get('memory_limit')),
+    array('icon' => 'icon-language', 'label' => '服务器时区', 'value' => date_default_timezone_get()),
+    array('icon' => 'icon-time', 'label' => '服务器时间', 'value' => date('Y-m-d H:i:s'), 'valueAttr' => 'data-server-time'),
+);
+?>
+        <div class="tw-p-2">
+            <div class="tw-flex tw-items-start tw-py-1">
+                <div class="tw-w-28 tw-flex-shrink-0 tw-flex tw-items-center tw-font-bold">
+                    <i class="iconfont icon-bell ub-text-muted tw-mr-2"></i>
+                    安全公告
+                </div>
+                <div class="tw-flex-1 tw-min-w-0 tw-break-words tw-leading-6" data-system-notice>
+                    <span class="ub-text-muted"><i class="iconfont icon-checked"></i> 暂无公告</span>
                 </div>
             </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="tw-flex tw-p-2">
-                    <div class="tw-w-24 tw-flex-shrink-0 tw-font-bold">🚀 系统内核</div>
-                    <div class="tw-flex-grow">ModStart V{{\ModStart\ModStart::$version}} ( <b>{{strtoupper(ModStart\ModStart::env())}}</b> )</div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="tw-flex tw-p-2">
-                    <div class="tw-w-24 tw-flex-shrink-0 tw-font-bold">🖥️ 操作系统</div>
-                    <div class="tw-flex-grow">{{PHP_OS}}</div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="tw-flex tw-p-2">
-                    <div class="tw-w-24 tw-flex-shrink-0 tw-font-bold">🐘 PHP版本</div>
-                    <div class="tw-flex-grow">
-                        V{{PHP_VERSION}}
-                        {{PHP_INT_SIZE == 8 ? '64' : '32'}}位
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="tw-flex tw-p-2">
-                    <div class="tw-w-24 tw-flex-shrink-0 tw-font-bold">🌐 运行环境</div>
-                    <div class="tw-flex-grow">
-                        @if(PHP_SAPI=='fpm-fcgi')
-                            Nginx（FPM）
-                        @elseif(PHP_SAPI=='cgi-fcgi')
-                            Nginx（FASTCGI）
-                        @elseif(PHP_SAPI=='apache2handler')
-                            Apache
-                        @else
-                            {{PHP_SAPI}}
-                        @endif
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="tw-flex tw-p-2">
-                    <div class="tw-w-24 tw-flex-shrink-0 tw-font-bold">🧠 内存限制</div>
-                    <div class="tw-flex-grow">{{@ini_get('memory_limit')}}</div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="tw-flex tw-p-2">
-                    <div class="tw-w-24 tw-flex-shrink-0 tw-font-bold">🌍 服务器时区</div>
-                    <div class="tw-flex-grow">{{date_default_timezone_get()}}</div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="tw-flex tw-p-2">
-                    <div class="tw-w-24 tw-flex-shrink-0 tw-font-bold">🕒 服务器时间</div>
-                    <div class="tw-flex-grow" data-server-time>-</div>
-                </div>
-            </div>
-            <div class="col-lg-12 col-md-12">
-                <div class="tw-flex tw-p-2">
-                    <div class="tw-w-24 tw-flex-shrink-0 tw-font-bold">📂 服务器参数</div>
-                    <div class="tw-flex-grow">
-                        <div>
-                            <code>upload_max_filesize({{@ini_get('upload_max_filesize')}})</code>
-                            <code>post_max_size({{@ini_get('post_max_size')}})</code>
-                            <code>max_file_uploads({{@ini_get('max_file_uploads')}})</code>
+            <div class="tw-grid tw-grid-cols-1 lg:tw-grid-cols-3 tw-gap-x-6">
+                @foreach($serverInfoItems as $serverInfoItem)
+                    <div class="tw-flex tw-items-start tw-py-1">
+                        <div class="tw-w-28 tw-flex-shrink-0 tw-flex tw-items-center tw-font-bold">
+                            <i class="iconfont {{$serverInfoItem['icon']}} ub-text-muted tw-mr-2"></i>
+                            {{$serverInfoItem['label']}}
                         </div>
+                        <div class="tw-flex-1 tw-min-w-0 tw-break-words tw-leading-6 tw-tabular-nums" {{ isset($serverInfoItem['valueAttr']) ? $serverInfoItem['valueAttr'] : '' }}>{{$serverInfoItem['value']}}</div>
                     </div>
+                @endforeach
+            </div>
+            <div class="tw-flex tw-items-start tw-py-1">
+                <div class="tw-w-28 tw-flex-shrink-0 tw-flex tw-items-center tw-font-bold">
+                    <i class="iconfont icon-list ub-text-muted tw-mr-2"></i>
+                    服务器参数
+                </div>
+                <div class="tw-flex-1 tw-min-w-0">
+                    <span class="ub-tag tw-mr-2 tw-mb-1 tw-tabular-nums">upload_max_filesize <b class="tw-ml-1">{{@ini_get('upload_max_filesize')}}</b></span>
+                    <span class="ub-tag tw-mr-2 tw-mb-1 tw-tabular-nums">post_max_size <b class="tw-ml-1">{{@ini_get('post_max_size')}}</b></span>
+                    <span class="ub-tag tw-mr-2 tw-mb-1 tw-tabular-nums">max_file_uploads <b class="tw-ml-1">{{@ini_get('max_file_uploads')}}</b></span>
                 </div>
             </div>
         </div>
@@ -86,10 +82,19 @@
             $('body').append('<script src="https://modstart.com/api/modstart/notice?modules={{urlencode($modules)}}&t={{date('YmdH')}}"><' + '/script>');
             $(function(){
                 var $serverTime = $('[data-server-time]');
-                var timeDiff = {{time()*1000}} - (new Date()).getTime()
-                setInterval(function(){
-                    $serverTime.text(new Date((new Date()).getTime() + timeDiff).toLocaleString());
-                }, 1000);
+                var timeDiff = {{time()*1000}} - (new Date()).getTime();
+                function serverInfoPad(n) {
+                    return n < 10 ? '0' + n : '' + n;
+                }
+                function serverInfoFormat(date) {
+                    return date.getFullYear() + '-' + serverInfoPad(date.getMonth() + 1) + '-' + serverInfoPad(date.getDate())
+                        + ' ' + serverInfoPad(date.getHours()) + ':' + serverInfoPad(date.getMinutes()) + ':' + serverInfoPad(date.getSeconds());
+                }
+                function serverInfoTick() {
+                    $serverTime.text(serverInfoFormat(new Date((new Date()).getTime() + timeDiff)));
+                }
+                serverInfoTick();
+                setInterval(serverInfoTick, 1000);
             });
         </script>
     </div>

@@ -6,7 +6,7 @@ namespace Module\Vendor\Web\Controller;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Response;
-use Intervention\Image\Facades\Image;
+use ModStart\Core\Util\Gd\GdImage as Image;
 
 class PlaceholderController extends Controller
 {

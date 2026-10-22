@@ -8,11 +8,13 @@ use Illuminate\Filesystem\Filesystem;
 use Illuminate\Hashing\BcryptHasher as Hasher;
 use Illuminate\Session\Store as Session;
 use Illuminate\Support\Str;
-use Intervention\Image\ImageManager;
+use ModStart\Core\Util\Gd\GdImage;
 
 /**
- * Class Captcha
- * @package Mews\Captcha
+ * 验证码
+ *
+ * 内置实现（源自 mews/captcha，已移除 intervention/image 依赖，改用 ModStart 内部 GD 实现），
+ * 详见本目录 FORK.md。
  */
 class Captcha
 {
@@ -26,11 +28,6 @@ class Captcha
      * @var Repository
      */
     protected $config;
-
-    /**
-     * @var ImageManager
-     */
-    protected $imageManager;
 
     /**
      * @var Session
@@ -48,12 +45,12 @@ class Captcha
     protected $str;
 
     /**
-     * @var ImageManager->canvas
+     * @var GdImage 画布
      */
     protected $canvas;
 
     /**
-     * @var ImageManager->image
+     * @var GdImage 图片
      */
     protected $image;
 
@@ -157,7 +154,6 @@ class Captcha
      *
      * @param Filesystem $files
      * @param Repository $config
-     * @param ImageManager $imageManager
      * @param Session $session
      * @param Hasher $hasher
      * @param Str $str
@@ -167,7 +163,6 @@ class Captcha
     public function __construct(
         Filesystem $files,
         Repository $config,
-        ImageManager $imageManager,
         Session $session,
         Hasher $hasher,
         Str $str
@@ -175,7 +170,6 @@ class Captcha
     {
         $this->files = $files;
         $this->config = $config;
-        $this->imageManager = $imageManager;
         $this->session = $session;
         $this->hasher = $hasher;
         $this->str = $str;
@@ -200,7 +194,7 @@ class Captcha
      *
      * @param string $config
      * @param boolean $api
-     * @return ImageManager->response
+     * @return \Illuminate\Http\Response|array
      */
     public function create($config = 'default', $api = false)
     {
@@ -220,14 +214,14 @@ class Captcha
         $generator = $this->generate($config);
         $this->text = $generator['value'];
 
-        $this->canvas = $this->imageManager->canvas(
+        $this->canvas = GdImage::canvas(
             $this->width,
             $this->height,
             $this->bgColor
         );
 
         if ($this->bgImage) {
-            $this->image = $this->imageManager->make($this->background())->resize(
+            $this->image = GdImage::make($this->background())->resize(
                 $this->width,
                 $this->height
             );
@@ -319,7 +313,8 @@ class Captcha
 //        ];
         return [
             'value' => $bagValue,
-            'key' => $bag
+            'sensitive' => $this->sensitive,
+            'key' => $bag,
         ];
     }
 
@@ -401,7 +396,7 @@ class Captcha
     /**
      * Random image lines
      *
-     * @return \Intervention\Image\Image
+     * @return GdImage
      */
     protected function lines()
     {

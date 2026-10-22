@@ -53,6 +53,37 @@ class TestMember
     // =========================================================================
 
     /**
+     * 获取当前进程内所有 Session Store 实例（去重）
+     * @return \Illuminate\Session\Store[]
+     */
+    public static function sessionStores()
+    {
+        $stores = [];
+        try {
+            $stores[] = app('session.store');
+        } catch (\Exception $e) {
+        }
+        try {
+            $stores[] = \Illuminate\Support\Facades\Session::getFacadeRoot()->driver();
+        } catch (\Exception $e) {
+        }
+        $result = [];
+        $seen = [];
+        foreach ($stores as $store) {
+            if (!$store instanceof \Illuminate\Session\Store) {
+                continue;
+            }
+            $hash = spl_object_hash($store);
+            if (isset($seen[$hash])) {
+                continue;
+            }
+            $seen[$hash] = true;
+            $result[] = $store;
+        }
+        return $result;
+    }
+
+    /**
      * 以测试用户登录（HTTP 模式），返回 api-token（= session id）
      * @return string|null
      */
@@ -79,14 +110,19 @@ class TestMember
         if (empty($user)) {
             return null;
         }
-        // 使用全局 session.store 单例（同一 PHP 进程中 HTTP kernel 共享同一个 handler）
-        /** @var \Illuminate\Session\Store $session */
-        $session = app('session.store');
-        $session->start();
-        $session->put('memberUserId', $user['id']);
-        $session->put('_memberUser', $user);
-        $session->save();
-        self::$testApiToken = $session->getId();
+        // 进程内可能存在多个 Session Store 实例（容器单例与 Session 门面缓存的 driver），
+        // 这里用同一个 Session ID 写入所有实例，确保 api-token 在后续任意请求中都能被读取到
+        // Laravel 5.1 的 Session ID 必须是 40 位十六进制
+        $sessionId = md5(uniqid('', true) . mt_rand()) . substr(md5(mt_rand()), 0, 8);
+        foreach (self::sessionStores() as $session) {
+            $session->flush();
+            $session->setId($sessionId);
+            $session->put('_token', md5(uniqid('', true)));
+            $session->put('memberUserId', $user['id']);
+            $session->put('_memberUser', $user);
+            $session->save();
+        }
+        self::$testApiToken = $sessionId;
         return self::$testApiToken;
     }
 

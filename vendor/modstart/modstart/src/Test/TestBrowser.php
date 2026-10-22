@@ -403,28 +403,182 @@ class TestBrowser
      * @param bool $fullPage 是否整页截图（true 时截取整个可滚动页面）
      * @return bool
      */
-    public static function screenshot($path, $fullPage = false)
+    /**
+     * 切换设备 / 视口（PC 与手机两种预览尺寸）
+     * ⚠️ 设备参数变化会重建浏览器 context，登录态（cookie）会丢失，
+     *    因此仅适用于前台页面截图；后台截图请在登录前设置。
+     * @param int $width CSS 像素宽度，如 1280（PC）/ 390（手机）
+     * @param int $height CSS 像素高度，如 800（PC）/ 844（手机）
+     * @param bool $mobile 是否模拟手机（移动 UA + isMobile + 触摸）
+     * @param float $deviceScaleFactor 设备像素比，默认 2（高清截图）
+     * @return bool
+     */
+    public static function setViewport($width, $height, $mobile = false, $deviceScaleFactor = 2)
     {
-        $ret = self::command('screenshot', ['path' => $path, 'fullPage' => $fullPage]);
+        $ret = self::command('viewport', [
+            'width' => intval($width),
+            'height' => intval($height),
+            'mobile' => !!$mobile,
+            'deviceScaleFactor' => floatval($deviceScaleFactor),
+        ]);
         return !empty($ret) && !empty($ret['ok']);
     }
 
     /**
+     * 浏览器截图
+     * @param string $path 保存路径
+     * @param bool $fullPage 是否整页截图（true 时截取整个可滚动页面）
+     * @param array $option 可选：
+     *                      - viewportWidth / viewportHeight / mobile / deviceScaleFactor：截图前切换设备
+     *                      - settle：是否执行「滚到底部等 1 秒」稳定流程，默认 true；
+     *                                逐帧动画截图传 false（否则每帧都会跳到底部）
+     * @return bool
+     */
+    public static function screenshot($path, $fullPage = false, $option = [])
+    {
+        if (!empty($option['viewportWidth'])) {
+            self::setViewport(
+                $option['viewportWidth'],
+                isset($option['viewportHeight']) ? $option['viewportHeight'] : 800,
+                !empty($option['mobile']),
+                isset($option['deviceScaleFactor']) ? $option['deviceScaleFactor'] : 2
+            );
+        }
+        $params = ['path' => $path, 'fullPage' => $fullPage];
+        if (array_key_exists('settle', $option)) {
+            $params['settle'] = !!$option['settle'];
+        }
+        if (!empty($option['clipViewport'])) {
+            $params['clipViewport'] = true;
+        }
+        $ret = self::command('screenshot', $params);
+        return !empty($ret) && !empty($ret['ok']);
+    }
+
+    /**
+     * 滚动到指定位置
+     * @param int $y
+     * @return mixed
+     */
+    public static function scrollTo($y)
+    {
+        return self::evalJs('window.scrollTo(0, ' . intval($y) . '); 1');
+    }
+
+    /**
+     * 当前页面可滚动总高度（文档高度）
+     * @return int
+     */
+    public static function pageScrollHeight()
+    {
+        $h = self::evalJs('Math.max(document.body.scrollHeight, document.documentElement.scrollHeight)');
+        return intval($h);
+    }
+
+    /**
+     * 等待页面资源（图片）加载完成 + 绘制完成（不滚动）
+     * @param int $timeoutMs
+     * @return void
+     */
+    public static function waitAssets($timeoutMs = 3000)
+    {
+        $script = '(function(){var t=' . intval($timeoutMs) . ';'
+            . 'var imgs=Array.prototype.slice.call(document.images||[]).filter(function(i){return !i.complete;});'
+            . 'if(!imgs.length){return 1;}'
+            . 'return new Promise(function(resolve){var left=imgs.length;var timer=setTimeout(function(){resolve(1);},t);'
+            . 'function done(){left--;if(left<=0){clearTimeout(timer);resolve(1);}}'
+            . 'imgs.forEach(function(i){i.addEventListener("load",done,{once:true});i.addEventListener("error",done,{once:true});});});'
+            . '})()';
+        self::evalJs($script);
+    }
+
+    /**
      * 截图并自动压缩
-     * 截图后通过 ImageUtil::compress 自动等比缩放 + 质量优化，避免图片过大
      * @param string $path 保存路径
      * @param bool $fullPage 是否整页截图
-     * @param array $option 压缩选项，见 ImageUtil::compress（maxWidth/maxHeight/quality）
+     * @param array $option 截图/压缩选项，见 screenshot 与 compressImage
      * @return bool
      */
     public static function screenshotCompressed($path, $fullPage = false, $option = [])
     {
-        if (!self::screenshot($path, $fullPage)) {
+        if (!self::screenshot($path, $fullPage, $option)) {
             return false;
         }
         if (!file_exists($path)) {
             return false;
         }
-        return ImageUtil::compress($path, $option);
+        return self::compressImage($path, $option);
+    }
+
+    /**
+     * 压缩图片（原地）
+     *
+     * 优先调用系统命令 ss-image-compress（无损缩放 + 质量优化，体积更小），
+     * 命令不存在或执行失败时回退框架的 ImageUtil::compress。
+     * 仅在显式传入 maxWidth / maxHeight 时才会等比缩放，否则只做质量压缩，不改变像素尺寸。
+     *
+     * @param string $path 图片路径
+     * @param array $option ['quality'=>85, 'maxWidth'=>0, 'maxHeight'=>0]
+     * @return bool
+     */
+    public static function compressImage($path, $option = [])
+    {
+        if (!file_exists($path)) {
+            return false;
+        }
+        $quality = isset($option['quality']) ? intval($option['quality']) : 85;
+        $maxWidth = isset($option['maxWidth']) ? intval($option['maxWidth']) : 0;
+        $maxHeight = isset($option['maxHeight']) ? intval($option['maxHeight']) : 0;
+        $max = max($maxWidth, $maxHeight);
+
+        $cmd = self::commandPath('ss-image-compress');
+        if ($cmd !== '') {
+            $before = @filesize($path);
+            $args = escapeshellarg($cmd) . ' ' . escapeshellarg($path)
+                . ' --overwrite -q ' . $quality;
+            if ($max > 0) {
+                $args .= ' --max ' . $max;
+            }
+            $output = [];
+            $code = 1;
+            @exec($args . ' 2>&1', $output, $code);
+            $after = @filesize($path);
+            if ($code === 0 && $after > 0 && ($before === false || $after <= $before)) {
+                return true;
+            }
+        }
+
+        // 回退：ImageUtil::compress（未指定尺寸时按原图尺寸，避免被默认值缩小）
+        $fallback = ['quality' => $quality];
+        if ($max > 0) {
+            $fallback['maxWidth'] = $maxWidth > 0 ? $maxWidth : $max;
+            $fallback['maxHeight'] = $maxHeight > 0 ? $maxHeight : $max;
+        } else {
+            $size = @getimagesize($path);
+            if ($size) {
+                $fallback['maxWidth'] = $size[0];
+                $fallback['maxHeight'] = $size[1];
+            }
+        }
+        return ImageUtil::compress($path, $fallback);
+    }
+
+    /**
+     * 检测系统命令是否存在，返回命令绝对路径（不存在返回空字符串）
+     * @param string $name
+     * @return string
+     */
+    public static function commandPath($name)
+    {
+        if (!function_exists('exec')) {
+            return '';
+        }
+        $output = [];
+        $code = 1;
+        @exec('command -v ' . escapeshellarg($name) . ' 2>/dev/null', $output, $code);
+        if ($code === 0 && !empty($output[0])) {
+            return trim($output[0]);
+        }
+        return '';
     }
 }

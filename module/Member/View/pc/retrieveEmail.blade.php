@@ -60,9 +60,14 @@
                     </div>
                     <div class="line">
                         <div class="field">
+                            <input type="text" class="form-lg" name="email" placeholder="输入邮箱" />
+                        </div>
+                    </div>
+                    <div class="line">
+                        <div class="field">
                             <div class="row no-gutters">
                                 <div class="col-7">
-                                    <input type="text" class="form-lg" name="email" placeholder="输入邮箱" />
+                                    <input type="text" class="form-lg" name="verify" placeholder="邮箱验证码" />
                                 </div>
                                 <div class="col-5">
                                     <button class="btn btn-round btn-lg btn-block" type="button" data-email-verify-generate>获取验证码</button>
@@ -70,11 +75,6 @@
                                     <button class="btn btn-round btn-lg btn-block" type="button" data-email-verify-regenerate style="display:none;margin:0;">重新获取</button>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="line">
-                        <div class="field">
-                            <input type="text" class="form-lg" name="verify" placeholder="邮箱验证码" />
                         </div>
                     </div>
                     <div class="line">

@@ -188,7 +188,11 @@ class UeditorManager
         $input = InputPackage::buildFromInput();
         $action = $input->getTrimString('action');
         if (in_array($action, ['image', 'catch'])) {
-            set_time_limit(60);
+            // 仅放宽执行时间上限，不把「无限制(0)」降低为 60 秒（CLI / 队列中会误伤后续任务）
+            $currentLimit = intval(ini_get('max_execution_time'));
+            if ($currentLimit > 0 && $currentLimit < 60) {
+                set_time_limit(60);
+            }
             if ($uploadTable == 'admin_upload' && AdminPermission::isDemo()) {
                 return self::resultError();
             }

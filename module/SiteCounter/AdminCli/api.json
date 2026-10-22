@@ -1,0 +1,28 @@
+{
+    "module": "SiteCounter",
+    "title": "网站统计设置",
+    "apis": [
+        {
+            "key": "site_counter.config",
+            "title": "网站统计设置 配置",
+            "method": "post",
+            "url": "site_counter/config",
+            "scope": "site_counter.write",
+            "permission": "Module\\SiteCounter\\Admin\\Controller\\ConfigController@setting",
+            "params": [
+                {
+                    "name": "systemCounter",
+                    "type": "string",
+                    "required": false,
+                    "desc": "systemCounter"
+                },
+                {
+                    "name": "systemCounterBody",
+                    "type": "string",
+                    "required": false,
+                    "desc": "systemCounterBody"
+                }
+            ]
+        }
+    ]
+}

@@ -65,13 +65,8 @@
                                 <div class="col-4">
                                     <img data-captcha src="{{$__msRoot}}member_profile/captcha" style="width:100%;height:30px;border:1px solid #CCC;border-radius:3px;cursor:pointer;" alt="刷新验证码" onclick="this.src='{{$__msRoot}}member_profile/captcha?'+Math.random();"/>
                                 </div>
-                                <div class="col-4">
+                                <div class="col-8">
                                     <input class="form" type="text" name="captcha" />
-                                </div>
-                                <div class="col-4">
-                                    <button class="btn btn-round btn-default btn-block" type="button" data-verify-generate>获取验证码</button>
-                                    <button class="btn btn-round btn-default btn-block" type="button" data-verify-countdown style="display:none;margin:0;"></button>
-                                    <button class="btn btn-round btn-default btn-block" type="button" data-verify-regenerate style="display:none;margin:0;">重新获取</button>
                                 </div>
                             </div>
                             <div class="help">
@@ -81,7 +76,16 @@
                     <div class="line">
                         <div class="label">邮箱验证：</div>
                         <div class="field">
-                            <input type="text" class="form" name="verify" />
+                            <div class="row">
+                                <div class="col-6">
+                                    <input type="text" class="form" name="verify" />
+                                </div>
+                                <div class="col-6">
+                                    <button class="btn btn-round btn-default btn-block" type="button" data-verify-generate>获取验证码</button>
+                                    <button class="btn btn-round btn-default btn-block" type="button" data-verify-countdown style="display:none;margin:0;"></button>
+                                    <button class="btn btn-round btn-default btn-block" type="button" data-verify-regenerate style="display:none;margin:0;">重新获取</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="line">
@@ -112,13 +116,8 @@
                             <div class="col-4">
                                 <img data-captcha src="{{$__msRoot}}member_profile/captcha" style="width:100%;height:30px;border:1px solid #CCC;border-radius:3px;cursor:pointer;" alt="刷新验证码" onclick="this.src='{{$__msRoot}}member_profile/captcha?'+Math.random();"/>
                             </div>
-                            <div class="col-4">
+                            <div class="col-8">
                                 <input type="text" class="form" name="captcha" />
-                            </div>
-                            <div class="col-4">
-                                <button class="btn btn-round btn-default btn-block" type="button" data-verify-generate>获取验证码</button>
-                                <button class="btn btn-round btn-default btn-block" type="button" data-verify-countdown style="display:none;margin:0;"></button>
-                                <button class="btn btn-round btn-default btn-block" type="button" data-verify-regenerate style="display:none;margin:0;">重新获取</button>
                             </div>
                         </div>
                     </div>
@@ -126,7 +125,16 @@
                 <div class="line">
                     <div class="label">邮箱验证：</div>
                     <div class="field">
-                        <input type="text" class="form" name="verify" />
+                        <div class="row">
+                            <div class="col-6">
+                                <input type="text" class="form" name="verify" />
+                            </div>
+                            <div class="col-6">
+                                <button class="btn btn-round btn-default btn-block" type="button" data-verify-generate>获取验证码</button>
+                                <button class="btn btn-round btn-default btn-block" type="button" data-verify-countdown style="display:none;margin:0;"></button>
+                                <button class="btn btn-round btn-default btn-block" type="button" data-verify-regenerate style="display:none;margin:0;">重新获取</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="line">

@@ -1,0 +1,66 @@
+<?php
+
+/**
+ * Nav 模块 Seed 测试数据填充
+ *
+ * 在 AUTO_TEST=true 时写入场景化演示数据，供后台列表 / 前台页面展示。
+ * 写入前先清空对应表，保证多次执行结果一致且不与唯一索引冲突。
+ */
+
+use ModStart\Core\Dao\ModelUtil;
+use ModStart\Test\TestCase;
+use Illuminate\Support\Facades\DB;
+use ModStart\Test\TestSeed;
+
+TestCase::describe('Nav Seed', function () {
+
+    if (!TestSeed::ensureTable('nav')) {
+        return;
+    }
+
+    $rows = [
+        [
+            'id' => 1,
+            'position' => 'cinemaHomeLeft',
+            'sort' => 1,
+            'name' => '首页',
+            'link' => '/demo-nav-1',
+            'openType' => 1,
+            'pid' => 0,
+            'enable' => 1,
+            'icon' => 'asset/image/avatar.png',
+        ],
+        [
+            'id' => 2,
+            'position' => 'cinemaHomeLeftFoot',
+            'sort' => 2,
+            'name' => '产品中心',
+            'link' => '/demo-nav-2',
+            'openType' => 1,
+            'pid' => 0,
+            'enable' => 1,
+            'icon' => 'theme/default/image/bg_1.png',
+        ],
+        [
+            'id' => 3,
+            'position' => 'cinemaHomeLeft',
+            'sort' => 3,
+            'name' => '解决方案',
+            'link' => '/demo-nav-3',
+            'openType' => 1,
+            'pid' => 0,
+            'enable' => 1,
+            'icon' => 'theme/default/image/bg_2.png',
+        ],
+    ];
+
+    // 先清空再写入，保证可重复执行且不与唯一索引冲突
+    DB::table('nav')->delete();
+    foreach ($rows as $row) {
+        ModelUtil::insert('nav', $row);
+    }
+
+    TestCase::test('测试数据填充执行完成', function () {
+        TestCase::assertTrue(true, 'Nav Seed: 执行完成');
+    });
+});

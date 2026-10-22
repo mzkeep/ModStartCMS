@@ -1,1 +1,2 @@
-https://ms-assets.modstart.com/data/image/2022/02/11/20751_0xpw_6186.jpg
+https://ms-assets.modstart.com/data/image/2026/10/21/39830_d4vv_8611.png
+https://ms-assets.modstart.com/data/image/2026/10/21/39833_kumd_4586.png

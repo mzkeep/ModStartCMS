@@ -436,6 +436,23 @@ function L_locale($locale = null)
         if (empty($currentLocale)) {
             $currentLocale = $fallbackLocale;
         }
+        // 兜底校验：既不在系统内置语言中、也不在多语言模块已注册语言中的值视为脏数据
+        // （如历史演示数据写入的默认语言），回退到系统默认语言，
+        // 避免 Lang/<locale>.php 不存在导致整站文案退化为翻译键（如 MenuWallet）
+        if (!empty($currentLocale) && !isset($localeList[$currentLocale]) && $currentLocale !== $locale) {
+            $registered = false;
+            if (class_exists('\\Module\\I18n\\Util\\LangUtil') && \ModStart\Module\ModuleManager::isModuleInstalled('I18n')) {
+                foreach (\Module\I18n\Util\LangUtil::listAll() as $langItem) {
+                    if (isset($langItem['shortName']) && $langItem['shortName'] === $currentLocale) {
+                        $registered = true;
+                        break;
+                    }
+                }
+            }
+            if (!$registered) {
+                $currentLocale = !empty($locale) ? $locale : $fallbackLocale;
+            }
+        }
         \Illuminate\Support\Facades\Session::put($sessionLocaleKey, $currentLocale);
         $useLocales[$app] = $currentLocale;
     }
@@ -694,3 +711,7 @@ if (PHP_VERSION_ID >= 80000) {
     require_once __DIR__ . '/Misc/Laravel/Input.php';
 }
 
+
+// 注册内置依赖库（src/Misc/BaconQrCode、src/Misc/NinjaMutex、src/Misc/HtmlPurifier）的兜底自动加载
+// 宿主项目如自行安装了同名包，Composer 自动加载会先命中宿主版本
+\ModStart\Misc\Bootstrap::register();

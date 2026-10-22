@@ -1,0 +1,15 @@
+{
+    "module": "Vendor",
+    "title": "通用功能包",
+    "apis": [
+        {
+            "key": "vendor.info",
+            "title": "Vendor 信息",
+            "method": "post",
+            "url": "vendor/info",
+            "scope": "vendor.read",
+            "permission": "\\Module\\Vendor\\Admin\\Controller\\WidgetIconController@index",
+            "params": []
+        }
+    ]
+}

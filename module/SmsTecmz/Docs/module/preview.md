@@ -1,0 +1,1 @@
+ScreenShot/image/setting.png

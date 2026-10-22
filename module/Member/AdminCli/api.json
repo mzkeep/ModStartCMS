@@ -1,0 +1,2498 @@
+{
+    "module": "Member",
+    "title": "用户系统",
+    "apis": [
+        {
+            "key": "member.config",
+            "title": "用户系统 配置",
+            "method": "post",
+            "url": "member/config",
+            "scope": "member.write",
+            "permission": "Module\\Member\\Admin\\Controller\\ConfigController@setting",
+            "params": [
+                {
+                    "name": "loginCaptchaEnable",
+                    "type": "string",
+                    "required": false,
+                    "desc": "loginCaptchaEnable"
+                },
+                {
+                    "name": "loginCaptchaProvider",
+                    "type": "string",
+                    "required": false,
+                    "desc": "loginCaptchaProvider"
+                },
+                {
+                    "name": "Member_LoginDefault",
+                    "type": "string",
+                    "required": false,
+                    "desc": "Member_LoginDefault"
+                },
+                {
+                    "name": "Member_LoginPhoneEnable",
+                    "type": "string",
+                    "required": false,
+                    "desc": "Member_LoginPhoneEnable"
+                },
+                {
+                    "name": "Member_LoginPhoneAutoRegister",
+                    "type": "string",
+                    "required": false,
+                    "desc": "Member_LoginPhoneAutoRegister"
+                },
+                {
+                    "name": "Member_LoginPhoneNameSuggest",
+                    "type": "string",
+                    "required": false,
+                    "desc": "Member_LoginPhoneNameSuggest"
+                },
+                {
+                    "name": "Member_RegisterCaptchaProvider",
+                    "type": "string",
+                    "required": false,
+                    "desc": "Member_RegisterCaptchaProvider"
+                },
+                {
+                    "name": "registerDisable",
+                    "type": "string",
+                    "required": false,
+                    "desc": "registerDisable"
+                },
+                {
+                    "name": "Member_RegisterDefault",
+                    "type": "string",
+                    "required": false,
+                    "desc": "Member_RegisterDefault"
+                },
+                {
+                    "name": "Member_RegisterPhoneEnable",
+                    "type": "string",
+                    "required": false,
+                    "desc": "Member_RegisterPhoneEnable"
+                },
+                {
+                    "name": "Member_RegisterPhonePasswordEnable",
+                    "type": "string",
+                    "required": false,
+                    "desc": "Member_RegisterPhonePasswordEnable"
+                },
+                {
+                    "name": "registerEmailEnable",
+                    "type": "string",
+                    "required": false,
+                    "desc": "registerEmailEnable"
+                },
+                {
+                    "name": "registerPhoneEnable",
+                    "type": "string",
+                    "required": false,
+                    "desc": "registerPhoneEnable"
+                },
+                {
+                    "name": "registerOauthEnable",
+                    "type": "string",
+                    "required": false,
+                    "desc": "registerOauthEnable"
+                },
+                {
+                    "name": "Member_OauthBindAuto",
+                    "type": "string",
+                    "required": false,
+                    "desc": "Member_OauthBindAuto"
+                },
+                {
+                    "name": "Member_OauthBindPhoneEnable",
+                    "type": "string",
+                    "required": false,
+                    "desc": "Member_OauthBindPhoneEnable"
+                },
+                {
+                    "name": "Member_OauthBindEmailEnable",
+                    "type": "string",
+                    "required": false,
+                    "desc": "Member_OauthBindEmailEnable"
+                },
+                {
+                    "name": "Member_UsernameMinLength",
+                    "type": "string",
+                    "required": false,
+                    "desc": "Member_UsernameMinLength"
+                },
+                {
+                    "name": "Member_RegisterUsernameSuggest",
+                    "type": "string",
+                    "required": false,
+                    "desc": "Member_RegisterUsernameSuggest"
+                },
+                {
+                    "name": "retrieveDisable",
+                    "type": "string",
+                    "required": false,
+                    "desc": "retrieveDisable"
+                },
+                {
+                    "name": "retrievePhoneEnable",
+                    "type": "string",
+                    "required": false,
+                    "desc": "retrievePhoneEnable"
+                },
+                {
+                    "name": "retrieveEmailEnable",
+                    "type": "string",
+                    "required": false,
+                    "desc": "retrieveEmailEnable"
+                },
+                {
+                    "name": "Member_ProfileEmailEnable",
+                    "type": "string",
+                    "required": false,
+                    "desc": "Member_ProfileEmailEnable"
+                },
+                {
+                    "name": "Member_ProfilePhoneEnable",
+                    "type": "string",
+                    "required": false,
+                    "desc": "Member_ProfilePhoneEnable"
+                },
+                {
+                    "name": "Member_LoginRedirectCheckEnable",
+                    "type": "string",
+                    "required": false,
+                    "desc": "Member_LoginRedirectCheckEnable"
+                },
+                {
+                    "name": "Member_LoginRedirectWhiteList",
+                    "type": "string",
+                    "required": false,
+                    "desc": "Member_LoginRedirectWhiteList"
+                },
+                {
+                    "name": "Member_DeleteEnable",
+                    "type": "string",
+                    "required": false,
+                    "desc": "Member_DeleteEnable"
+                },
+                {
+                    "name": "Member_PasswordStrength",
+                    "type": "string",
+                    "required": false,
+                    "desc": "Member_PasswordStrength"
+                },
+                {
+                    "name": "Member_PasswordLengthMin",
+                    "type": "string",
+                    "required": false,
+                    "desc": "Member_PasswordLengthMin"
+                },
+                {
+                    "name": "Member_LoginInfoEncrypt",
+                    "type": "string",
+                    "required": false,
+                    "desc": "Member_LoginInfoEncrypt"
+                },
+                {
+                    "name": "Member_DataStatisticEnable",
+                    "type": "string",
+                    "required": false,
+                    "desc": "Member_DataStatisticEnable"
+                },
+                {
+                    "name": "Member_DataStatisticDefaultLimit",
+                    "type": "string",
+                    "required": false,
+                    "desc": "Member_DataStatisticDefaultLimit"
+                },
+                {
+                    "name": "Member_GroupShowEnable",
+                    "type": "string",
+                    "required": false,
+                    "desc": "Member_GroupShowEnable"
+                },
+                {
+                    "name": "Member_AgreementEnable",
+                    "type": "string",
+                    "required": false,
+                    "desc": "Member_AgreementEnable"
+                },
+                {
+                    "name": "Member_AgreementTitle",
+                    "type": "string",
+                    "required": false,
+                    "desc": "Member_AgreementTitle"
+                },
+                {
+                    "name": "Member_AgreementContent",
+                    "type": "string",
+                    "required": false,
+                    "desc": "Member_AgreementContent"
+                },
+                {
+                    "name": "Member_PrivacyEnable",
+                    "type": "string",
+                    "required": false,
+                    "desc": "Member_PrivacyEnable"
+                },
+                {
+                    "name": "Member_PrivacyTitle",
+                    "type": "string",
+                    "required": false,
+                    "desc": "Member_PrivacyTitle"
+                },
+                {
+                    "name": "Member_PrivacyContent",
+                    "type": "string",
+                    "required": false,
+                    "desc": "Member_PrivacyContent"
+                },
+                {
+                    "name": "Member_AppealEnable",
+                    "type": "string",
+                    "required": false,
+                    "desc": "Member_AppealEnable"
+                },
+                {
+                    "name": "Member_AppealTitle",
+                    "type": "string",
+                    "required": false,
+                    "desc": "Member_AppealTitle"
+                },
+                {
+                    "name": "Member_AppealContent",
+                    "type": "string",
+                    "required": false,
+                    "desc": "Member_AppealContent"
+                },
+                {
+                    "name": "Member_MoneyCashEnable",
+                    "type": "string",
+                    "required": false,
+                    "desc": "Member_MoneyCashEnable"
+                },
+                {
+                    "name": "Member_MoneyCashMin",
+                    "type": "string",
+                    "required": false,
+                    "desc": "Member_MoneyCashMin"
+                },
+                {
+                    "name": "Member_MoneyCashTaxRate",
+                    "type": "string",
+                    "required": false,
+                    "desc": "Member_MoneyCashTaxRate"
+                },
+                {
+                    "name": "Member_MoneyCashDescription",
+                    "type": "string",
+                    "required": false,
+                    "desc": "Member_MoneyCashDescription"
+                },
+                {
+                    "name": "Member_MoneyChargeEnable",
+                    "type": "string",
+                    "required": false,
+                    "desc": "Member_MoneyChargeEnable"
+                },
+                {
+                    "name": "Member_MoneyChargeDesc",
+                    "type": "string",
+                    "required": false,
+                    "desc": "Member_MoneyChargeDesc"
+                },
+                {
+                    "name": "Member_Registered_Message",
+                    "type": "string",
+                    "required": false,
+                    "desc": "Member_Registered_Message"
+                },
+                {
+                    "name": "Member_Registered_EmailTitle",
+                    "type": "string",
+                    "required": false,
+                    "desc": "Member_Registered_EmailTitle"
+                },
+                {
+                    "name": "Member_Registered_Email",
+                    "type": "string",
+                    "required": false,
+                    "desc": "Member_Registered_Email"
+                }
+            ]
+        },
+        {
+            "key": "member.index",
+            "title": "用户系统 列表",
+            "method": "post",
+            "url": "member/index",
+            "scope": "member.read",
+            "permission": "\\Module\\Member\\Admin\\Controller\\MemberController@index",
+            "params": [
+                {
+                    "name": "page",
+                    "type": "int",
+                    "required": false,
+                    "desc": "页码"
+                },
+                {
+                    "name": "pageSize",
+                    "type": "int",
+                    "required": false,
+                    "desc": "每页数量"
+                },
+                {
+                    "name": "keyword",
+                    "type": "string",
+                    "required": false,
+                    "desc": "关键词"
+                }
+            ]
+        },
+        {
+            "key": "member.add",
+            "title": "用户系统 新增",
+            "method": "post",
+            "url": "member/add",
+            "scope": "member.write",
+            "permission": "\\Module\\Member\\Admin\\Controller\\MemberController@add",
+            "params": [
+                {
+                    "name": "username",
+                    "type": "string",
+                    "required": false,
+                    "desc": "username"
+                },
+                {
+                    "name": "phone",
+                    "type": "string",
+                    "required": false,
+                    "desc": "phone"
+                },
+                {
+                    "name": "email",
+                    "type": "string",
+                    "required": false,
+                    "desc": "email"
+                },
+                {
+                    "name": "password",
+                    "type": "string",
+                    "required": false,
+                    "desc": "password"
+                },
+                {
+                    "name": "passwordSalt",
+                    "type": "string",
+                    "required": false,
+                    "desc": "passwordSalt"
+                },
+                {
+                    "name": "lastLoginTime",
+                    "type": "string",
+                    "required": false,
+                    "desc": "lastLoginTime"
+                },
+                {
+                    "name": "lastLoginIp",
+                    "type": "string",
+                    "required": false,
+                    "desc": "lastLoginIp"
+                },
+                {
+                    "name": "phoneVerified",
+                    "type": "string",
+                    "required": false,
+                    "desc": "phoneVerified"
+                },
+                {
+                    "name": "emailVerified",
+                    "type": "string",
+                    "required": false,
+                    "desc": "emailVerified"
+                },
+                {
+                    "name": "avatar",
+                    "type": "string",
+                    "required": false,
+                    "desc": "avatar"
+                },
+                {
+                    "name": "avatarMedium",
+                    "type": "string",
+                    "required": false,
+                    "desc": "avatarMedium"
+                },
+                {
+                    "name": "avatarBig",
+                    "type": "string",
+                    "required": false,
+                    "desc": "avatarBig"
+                },
+                {
+                    "name": "gender",
+                    "type": "string",
+                    "required": false,
+                    "desc": "gender"
+                },
+                {
+                    "name": "realname",
+                    "type": "string",
+                    "required": false,
+                    "desc": "realname"
+                },
+                {
+                    "name": "signature",
+                    "type": "string",
+                    "required": false,
+                    "desc": "signature"
+                },
+                {
+                    "name": "vipId",
+                    "type": "int",
+                    "required": false,
+                    "desc": "vipId"
+                },
+                {
+                    "name": "vipExpire",
+                    "type": "string",
+                    "required": false,
+                    "desc": "vipExpire"
+                },
+                {
+                    "name": "nickname",
+                    "type": "string",
+                    "required": false,
+                    "desc": "nickname"
+                },
+                {
+                    "name": "status",
+                    "type": "int",
+                    "required": false,
+                    "desc": "status"
+                },
+                {
+                    "name": "groupId",
+                    "type": "int",
+                    "required": false,
+                    "desc": "groupId"
+                },
+                {
+                    "name": "deleteAtTime",
+                    "type": "string",
+                    "required": false,
+                    "desc": "deleteAtTime"
+                },
+                {
+                    "name": "isDeleted",
+                    "type": "string",
+                    "required": false,
+                    "desc": "isDeleted"
+                },
+                {
+                    "name": "messageCount",
+                    "type": "string",
+                    "required": false,
+                    "desc": "messageCount"
+                },
+                {
+                    "name": "registerIp",
+                    "type": "string",
+                    "required": false,
+                    "desc": "registerIp"
+                },
+                {
+                    "name": "registerIpName",
+                    "type": "string",
+                    "required": false,
+                    "desc": "registerIpName"
+                },
+                {
+                    "name": "bizGroup",
+                    "type": "string",
+                    "required": false,
+                    "desc": "bizGroup"
+                },
+                {
+                    "name": "pluginAutoPublish",
+                    "type": "string",
+                    "required": false,
+                    "desc": "pluginAutoPublish"
+                },
+                {
+                    "name": "pluginHotfixEnable",
+                    "type": "string",
+                    "required": false,
+                    "desc": "pluginHotfixEnable"
+                },
+                {
+                    "name": "pluginMaintainEnable",
+                    "type": "string",
+                    "required": false,
+                    "desc": "pluginMaintainEnable"
+                },
+                {
+                    "name": "bodyHeight",
+                    "type": "string",
+                    "required": false,
+                    "desc": "bodyHeight"
+                },
+                {
+                    "name": "bodyWeight",
+                    "type": "string",
+                    "required": false,
+                    "desc": "bodyWeight"
+                },
+                {
+                    "name": "bodyBirthYear",
+                    "type": "string",
+                    "required": false,
+                    "desc": "bodyBirthYear"
+                },
+                {
+                    "name": "bodyBirthday",
+                    "type": "string",
+                    "required": false,
+                    "desc": "bodyBirthday"
+                },
+                {
+                    "name": "cmsPostCount",
+                    "type": "string",
+                    "required": false,
+                    "desc": "cmsPostCount"
+                },
+                {
+                    "name": "cmsWordCount",
+                    "type": "string",
+                    "required": false,
+                    "desc": "cmsWordCount"
+                },
+                {
+                    "name": "cmsEditorType",
+                    "type": "string",
+                    "required": false,
+                    "desc": "cmsEditorType"
+                },
+                {
+                    "name": "unreadChatMsgCount",
+                    "type": "string",
+                    "required": false,
+                    "desc": "unreadChatMsgCount"
+                },
+                {
+                    "name": "newChatMsgCount",
+                    "type": "string",
+                    "required": false,
+                    "desc": "newChatMsgCount"
+                },
+                {
+                    "name": "followerCount",
+                    "type": "string",
+                    "required": false,
+                    "desc": "followerCount"
+                },
+                {
+                    "name": "followCount",
+                    "type": "string",
+                    "required": false,
+                    "desc": "followCount"
+                },
+                {
+                    "name": "rewardEnable",
+                    "type": "string",
+                    "required": false,
+                    "desc": "rewardEnable"
+                },
+                {
+                    "name": "rewardMoneyDefault",
+                    "type": "string",
+                    "required": false,
+                    "desc": "rewardMoneyDefault"
+                },
+                {
+                    "name": "rewardMsgDefault",
+                    "type": "string",
+                    "required": false,
+                    "desc": "rewardMsgDefault"
+                },
+                {
+                    "name": "oaParentMemberUserId",
+                    "type": "int",
+                    "required": false,
+                    "desc": "oaParentMemberUserId"
+                },
+                {
+                    "name": "oaStatus",
+                    "type": "string",
+                    "required": false,
+                    "desc": "oaStatus"
+                },
+                {
+                    "name": "taskWorkCount",
+                    "type": "string",
+                    "required": false,
+                    "desc": "taskWorkCount"
+                },
+                {
+                    "name": "taskWorkApplyCount",
+                    "type": "string",
+                    "required": false,
+                    "desc": "taskWorkApplyCount"
+                },
+                {
+                    "name": "taskEmployerRateAvg",
+                    "type": "string",
+                    "required": false,
+                    "desc": "taskEmployerRateAvg"
+                },
+                {
+                    "name": "taskEmployerWellPercent",
+                    "type": "string",
+                    "required": false,
+                    "desc": "taskEmployerWellPercent"
+                },
+                {
+                    "name": "taskEmployeeRateAvg",
+                    "type": "string",
+                    "required": false,
+                    "desc": "taskEmployeeRateAvg"
+                },
+                {
+                    "name": "taskEmployeeWellPercent",
+                    "type": "string",
+                    "required": false,
+                    "desc": "taskEmployeeWellPercent"
+                },
+                {
+                    "name": "qq",
+                    "type": "string",
+                    "required": false,
+                    "desc": "qq"
+                },
+                {
+                    "name": "bossId",
+                    "type": "int",
+                    "required": false,
+                    "desc": "bossId"
+                },
+                {
+                    "name": "mzUserId",
+                    "type": "int",
+                    "required": false,
+                    "desc": "mzUserId"
+                },
+                {
+                    "name": "moduleAutoPublish",
+                    "type": "string",
+                    "required": false,
+                    "desc": "moduleAutoPublish"
+                },
+                {
+                    "name": "moduleHotfixEnable",
+                    "type": "string",
+                    "required": false,
+                    "desc": "moduleHotfixEnable"
+                },
+                {
+                    "name": "moduleMaintainEnable",
+                    "type": "string",
+                    "required": false,
+                    "desc": "moduleMaintainEnable"
+                },
+                {
+                    "name": "loginLockTime",
+                    "type": "string",
+                    "required": false,
+                    "desc": "loginLockTime"
+                },
+                {
+                    "name": "loginFailTimes",
+                    "type": "string",
+                    "required": false,
+                    "desc": "loginFailTimes"
+                },
+                {
+                    "name": "noteCount",
+                    "type": "string",
+                    "required": false,
+                    "desc": "noteCount"
+                },
+                {
+                    "name": "wordCount",
+                    "type": "string",
+                    "required": false,
+                    "desc": "wordCount"
+                },
+                {
+                    "name": "newMessageCount",
+                    "type": "string",
+                    "required": false,
+                    "desc": "newMessageCount"
+                },
+                {
+                    "name": "noteEditorType",
+                    "type": "string",
+                    "required": false,
+                    "desc": "noteEditorType"
+                },
+                {
+                    "name": "tipEnable",
+                    "type": "string",
+                    "required": false,
+                    "desc": "tipEnable"
+                },
+                {
+                    "name": "defaultTipValue",
+                    "type": "string",
+                    "required": false,
+                    "desc": "defaultTipValue"
+                },
+                {
+                    "name": "panSizeLimit",
+                    "type": "string",
+                    "required": false,
+                    "desc": "panSizeLimit"
+                },
+                {
+                    "name": "panSizeUsed",
+                    "type": "string",
+                    "required": false,
+                    "desc": "panSizeUsed"
+                },
+                {
+                    "name": "activeEmployee",
+                    "type": "string",
+                    "required": false,
+                    "desc": "activeEmployee"
+                },
+                {
+                    "name": "activeCorp",
+                    "type": "string",
+                    "required": false,
+                    "desc": "activeCorp"
+                }
+            ]
+        },
+        {
+            "key": "member.edit",
+            "title": "用户系统 编辑",
+            "method": "post",
+            "url": "member/edit",
+            "scope": "member.write",
+            "permission": "\\Module\\Member\\Admin\\Controller\\MemberController@edit",
+            "params": [
+                {
+                    "name": "id",
+                    "type": "int",
+                    "required": true,
+                    "desc": "记录ID"
+                },
+                {
+                    "name": "username",
+                    "type": "string",
+                    "required": false,
+                    "desc": "username"
+                },
+                {
+                    "name": "phone",
+                    "type": "string",
+                    "required": false,
+                    "desc": "phone"
+                },
+                {
+                    "name": "email",
+                    "type": "string",
+                    "required": false,
+                    "desc": "email"
+                },
+                {
+                    "name": "password",
+                    "type": "string",
+                    "required": false,
+                    "desc": "password"
+                },
+                {
+                    "name": "passwordSalt",
+                    "type": "string",
+                    "required": false,
+                    "desc": "passwordSalt"
+                },
+                {
+                    "name": "lastLoginTime",
+                    "type": "string",
+                    "required": false,
+                    "desc": "lastLoginTime"
+                },
+                {
+                    "name": "lastLoginIp",
+                    "type": "string",
+                    "required": false,
+                    "desc": "lastLoginIp"
+                },
+                {
+                    "name": "phoneVerified",
+                    "type": "string",
+                    "required": false,
+                    "desc": "phoneVerified"
+                },
+                {
+                    "name": "emailVerified",
+                    "type": "string",
+                    "required": false,
+                    "desc": "emailVerified"
+                },
+                {
+                    "name": "avatar",
+                    "type": "string",
+                    "required": false,
+                    "desc": "avatar"
+                },
+                {
+                    "name": "avatarMedium",
+                    "type": "string",
+                    "required": false,
+                    "desc": "avatarMedium"
+                },
+                {
+                    "name": "avatarBig",
+                    "type": "string",
+                    "required": false,
+                    "desc": "avatarBig"
+                },
+                {
+                    "name": "gender",
+                    "type": "string",
+                    "required": false,
+                    "desc": "gender"
+                },
+                {
+                    "name": "realname",
+                    "type": "string",
+                    "required": false,
+                    "desc": "realname"
+                },
+                {
+                    "name": "signature",
+                    "type": "string",
+                    "required": false,
+                    "desc": "signature"
+                },
+                {
+                    "name": "vipId",
+                    "type": "int",
+                    "required": false,
+                    "desc": "vipId"
+                },
+                {
+                    "name": "vipExpire",
+                    "type": "string",
+                    "required": false,
+                    "desc": "vipExpire"
+                },
+                {
+                    "name": "nickname",
+                    "type": "string",
+                    "required": false,
+                    "desc": "nickname"
+                },
+                {
+                    "name": "status",
+                    "type": "int",
+                    "required": false,
+                    "desc": "status"
+                },
+                {
+                    "name": "groupId",
+                    "type": "int",
+                    "required": false,
+                    "desc": "groupId"
+                },
+                {
+                    "name": "deleteAtTime",
+                    "type": "string",
+                    "required": false,
+                    "desc": "deleteAtTime"
+                },
+                {
+                    "name": "isDeleted",
+                    "type": "string",
+                    "required": false,
+                    "desc": "isDeleted"
+                },
+                {
+                    "name": "messageCount",
+                    "type": "string",
+                    "required": false,
+                    "desc": "messageCount"
+                },
+                {
+                    "name": "registerIp",
+                    "type": "string",
+                    "required": false,
+                    "desc": "registerIp"
+                },
+                {
+                    "name": "registerIpName",
+                    "type": "string",
+                    "required": false,
+                    "desc": "registerIpName"
+                },
+                {
+                    "name": "bizGroup",
+                    "type": "string",
+                    "required": false,
+                    "desc": "bizGroup"
+                },
+                {
+                    "name": "pluginAutoPublish",
+                    "type": "string",
+                    "required": false,
+                    "desc": "pluginAutoPublish"
+                },
+                {
+                    "name": "pluginHotfixEnable",
+                    "type": "string",
+                    "required": false,
+                    "desc": "pluginHotfixEnable"
+                },
+                {
+                    "name": "pluginMaintainEnable",
+                    "type": "string",
+                    "required": false,
+                    "desc": "pluginMaintainEnable"
+                },
+                {
+                    "name": "bodyHeight",
+                    "type": "string",
+                    "required": false,
+                    "desc": "bodyHeight"
+                },
+                {
+                    "name": "bodyWeight",
+                    "type": "string",
+                    "required": false,
+                    "desc": "bodyWeight"
+                },
+                {
+                    "name": "bodyBirthYear",
+                    "type": "string",
+                    "required": false,
+                    "desc": "bodyBirthYear"
+                },
+                {
+                    "name": "bodyBirthday",
+                    "type": "string",
+                    "required": false,
+                    "desc": "bodyBirthday"
+                },
+                {
+                    "name": "cmsPostCount",
+                    "type": "string",
+                    "required": false,
+                    "desc": "cmsPostCount"
+                },
+                {
+                    "name": "cmsWordCount",
+                    "type": "string",
+                    "required": false,
+                    "desc": "cmsWordCount"
+                },
+                {
+                    "name": "cmsEditorType",
+                    "type": "string",
+                    "required": false,
+                    "desc": "cmsEditorType"
+                },
+                {
+                    "name": "unreadChatMsgCount",
+                    "type": "string",
+                    "required": false,
+                    "desc": "unreadChatMsgCount"
+                },
+                {
+                    "name": "newChatMsgCount",
+                    "type": "string",
+                    "required": false,
+                    "desc": "newChatMsgCount"
+                },
+                {
+                    "name": "followerCount",
+                    "type": "string",
+                    "required": false,
+                    "desc": "followerCount"
+                },
+                {
+                    "name": "followCount",
+                    "type": "string",
+                    "required": false,
+                    "desc": "followCount"
+                },
+                {
+                    "name": "rewardEnable",
+                    "type": "string",
+                    "required": false,
+                    "desc": "rewardEnable"
+                },
+                {
+                    "name": "rewardMoneyDefault",
+                    "type": "string",
+                    "required": false,
+                    "desc": "rewardMoneyDefault"
+                },
+                {
+                    "name": "rewardMsgDefault",
+                    "type": "string",
+                    "required": false,
+                    "desc": "rewardMsgDefault"
+                },
+                {
+                    "name": "oaParentMemberUserId",
+                    "type": "int",
+                    "required": false,
+                    "desc": "oaParentMemberUserId"
+                },
+                {
+                    "name": "oaStatus",
+                    "type": "string",
+                    "required": false,
+                    "desc": "oaStatus"
+                },
+                {
+                    "name": "taskWorkCount",
+                    "type": "string",
+                    "required": false,
+                    "desc": "taskWorkCount"
+                },
+                {
+                    "name": "taskWorkApplyCount",
+                    "type": "string",
+                    "required": false,
+                    "desc": "taskWorkApplyCount"
+                },
+                {
+                    "name": "taskEmployerRateAvg",
+                    "type": "string",
+                    "required": false,
+                    "desc": "taskEmployerRateAvg"
+                },
+                {
+                    "name": "taskEmployerWellPercent",
+                    "type": "string",
+                    "required": false,
+                    "desc": "taskEmployerWellPercent"
+                },
+                {
+                    "name": "taskEmployeeRateAvg",
+                    "type": "string",
+                    "required": false,
+                    "desc": "taskEmployeeRateAvg"
+                },
+                {
+                    "name": "taskEmployeeWellPercent",
+                    "type": "string",
+                    "required": false,
+                    "desc": "taskEmployeeWellPercent"
+                },
+                {
+                    "name": "qq",
+                    "type": "string",
+                    "required": false,
+                    "desc": "qq"
+                },
+                {
+                    "name": "bossId",
+                    "type": "int",
+                    "required": false,
+                    "desc": "bossId"
+                },
+                {
+                    "name": "mzUserId",
+                    "type": "int",
+                    "required": false,
+                    "desc": "mzUserId"
+                },
+                {
+                    "name": "moduleAutoPublish",
+                    "type": "string",
+                    "required": false,
+                    "desc": "moduleAutoPublish"
+                },
+                {
+                    "name": "moduleHotfixEnable",
+                    "type": "string",
+                    "required": false,
+                    "desc": "moduleHotfixEnable"
+                },
+                {
+                    "name": "moduleMaintainEnable",
+                    "type": "string",
+                    "required": false,
+                    "desc": "moduleMaintainEnable"
+                },
+                {
+                    "name": "loginLockTime",
+                    "type": "string",
+                    "required": false,
+                    "desc": "loginLockTime"
+                },
+                {
+                    "name": "loginFailTimes",
+                    "type": "string",
+                    "required": false,
+                    "desc": "loginFailTimes"
+                },
+                {
+                    "name": "noteCount",
+                    "type": "string",
+                    "required": false,
+                    "desc": "noteCount"
+                },
+                {
+                    "name": "wordCount",
+                    "type": "string",
+                    "required": false,
+                    "desc": "wordCount"
+                },
+                {
+                    "name": "newMessageCount",
+                    "type": "string",
+                    "required": false,
+                    "desc": "newMessageCount"
+                },
+                {
+                    "name": "noteEditorType",
+                    "type": "string",
+                    "required": false,
+                    "desc": "noteEditorType"
+                },
+                {
+                    "name": "tipEnable",
+                    "type": "string",
+                    "required": false,
+                    "desc": "tipEnable"
+                },
+                {
+                    "name": "defaultTipValue",
+                    "type": "string",
+                    "required": false,
+                    "desc": "defaultTipValue"
+                },
+                {
+                    "name": "panSizeLimit",
+                    "type": "string",
+                    "required": false,
+                    "desc": "panSizeLimit"
+                },
+                {
+                    "name": "panSizeUsed",
+                    "type": "string",
+                    "required": false,
+                    "desc": "panSizeUsed"
+                },
+                {
+                    "name": "activeEmployee",
+                    "type": "string",
+                    "required": false,
+                    "desc": "activeEmployee"
+                },
+                {
+                    "name": "activeCorp",
+                    "type": "string",
+                    "required": false,
+                    "desc": "activeCorp"
+                }
+            ]
+        },
+        {
+            "key": "member.delete",
+            "title": "用户系统 删除",
+            "method": "post",
+            "url": "member/delete",
+            "scope": "member.write",
+            "permission": "\\Module\\Member\\Admin\\Controller\\MemberController@delete",
+            "params": [
+                {
+                    "name": "ids",
+                    "type": "string",
+                    "required": true,
+                    "desc": "记录ID，多个用逗号分隔"
+                }
+            ]
+        },
+        {
+            "key": "member.vip_set.index",
+            "title": "用户系统 列表",
+            "method": "post",
+            "url": "member/vip_set/index",
+            "scope": "member.read",
+            "permission": "\\Module\\Member\\Admin\\Controller\\MemberVipSetController@index",
+            "params": [
+                {
+                    "name": "page",
+                    "type": "int",
+                    "required": false,
+                    "desc": "页码"
+                },
+                {
+                    "name": "pageSize",
+                    "type": "int",
+                    "required": false,
+                    "desc": "每页数量"
+                },
+                {
+                    "name": "keyword",
+                    "type": "string",
+                    "required": false,
+                    "desc": "关键词"
+                }
+            ]
+        },
+        {
+            "key": "member.vip_set.add",
+            "title": "用户系统 新增",
+            "method": "post",
+            "url": "member/vip_set/add",
+            "scope": "member.write",
+            "permission": "\\Module\\Member\\Admin\\Controller\\MemberVipSetController@add",
+            "params": [
+                {
+                    "name": "title",
+                    "type": "string",
+                    "required": false,
+                    "desc": "title"
+                },
+                {
+                    "name": "flag",
+                    "type": "string",
+                    "required": false,
+                    "desc": "flag"
+                },
+                {
+                    "name": "pid",
+                    "type": "int",
+                    "required": false,
+                    "desc": "pid"
+                },
+                {
+                    "name": "sort",
+                    "type": "int",
+                    "required": false,
+                    "desc": "sort"
+                },
+                {
+                    "name": "isDefault",
+                    "type": "string",
+                    "required": false,
+                    "desc": "isDefault"
+                },
+                {
+                    "name": "icon",
+                    "type": "string",
+                    "required": false,
+                    "desc": "icon"
+                },
+                {
+                    "name": "price",
+                    "type": "string",
+                    "required": false,
+                    "desc": "price"
+                },
+                {
+                    "name": "vipDays",
+                    "type": "string",
+                    "required": false,
+                    "desc": "vipDays"
+                },
+                {
+                    "name": "content",
+                    "type": "string",
+                    "required": false,
+                    "desc": "content"
+                },
+                {
+                    "name": "creditPresentEnable",
+                    "type": "string",
+                    "required": false,
+                    "desc": "creditPresentEnable"
+                },
+                {
+                    "name": "creditPresentValue",
+                    "type": "string",
+                    "required": false,
+                    "desc": "creditPresentValue"
+                },
+                {
+                    "name": "desc",
+                    "type": "string",
+                    "required": false,
+                    "desc": "desc"
+                },
+                {
+                    "name": "visible",
+                    "type": "string",
+                    "required": false,
+                    "desc": "visible"
+                },
+                {
+                    "name": "priceMarket",
+                    "type": "string",
+                    "required": false,
+                    "desc": "priceMarket"
+                },
+                {
+                    "name": "groupName",
+                    "type": "string",
+                    "required": false,
+                    "desc": "groupName"
+                },
+                {
+                    "name": "quotaQuestionViewDaily",
+                    "type": "string",
+                    "required": false,
+                    "desc": "quotaQuestionViewDaily"
+                },
+                {
+                    "name": "wenkuDiscount",
+                    "type": "string",
+                    "required": false,
+                    "desc": "wenkuDiscount"
+                },
+                {
+                    "name": "wenkuMoneyReward",
+                    "type": "string",
+                    "required": false,
+                    "desc": "wenkuMoneyReward"
+                },
+                {
+                    "name": "wenkuUploadCreditReward",
+                    "type": "string",
+                    "required": false,
+                    "desc": "wenkuUploadCreditReward"
+                },
+                {
+                    "name": "wenkuDailyDoc",
+                    "type": "string",
+                    "required": false,
+                    "desc": "wenkuDailyDoc"
+                },
+                {
+                    "name": "wenkuFreeDailyDoc",
+                    "type": "string",
+                    "required": false,
+                    "desc": "wenkuFreeDailyDoc"
+                },
+                {
+                    "name": "wenkuMonthlyDoc",
+                    "type": "string",
+                    "required": false,
+                    "desc": "wenkuMonthlyDoc"
+                },
+                {
+                    "name": "wenkuFreeMonthlyDoc",
+                    "type": "string",
+                    "required": false,
+                    "desc": "wenkuFreeMonthlyDoc"
+                },
+                {
+                    "name": "wenkuYearlyDoc",
+                    "type": "string",
+                    "required": false,
+                    "desc": "wenkuYearlyDoc"
+                },
+                {
+                    "name": "wenkuFreeYearlyDoc",
+                    "type": "string",
+                    "required": false,
+                    "desc": "wenkuFreeYearlyDoc"
+                },
+                {
+                    "name": "paper_FeeDaily",
+                    "type": "string",
+                    "required": false,
+                    "desc": "paper_FeeDaily"
+                },
+                {
+                    "name": "paper_FeeMonthly",
+                    "type": "string",
+                    "required": false,
+                    "desc": "paper_FeeMonthly"
+                },
+                {
+                    "name": "paper_FeeYearly",
+                    "type": "string",
+                    "required": false,
+                    "desc": "paper_FeeYearly"
+                },
+                {
+                    "name": "paper_FreeDaily",
+                    "type": "string",
+                    "required": false,
+                    "desc": "paper_FreeDaily"
+                },
+                {
+                    "name": "paper_FreeMonthly",
+                    "type": "string",
+                    "required": false,
+                    "desc": "paper_FreeMonthly"
+                },
+                {
+                    "name": "paper_FreeYearly",
+                    "type": "string",
+                    "required": false,
+                    "desc": "paper_FreeYearly"
+                },
+                {
+                    "name": "aigcWriteCountDaily",
+                    "type": "string",
+                    "required": false,
+                    "desc": "aigcWriteCountDaily"
+                },
+                {
+                    "name": "aigcMessageCountDaily",
+                    "type": "string",
+                    "required": false,
+                    "desc": "aigcMessageCountDaily"
+                },
+                {
+                    "name": "aigcCountDaily",
+                    "type": "string",
+                    "required": false,
+                    "desc": "aigcCountDaily"
+                },
+                {
+                    "name": "picUploaderSpace",
+                    "type": "string",
+                    "required": false,
+                    "desc": "picUploaderSpace"
+                },
+                {
+                    "name": "quotaCorpWorkCount",
+                    "type": "string",
+                    "required": false,
+                    "desc": "quotaCorpWorkCount"
+                },
+                {
+                    "name": "quotaCorpEmployeeInviteDaily",
+                    "type": "string",
+                    "required": false,
+                    "desc": "quotaCorpEmployeeInviteDaily"
+                },
+                {
+                    "name": "quotaHireResumeViewDaily",
+                    "type": "string",
+                    "required": false,
+                    "desc": "quotaHireResumeViewDaily"
+                },
+                {
+                    "name": "quotaHireResumeInviteDaily",
+                    "type": "string",
+                    "required": false,
+                    "desc": "quotaHireResumeInviteDaily"
+                }
+            ]
+        },
+        {
+            "key": "member.vip_set.edit",
+            "title": "用户系统 编辑",
+            "method": "post",
+            "url": "member/vip_set/edit",
+            "scope": "member.write",
+            "permission": "\\Module\\Member\\Admin\\Controller\\MemberVipSetController@edit",
+            "params": [
+                {
+                    "name": "id",
+                    "type": "int",
+                    "required": true,
+                    "desc": "记录ID"
+                },
+                {
+                    "name": "title",
+                    "type": "string",
+                    "required": false,
+                    "desc": "title"
+                },
+                {
+                    "name": "flag",
+                    "type": "string",
+                    "required": false,
+                    "desc": "flag"
+                },
+                {
+                    "name": "pid",
+                    "type": "int",
+                    "required": false,
+                    "desc": "pid"
+                },
+                {
+                    "name": "sort",
+                    "type": "int",
+                    "required": false,
+                    "desc": "sort"
+                },
+                {
+                    "name": "isDefault",
+                    "type": "string",
+                    "required": false,
+                    "desc": "isDefault"
+                },
+                {
+                    "name": "icon",
+                    "type": "string",
+                    "required": false,
+                    "desc": "icon"
+                },
+                {
+                    "name": "price",
+                    "type": "string",
+                    "required": false,
+                    "desc": "price"
+                },
+                {
+                    "name": "vipDays",
+                    "type": "string",
+                    "required": false,
+                    "desc": "vipDays"
+                },
+                {
+                    "name": "content",
+                    "type": "string",
+                    "required": false,
+                    "desc": "content"
+                },
+                {
+                    "name": "creditPresentEnable",
+                    "type": "string",
+                    "required": false,
+                    "desc": "creditPresentEnable"
+                },
+                {
+                    "name": "creditPresentValue",
+                    "type": "string",
+                    "required": false,
+                    "desc": "creditPresentValue"
+                },
+                {
+                    "name": "desc",
+                    "type": "string",
+                    "required": false,
+                    "desc": "desc"
+                },
+                {
+                    "name": "visible",
+                    "type": "string",
+                    "required": false,
+                    "desc": "visible"
+                },
+                {
+                    "name": "priceMarket",
+                    "type": "string",
+                    "required": false,
+                    "desc": "priceMarket"
+                },
+                {
+                    "name": "groupName",
+                    "type": "string",
+                    "required": false,
+                    "desc": "groupName"
+                },
+                {
+                    "name": "quotaQuestionViewDaily",
+                    "type": "string",
+                    "required": false,
+                    "desc": "quotaQuestionViewDaily"
+                },
+                {
+                    "name": "wenkuDiscount",
+                    "type": "string",
+                    "required": false,
+                    "desc": "wenkuDiscount"
+                },
+                {
+                    "name": "wenkuMoneyReward",
+                    "type": "string",
+                    "required": false,
+                    "desc": "wenkuMoneyReward"
+                },
+                {
+                    "name": "wenkuUploadCreditReward",
+                    "type": "string",
+                    "required": false,
+                    "desc": "wenkuUploadCreditReward"
+                },
+                {
+                    "name": "wenkuDailyDoc",
+                    "type": "string",
+                    "required": false,
+                    "desc": "wenkuDailyDoc"
+                },
+                {
+                    "name": "wenkuFreeDailyDoc",
+                    "type": "string",
+                    "required": false,
+                    "desc": "wenkuFreeDailyDoc"
+                },
+                {
+                    "name": "wenkuMonthlyDoc",
+                    "type": "string",
+                    "required": false,
+                    "desc": "wenkuMonthlyDoc"
+                },
+                {
+                    "name": "wenkuFreeMonthlyDoc",
+                    "type": "string",
+                    "required": false,
+                    "desc": "wenkuFreeMonthlyDoc"
+                },
+                {
+                    "name": "wenkuYearlyDoc",
+                    "type": "string",
+                    "required": false,
+                    "desc": "wenkuYearlyDoc"
+                },
+                {
+                    "name": "wenkuFreeYearlyDoc",
+                    "type": "string",
+                    "required": false,
+                    "desc": "wenkuFreeYearlyDoc"
+                },
+                {
+                    "name": "paper_FeeDaily",
+                    "type": "string",
+                    "required": false,
+                    "desc": "paper_FeeDaily"
+                },
+                {
+                    "name": "paper_FeeMonthly",
+                    "type": "string",
+                    "required": false,
+                    "desc": "paper_FeeMonthly"
+                },
+                {
+                    "name": "paper_FeeYearly",
+                    "type": "string",
+                    "required": false,
+                    "desc": "paper_FeeYearly"
+                },
+                {
+                    "name": "paper_FreeDaily",
+                    "type": "string",
+                    "required": false,
+                    "desc": "paper_FreeDaily"
+                },
+                {
+                    "name": "paper_FreeMonthly",
+                    "type": "string",
+                    "required": false,
+                    "desc": "paper_FreeMonthly"
+                },
+                {
+                    "name": "paper_FreeYearly",
+                    "type": "string",
+                    "required": false,
+                    "desc": "paper_FreeYearly"
+                },
+                {
+                    "name": "aigcWriteCountDaily",
+                    "type": "string",
+                    "required": false,
+                    "desc": "aigcWriteCountDaily"
+                },
+                {
+                    "name": "aigcMessageCountDaily",
+                    "type": "string",
+                    "required": false,
+                    "desc": "aigcMessageCountDaily"
+                },
+                {
+                    "name": "aigcCountDaily",
+                    "type": "string",
+                    "required": false,
+                    "desc": "aigcCountDaily"
+                },
+                {
+                    "name": "picUploaderSpace",
+                    "type": "string",
+                    "required": false,
+                    "desc": "picUploaderSpace"
+                },
+                {
+                    "name": "quotaCorpWorkCount",
+                    "type": "string",
+                    "required": false,
+                    "desc": "quotaCorpWorkCount"
+                },
+                {
+                    "name": "quotaCorpEmployeeInviteDaily",
+                    "type": "string",
+                    "required": false,
+                    "desc": "quotaCorpEmployeeInviteDaily"
+                },
+                {
+                    "name": "quotaHireResumeViewDaily",
+                    "type": "string",
+                    "required": false,
+                    "desc": "quotaHireResumeViewDaily"
+                },
+                {
+                    "name": "quotaHireResumeInviteDaily",
+                    "type": "string",
+                    "required": false,
+                    "desc": "quotaHireResumeInviteDaily"
+                }
+            ]
+        },
+        {
+            "key": "member.vip_set.delete",
+            "title": "用户系统 删除",
+            "method": "post",
+            "url": "member/vip_set/delete",
+            "scope": "member.write",
+            "permission": "\\Module\\Member\\Admin\\Controller\\MemberVipSetController@delete",
+            "params": [
+                {
+                    "name": "ids",
+                    "type": "string",
+                    "required": true,
+                    "desc": "记录ID，多个用逗号分隔"
+                }
+            ]
+        },
+        {
+            "key": "member.vip_set.sort",
+            "title": "用户系统 排序",
+            "method": "post",
+            "url": "member/vip_set/sort",
+            "scope": "member.write",
+            "permission": "\\Module\\Member\\Admin\\Controller\\MemberVipSetController@sort",
+            "params": [
+                {
+                    "name": "ids",
+                    "type": "string",
+                    "required": true,
+                    "desc": "记录ID，按目标顺序用逗号分隔"
+                }
+            ]
+        },
+        {
+            "key": "member.vip_right.index",
+            "title": "用户系统 列表",
+            "method": "post",
+            "url": "member/vip_right/index",
+            "scope": "member.read",
+            "permission": "\\Module\\Member\\Admin\\Controller\\MemberVipRightController@index",
+            "params": [
+                {
+                    "name": "page",
+                    "type": "int",
+                    "required": false,
+                    "desc": "页码"
+                },
+                {
+                    "name": "pageSize",
+                    "type": "int",
+                    "required": false,
+                    "desc": "每页数量"
+                },
+                {
+                    "name": "keyword",
+                    "type": "string",
+                    "required": false,
+                    "desc": "关键词"
+                }
+            ]
+        },
+        {
+            "key": "member.vip_right.add",
+            "title": "用户系统 新增",
+            "method": "post",
+            "url": "member/vip_right/add",
+            "scope": "member.write",
+            "permission": "\\Module\\Member\\Admin\\Controller\\MemberVipRightController@add",
+            "params": [
+                {
+                    "name": "vipIds",
+                    "type": "string",
+                    "required": false,
+                    "desc": "vipIds"
+                },
+                {
+                    "name": "title",
+                    "type": "string",
+                    "required": false,
+                    "desc": "title"
+                },
+                {
+                    "name": "desc",
+                    "type": "string",
+                    "required": false,
+                    "desc": "desc"
+                },
+                {
+                    "name": "image",
+                    "type": "string",
+                    "required": false,
+                    "desc": "image"
+                },
+                {
+                    "name": "sort",
+                    "type": "int",
+                    "required": false,
+                    "desc": "sort"
+                }
+            ]
+        },
+        {
+            "key": "member.vip_right.edit",
+            "title": "用户系统 编辑",
+            "method": "post",
+            "url": "member/vip_right/edit",
+            "scope": "member.write",
+            "permission": "\\Module\\Member\\Admin\\Controller\\MemberVipRightController@edit",
+            "params": [
+                {
+                    "name": "id",
+                    "type": "int",
+                    "required": true,
+                    "desc": "记录ID"
+                },
+                {
+                    "name": "vipIds",
+                    "type": "string",
+                    "required": false,
+                    "desc": "vipIds"
+                },
+                {
+                    "name": "title",
+                    "type": "string",
+                    "required": false,
+                    "desc": "title"
+                },
+                {
+                    "name": "desc",
+                    "type": "string",
+                    "required": false,
+                    "desc": "desc"
+                },
+                {
+                    "name": "image",
+                    "type": "string",
+                    "required": false,
+                    "desc": "image"
+                },
+                {
+                    "name": "sort",
+                    "type": "int",
+                    "required": false,
+                    "desc": "sort"
+                }
+            ]
+        },
+        {
+            "key": "member.vip_right.delete",
+            "title": "用户系统 删除",
+            "method": "post",
+            "url": "member/vip_right/delete",
+            "scope": "member.write",
+            "permission": "\\Module\\Member\\Admin\\Controller\\MemberVipRightController@delete",
+            "params": [
+                {
+                    "name": "ids",
+                    "type": "string",
+                    "required": true,
+                    "desc": "记录ID，多个用逗号分隔"
+                }
+            ]
+        },
+        {
+            "key": "member.vip_right.sort",
+            "title": "用户系统 排序",
+            "method": "post",
+            "url": "member/vip_right/sort",
+            "scope": "member.write",
+            "permission": "\\Module\\Member\\Admin\\Controller\\MemberVipRightController@sort",
+            "params": [
+                {
+                    "name": "ids",
+                    "type": "string",
+                    "required": true,
+                    "desc": "记录ID，按目标顺序用逗号分隔"
+                }
+            ]
+        },
+        {
+            "key": "member.money_charge_order.index",
+            "title": "用户系统 列表",
+            "method": "post",
+            "url": "member/money_charge_order/index",
+            "scope": "member.read",
+            "permission": "\\Module\\Member\\Admin\\Controller\\MemberMoneyChargeOrderController@index",
+            "params": [
+                {
+                    "name": "page",
+                    "type": "int",
+                    "required": false,
+                    "desc": "页码"
+                },
+                {
+                    "name": "pageSize",
+                    "type": "int",
+                    "required": false,
+                    "desc": "每页数量"
+                },
+                {
+                    "name": "keyword",
+                    "type": "string",
+                    "required": false,
+                    "desc": "关键词"
+                }
+            ]
+        },
+        {
+            "key": "member.money_charge_order.add",
+            "title": "用户系统 新增",
+            "method": "post",
+            "url": "member/money_charge_order/add",
+            "scope": "member.write",
+            "permission": "\\Module\\Member\\Admin\\Controller\\MemberMoneyChargeOrderController@add",
+            "params": [
+                {
+                    "name": "memberUserId",
+                    "type": "int",
+                    "required": false,
+                    "desc": "memberUserId"
+                }
+            ]
+        },
+        {
+            "key": "member.money_charge_order.edit",
+            "title": "用户系统 编辑",
+            "method": "post",
+            "url": "member/money_charge_order/edit",
+            "scope": "member.write",
+            "permission": "\\Module\\Member\\Admin\\Controller\\MemberMoneyChargeOrderController@edit",
+            "params": [
+                {
+                    "name": "id",
+                    "type": "int",
+                    "required": true,
+                    "desc": "记录ID"
+                },
+                {
+                    "name": "memberUserId",
+                    "type": "int",
+                    "required": false,
+                    "desc": "memberUserId"
+                }
+            ]
+        },
+        {
+            "key": "member.money_charge_order.delete",
+            "title": "用户系统 删除",
+            "method": "post",
+            "url": "member/money_charge_order/delete",
+            "scope": "member.write",
+            "permission": "\\Module\\Member\\Admin\\Controller\\MemberMoneyChargeOrderController@delete",
+            "params": [
+                {
+                    "name": "ids",
+                    "type": "string",
+                    "required": true,
+                    "desc": "记录ID，多个用逗号分隔"
+                }
+            ]
+        },
+        {
+            "key": "member.money_log.index",
+            "title": "用户系统 列表",
+            "method": "post",
+            "url": "member/money_log/index",
+            "scope": "member.read",
+            "permission": "\\Module\\Member\\Admin\\Controller\\MemberMoneyLogController@index",
+            "params": [
+                {
+                    "name": "page",
+                    "type": "int",
+                    "required": false,
+                    "desc": "页码"
+                },
+                {
+                    "name": "pageSize",
+                    "type": "int",
+                    "required": false,
+                    "desc": "每页数量"
+                },
+                {
+                    "name": "keyword",
+                    "type": "string",
+                    "required": false,
+                    "desc": "关键词"
+                }
+            ]
+        },
+        {
+            "key": "member.money_log.add",
+            "title": "用户系统 新增",
+            "method": "post",
+            "url": "member/money_log/add",
+            "scope": "member.write",
+            "permission": "\\Module\\Member\\Admin\\Controller\\MemberMoneyLogController@add",
+            "params": [
+                {
+                    "name": "memberUserId",
+                    "type": "int",
+                    "required": false,
+                    "desc": "memberUserId"
+                },
+                {
+                    "name": "change",
+                    "type": "string",
+                    "required": false,
+                    "desc": "change"
+                },
+                {
+                    "name": "remark",
+                    "type": "string",
+                    "required": false,
+                    "desc": "remark"
+                },
+                {
+                    "name": "meta",
+                    "type": "string",
+                    "required": false,
+                    "desc": "meta"
+                }
+            ]
+        },
+        {
+            "key": "member.money_log.edit",
+            "title": "用户系统 编辑",
+            "method": "post",
+            "url": "member/money_log/edit",
+            "scope": "member.write",
+            "permission": "\\Module\\Member\\Admin\\Controller\\MemberMoneyLogController@edit",
+            "params": [
+                {
+                    "name": "id",
+                    "type": "int",
+                    "required": true,
+                    "desc": "记录ID"
+                },
+                {
+                    "name": "memberUserId",
+                    "type": "int",
+                    "required": false,
+                    "desc": "memberUserId"
+                },
+                {
+                    "name": "change",
+                    "type": "string",
+                    "required": false,
+                    "desc": "change"
+                },
+                {
+                    "name": "remark",
+                    "type": "string",
+                    "required": false,
+                    "desc": "remark"
+                },
+                {
+                    "name": "meta",
+                    "type": "string",
+                    "required": false,
+                    "desc": "meta"
+                }
+            ]
+        },
+        {
+            "key": "member.money_log.delete",
+            "title": "用户系统 删除",
+            "method": "post",
+            "url": "member/money_log/delete",
+            "scope": "member.write",
+            "permission": "\\Module\\Member\\Admin\\Controller\\MemberMoneyLogController@delete",
+            "params": [
+                {
+                    "name": "ids",
+                    "type": "string",
+                    "required": true,
+                    "desc": "记录ID，多个用逗号分隔"
+                }
+            ]
+        },
+        {
+            "key": "member.credit_log.index",
+            "title": "用户系统 列表",
+            "method": "post",
+            "url": "member/credit_log/index",
+            "scope": "member.read",
+            "permission": "\\Module\\Member\\Admin\\Controller\\MemberCreditLogController@index",
+            "params": [
+                {
+                    "name": "page",
+                    "type": "int",
+                    "required": false,
+                    "desc": "页码"
+                },
+                {
+                    "name": "pageSize",
+                    "type": "int",
+                    "required": false,
+                    "desc": "每页数量"
+                },
+                {
+                    "name": "keyword",
+                    "type": "string",
+                    "required": false,
+                    "desc": "关键词"
+                }
+            ]
+        },
+        {
+            "key": "member.credit_log.add",
+            "title": "用户系统 新增",
+            "method": "post",
+            "url": "member/credit_log/add",
+            "scope": "member.write",
+            "permission": "\\Module\\Member\\Admin\\Controller\\MemberCreditLogController@add",
+            "params": [
+                {
+                    "name": "memberUserId",
+                    "type": "int",
+                    "required": false,
+                    "desc": "memberUserId"
+                },
+                {
+                    "name": "change",
+                    "type": "string",
+                    "required": false,
+                    "desc": "change"
+                },
+                {
+                    "name": "remark",
+                    "type": "string",
+                    "required": false,
+                    "desc": "remark"
+                },
+                {
+                    "name": "meta",
+                    "type": "string",
+                    "required": false,
+                    "desc": "meta"
+                }
+            ]
+        },
+        {
+            "key": "member.credit_log.edit",
+            "title": "用户系统 编辑",
+            "method": "post",
+            "url": "member/credit_log/edit",
+            "scope": "member.write",
+            "permission": "\\Module\\Member\\Admin\\Controller\\MemberCreditLogController@edit",
+            "params": [
+                {
+                    "name": "id",
+                    "type": "int",
+                    "required": true,
+                    "desc": "记录ID"
+                },
+                {
+                    "name": "memberUserId",
+                    "type": "int",
+                    "required": false,
+                    "desc": "memberUserId"
+                },
+                {
+                    "name": "change",
+                    "type": "string",
+                    "required": false,
+                    "desc": "change"
+                },
+                {
+                    "name": "remark",
+                    "type": "string",
+                    "required": false,
+                    "desc": "remark"
+                },
+                {
+                    "name": "meta",
+                    "type": "string",
+                    "required": false,
+                    "desc": "meta"
+                }
+            ]
+        },
+        {
+            "key": "member.credit_log.delete",
+            "title": "用户系统 删除",
+            "method": "post",
+            "url": "member/credit_log/delete",
+            "scope": "member.write",
+            "permission": "\\Module\\Member\\Admin\\Controller\\MemberCreditLogController@delete",
+            "params": [
+                {
+                    "name": "ids",
+                    "type": "string",
+                    "required": true,
+                    "desc": "记录ID，多个用逗号分隔"
+                }
+            ]
+        },
+        {
+            "key": "member.money_cash.index",
+            "title": "用户系统 列表",
+            "method": "post",
+            "url": "member/money_cash/index",
+            "scope": "member.read",
+            "permission": "\\Module\\Member\\Admin\\Controller\\MemberMoneyCashController@index",
+            "params": [
+                {
+                    "name": "page",
+                    "type": "int",
+                    "required": false,
+                    "desc": "页码"
+                },
+                {
+                    "name": "pageSize",
+                    "type": "int",
+                    "required": false,
+                    "desc": "每页数量"
+                },
+                {
+                    "name": "keyword",
+                    "type": "string",
+                    "required": false,
+                    "desc": "关键词"
+                }
+            ]
+        },
+        {
+            "key": "member.money_cash.add",
+            "title": "用户系统 新增",
+            "method": "post",
+            "url": "member/money_cash/add",
+            "scope": "member.write",
+            "permission": "\\Module\\Member\\Admin\\Controller\\MemberMoneyCashController@add",
+            "params": [
+                {
+                    "name": "memberUserId",
+                    "type": "int",
+                    "required": false,
+                    "desc": "memberUserId"
+                },
+                {
+                    "name": "moneyAfterTax",
+                    "type": "string",
+                    "required": false,
+                    "desc": "moneyAfterTax"
+                },
+                {
+                    "name": "remark",
+                    "type": "string",
+                    "required": false,
+                    "desc": "remark"
+                },
+                {
+                    "name": "type",
+                    "type": "int",
+                    "required": false,
+                    "desc": "type"
+                },
+                {
+                    "name": "realname",
+                    "type": "string",
+                    "required": false,
+                    "desc": "realname"
+                },
+                {
+                    "name": "param",
+                    "type": "string",
+                    "required": false,
+                    "desc": "param"
+                }
+            ]
+        },
+        {
+            "key": "member.money_cash.edit",
+            "title": "用户系统 编辑",
+            "method": "post",
+            "url": "member/money_cash/edit",
+            "scope": "member.write",
+            "permission": "\\Module\\Member\\Admin\\Controller\\MemberMoneyCashController@edit",
+            "params": [
+                {
+                    "name": "id",
+                    "type": "int",
+                    "required": true,
+                    "desc": "记录ID"
+                },
+                {
+                    "name": "memberUserId",
+                    "type": "int",
+                    "required": false,
+                    "desc": "memberUserId"
+                },
+                {
+                    "name": "moneyAfterTax",
+                    "type": "string",
+                    "required": false,
+                    "desc": "moneyAfterTax"
+                },
+                {
+                    "name": "remark",
+                    "type": "string",
+                    "required": false,
+                    "desc": "remark"
+                },
+                {
+                    "name": "type",
+                    "type": "int",
+                    "required": false,
+                    "desc": "type"
+                },
+                {
+                    "name": "realname",
+                    "type": "string",
+                    "required": false,
+                    "desc": "realname"
+                },
+                {
+                    "name": "param",
+                    "type": "string",
+                    "required": false,
+                    "desc": "param"
+                }
+            ]
+        },
+        {
+            "key": "member.money_cash.delete",
+            "title": "用户系统 删除",
+            "method": "post",
+            "url": "member/money_cash/delete",
+            "scope": "member.write",
+            "permission": "\\Module\\Member\\Admin\\Controller\\MemberMoneyCashController@delete",
+            "params": [
+                {
+                    "name": "ids",
+                    "type": "string",
+                    "required": true,
+                    "desc": "记录ID，多个用逗号分隔"
+                }
+            ]
+        },
+        {
+            "key": "member.group.index",
+            "title": "用户系统 列表",
+            "method": "post",
+            "url": "member/group/index",
+            "scope": "member.read",
+            "permission": "\\Module\\Member\\Admin\\Controller\\MemberGroupController@index",
+            "params": [
+                {
+                    "name": "page",
+                    "type": "int",
+                    "required": false,
+                    "desc": "页码"
+                },
+                {
+                    "name": "pageSize",
+                    "type": "int",
+                    "required": false,
+                    "desc": "每页数量"
+                },
+                {
+                    "name": "keyword",
+                    "type": "string",
+                    "required": false,
+                    "desc": "关键词"
+                }
+            ]
+        },
+        {
+            "key": "member.group.add",
+            "title": "用户系统 新增",
+            "method": "post",
+            "url": "member/group/add",
+            "scope": "member.write",
+            "permission": "\\Module\\Member\\Admin\\Controller\\MemberGroupController@add",
+            "params": [
+                {
+                    "name": "title",
+                    "type": "string",
+                    "required": false,
+                    "desc": "title"
+                },
+                {
+                    "name": "description",
+                    "type": "string",
+                    "required": false,
+                    "desc": "description"
+                },
+                {
+                    "name": "isDefault",
+                    "type": "string",
+                    "required": false,
+                    "desc": "isDefault"
+                },
+                {
+                    "name": "showFront",
+                    "type": "string",
+                    "required": false,
+                    "desc": "showFront"
+                }
+            ]
+        },
+        {
+            "key": "member.group.edit",
+            "title": "用户系统 编辑",
+            "method": "post",
+            "url": "member/group/edit",
+            "scope": "member.write",
+            "permission": "\\Module\\Member\\Admin\\Controller\\MemberGroupController@edit",
+            "params": [
+                {
+                    "name": "id",
+                    "type": "int",
+                    "required": true,
+                    "desc": "记录ID"
+                },
+                {
+                    "name": "title",
+                    "type": "string",
+                    "required": false,
+                    "desc": "title"
+                },
+                {
+                    "name": "description",
+                    "type": "string",
+                    "required": false,
+                    "desc": "description"
+                },
+                {
+                    "name": "isDefault",
+                    "type": "string",
+                    "required": false,
+                    "desc": "isDefault"
+                },
+                {
+                    "name": "showFront",
+                    "type": "string",
+                    "required": false,
+                    "desc": "showFront"
+                }
+            ]
+        },
+        {
+            "key": "member.group.delete",
+            "title": "用户系统 删除",
+            "method": "post",
+            "url": "member/group/delete",
+            "scope": "member.write",
+            "permission": "\\Module\\Member\\Admin\\Controller\\MemberGroupController@delete",
+            "params": [
+                {
+                    "name": "ids",
+                    "type": "string",
+                    "required": true,
+                    "desc": "记录ID，多个用逗号分隔"
+                }
+            ]
+        }
+    ]
+}

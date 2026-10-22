@@ -44,7 +44,13 @@ class AdminPermission
 
     public static function isDemo()
     {
-        return Admin::id() === self::demoId();
+        // demoId 未配置时（默认 0）不能把「未登录（Admin::id() 为 0）」误判为演示账号，
+        // 否则 CLI / 队列 / 未登录请求调用 demoCheck() 会被错误拦截
+        $demoId = self::demoId();
+        if ($demoId <= 0) {
+            return false;
+        }
+        return Admin::id() === $demoId;
     }
 
     public static function demoId()

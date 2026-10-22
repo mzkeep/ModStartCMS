@@ -1,0 +1,224 @@
+{
+    "module": "Banner",
+    "title": "通用轮播",
+    "apis": [
+        {
+            "key": "banner.index",
+            "title": "通用轮播 列表",
+            "method": "post",
+            "url": "banner/index",
+            "scope": "banner.read",
+            "permission": "\\Module\\Banner\\Admin\\Controller\\BannerController@index",
+            "params": [
+                {
+                    "name": "page",
+                    "type": "int",
+                    "required": false,
+                    "desc": "页码"
+                },
+                {
+                    "name": "pageSize",
+                    "type": "int",
+                    "required": false,
+                    "desc": "每页数量"
+                },
+                {
+                    "name": "keyword",
+                    "type": "string",
+                    "required": false,
+                    "desc": "关键词"
+                }
+            ]
+        },
+        {
+            "key": "banner.add",
+            "title": "通用轮播 新增",
+            "method": "post",
+            "url": "banner/add",
+            "scope": "banner.write",
+            "permission": "\\Module\\Banner\\Admin\\Controller\\BannerController@add",
+            "params": [
+                {
+                    "name": "position",
+                    "type": "string",
+                    "required": false,
+                    "desc": "position"
+                },
+                {
+                    "name": "sort",
+                    "type": "int",
+                    "required": false,
+                    "desc": "sort"
+                },
+                {
+                    "name": "image",
+                    "type": "string",
+                    "required": false,
+                    "desc": "image"
+                },
+                {
+                    "name": "link",
+                    "type": "string",
+                    "required": false,
+                    "desc": "link"
+                },
+                {
+                    "name": "type",
+                    "type": "int",
+                    "required": false,
+                    "desc": "type"
+                },
+                {
+                    "name": "title",
+                    "type": "string",
+                    "required": false,
+                    "desc": "title"
+                },
+                {
+                    "name": "slogan",
+                    "type": "string",
+                    "required": false,
+                    "desc": "slogan"
+                },
+                {
+                    "name": "linkText",
+                    "type": "string",
+                    "required": false,
+                    "desc": "linkText"
+                },
+                {
+                    "name": "colorReverse",
+                    "type": "string",
+                    "required": false,
+                    "desc": "colorReverse"
+                },
+                {
+                    "name": "video",
+                    "type": "string",
+                    "required": false,
+                    "desc": "video"
+                },
+                {
+                    "name": "backgroundColor",
+                    "type": "string",
+                    "required": false,
+                    "desc": "backgroundColor"
+                }
+            ]
+        },
+        {
+            "key": "banner.edit",
+            "title": "通用轮播 编辑",
+            "method": "post",
+            "url": "banner/edit",
+            "scope": "banner.write",
+            "permission": "\\Module\\Banner\\Admin\\Controller\\BannerController@edit",
+            "params": [
+                {
+                    "name": "id",
+                    "type": "int",
+                    "required": true,
+                    "desc": "记录ID"
+                },
+                {
+                    "name": "position",
+                    "type": "string",
+                    "required": false,
+                    "desc": "position"
+                },
+                {
+                    "name": "sort",
+                    "type": "int",
+                    "required": false,
+                    "desc": "sort"
+                },
+                {
+                    "name": "image",
+                    "type": "string",
+                    "required": false,
+                    "desc": "image"
+                },
+                {
+                    "name": "link",
+                    "type": "string",
+                    "required": false,
+                    "desc": "link"
+                },
+                {
+                    "name": "type",
+                    "type": "int",
+                    "required": false,
+                    "desc": "type"
+                },
+                {
+                    "name": "title",
+                    "type": "string",
+                    "required": false,
+                    "desc": "title"
+                },
+                {
+                    "name": "slogan",
+                    "type": "string",
+                    "required": false,
+                    "desc": "slogan"
+                },
+                {
+                    "name": "linkText",
+                    "type": "string",
+                    "required": false,
+                    "desc": "linkText"
+                },
+                {
+                    "name": "colorReverse",
+                    "type": "string",
+                    "required": false,
+                    "desc": "colorReverse"
+                },
+                {
+                    "name": "video",
+                    "type": "string",
+                    "required": false,
+                    "desc": "video"
+                },
+                {
+                    "name": "backgroundColor",
+                    "type": "string",
+                    "required": false,
+                    "desc": "backgroundColor"
+                }
+            ]
+        },
+        {
+            "key": "banner.delete",
+            "title": "通用轮播 删除",
+            "method": "post",
+            "url": "banner/delete",
+            "scope": "banner.write",
+            "permission": "\\Module\\Banner\\Admin\\Controller\\BannerController@delete",
+            "params": [
+                {
+                    "name": "ids",
+                    "type": "string",
+                    "required": true,
+                    "desc": "记录ID，多个用逗号分隔"
+                }
+            ]
+        },
+        {
+            "key": "banner.sort",
+            "title": "通用轮播 排序",
+            "method": "post",
+            "url": "banner/sort",
+            "scope": "banner.write",
+            "permission": "\\Module\\Banner\\Admin\\Controller\\BannerController@sort",
+            "params": [
+                {
+                    "name": "ids",
+                    "type": "string",
+                    "required": true,
+                    "desc": "记录ID，按目标顺序用逗号分隔"
+                }
+            ]
+        }
+    ]
+}

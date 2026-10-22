@@ -1,0 +1,660 @@
+{
+    "module": "Cms",
+    "title": "CMS系统",
+    "apis": [
+        {
+            "key": "cms.config",
+            "title": "CMS系统 配置",
+            "method": "post",
+            "url": "cms/config",
+            "scope": "cms.write",
+            "permission": "Module\\Cms\\Admin\\Controller\\ConfigController@setting",
+            "params": [
+                {
+                    "name": "Cms_CompanyName",
+                    "type": "string",
+                    "required": false,
+                    "desc": "Cms_CompanyName"
+                },
+                {
+                    "name": "Cms_ContactEmail",
+                    "type": "string",
+                    "required": false,
+                    "desc": "Cms_ContactEmail"
+                },
+                {
+                    "name": "Cms_ContactPhone",
+                    "type": "string",
+                    "required": false,
+                    "desc": "Cms_ContactPhone"
+                },
+                {
+                    "name": "Cms_ContactAddress",
+                    "type": "string",
+                    "required": false,
+                    "desc": "Cms_ContactAddress"
+                },
+                {
+                    "name": "Cms_ContactFax",
+                    "type": "string",
+                    "required": false,
+                    "desc": "Cms_ContactFax"
+                },
+                {
+                    "name": "Cms_ContactContactPerson",
+                    "type": "string",
+                    "required": false,
+                    "desc": "Cms_ContactContactPerson"
+                },
+                {
+                    "name": "Cms_ContactQQ",
+                    "type": "string",
+                    "required": false,
+                    "desc": "Cms_ContactQQ"
+                },
+                {
+                    "name": "Cms_HomeInfoTitle",
+                    "type": "string",
+                    "required": false,
+                    "desc": "Cms_HomeInfoTitle"
+                },
+                {
+                    "name": "Cms_HomeInfoImage",
+                    "type": "string",
+                    "required": false,
+                    "desc": "Cms_HomeInfoImage"
+                },
+                {
+                    "name": "Cms_HomeInfoContent",
+                    "type": "string",
+                    "required": false,
+                    "desc": "Cms_HomeInfoContent"
+                },
+                {
+                    "name": "Cms_ContentUrlMode",
+                    "type": "string",
+                    "required": false,
+                    "desc": "Cms_ContentUrlMode"
+                },
+                {
+                    "name": "Cms_CatAdminTreeMode",
+                    "type": "string",
+                    "required": false,
+                    "desc": "Cms_CatAdminTreeMode"
+                },
+                {
+                    "name": "Cms_LikeAnonymityEnable",
+                    "type": "string",
+                    "required": false,
+                    "desc": "Cms_LikeAnonymityEnable"
+                },
+                {
+                    "name": "Cms_RecommendProvider",
+                    "type": "string",
+                    "required": false,
+                    "desc": "Cms_RecommendProvider"
+                }
+            ]
+        },
+        {
+            "key": "cms.model.index",
+            "title": "CMS系统 列表",
+            "method": "post",
+            "url": "cms/model/index",
+            "scope": "cms.read",
+            "permission": "\\Module\\Cms\\Admin\\Controller\\ModelController@index",
+            "params": [
+                {
+                    "name": "page",
+                    "type": "int",
+                    "required": false,
+                    "desc": "页码"
+                },
+                {
+                    "name": "pageSize",
+                    "type": "int",
+                    "required": false,
+                    "desc": "每页数量"
+                },
+                {
+                    "name": "keyword",
+                    "type": "string",
+                    "required": false,
+                    "desc": "关键词"
+                }
+            ]
+        },
+        {
+            "key": "cms.model.edit",
+            "title": "CMS系统 编辑",
+            "method": "post",
+            "url": "cms/model/edit",
+            "scope": "cms.write",
+            "permission": "\\Module\\Cms\\Admin\\Controller\\ModelController@edit",
+            "params": [
+                {
+                    "name": "id",
+                    "type": "int",
+                    "required": true,
+                    "desc": "记录ID"
+                },
+                {
+                    "name": "modelId",
+                    "type": "int",
+                    "required": false,
+                    "desc": "modelId"
+                },
+                {
+                    "name": "sort",
+                    "type": "int",
+                    "required": false,
+                    "desc": "sort"
+                },
+                {
+                    "name": "title",
+                    "type": "string",
+                    "required": false,
+                    "desc": "title"
+                },
+                {
+                    "name": "name",
+                    "type": "string",
+                    "required": false,
+                    "desc": "name"
+                },
+                {
+                    "name": "fieldType",
+                    "type": "string",
+                    "required": false,
+                    "desc": "fieldType"
+                },
+                {
+                    "name": "fieldData",
+                    "type": "string",
+                    "required": false,
+                    "desc": "fieldData"
+                },
+                {
+                    "name": "maxLength",
+                    "type": "string",
+                    "required": false,
+                    "desc": "maxLength"
+                },
+                {
+                    "name": "isRequired",
+                    "type": "string",
+                    "required": false,
+                    "desc": "isRequired"
+                },
+                {
+                    "name": "isSearch",
+                    "type": "string",
+                    "required": false,
+                    "desc": "isSearch"
+                },
+                {
+                    "name": "isList",
+                    "type": "string",
+                    "required": false,
+                    "desc": "isList"
+                },
+                {
+                    "name": "placeholder",
+                    "type": "string",
+                    "required": false,
+                    "desc": "placeholder"
+                },
+                {
+                    "name": "enable",
+                    "type": "string",
+                    "required": false,
+                    "desc": "enable"
+                },
+                {
+                    "name": "guestVisitVisible",
+                    "type": "string",
+                    "required": false,
+                    "desc": "guestVisitVisible"
+                }
+            ]
+        },
+        {
+            "key": "cms.model.delete",
+            "title": "CMS系统 删除",
+            "method": "post",
+            "url": "cms/model/delete",
+            "scope": "cms.write",
+            "permission": "\\Module\\Cms\\Admin\\Controller\\ModelController@delete",
+            "params": [
+                {
+                    "name": "ids",
+                    "type": "string",
+                    "required": true,
+                    "desc": "记录ID，多个用逗号分隔"
+                }
+            ]
+        },
+        {
+            "key": "cms.cat.index",
+            "title": "CMS系统 列表",
+            "method": "post",
+            "url": "cms/cat/index",
+            "scope": "cms.read",
+            "permission": "\\Module\\Cms\\Admin\\Controller\\CatController@index",
+            "params": [
+                {
+                    "name": "page",
+                    "type": "int",
+                    "required": false,
+                    "desc": "页码"
+                },
+                {
+                    "name": "pageSize",
+                    "type": "int",
+                    "required": false,
+                    "desc": "每页数量"
+                },
+                {
+                    "name": "keyword",
+                    "type": "string",
+                    "required": false,
+                    "desc": "关键词"
+                }
+            ]
+        },
+        {
+            "key": "cms.cat.add",
+            "title": "CMS系统 新增",
+            "method": "post",
+            "url": "cms/cat/add",
+            "scope": "cms.write",
+            "permission": "\\Module\\Cms\\Admin\\Controller\\CatController@add",
+            "params": [
+                {
+                    "name": "pid",
+                    "type": "int",
+                    "required": false,
+                    "desc": "pid"
+                },
+                {
+                    "name": "sort",
+                    "type": "int",
+                    "required": false,
+                    "desc": "sort"
+                },
+                {
+                    "name": "title",
+                    "type": "string",
+                    "required": false,
+                    "desc": "title"
+                },
+                {
+                    "name": "subTitle",
+                    "type": "string",
+                    "required": false,
+                    "desc": "subTitle"
+                },
+                {
+                    "name": "bannerBg",
+                    "type": "string",
+                    "required": false,
+                    "desc": "bannerBg"
+                },
+                {
+                    "name": "url",
+                    "type": "string",
+                    "required": false,
+                    "desc": "url"
+                },
+                {
+                    "name": "modelId",
+                    "type": "int",
+                    "required": false,
+                    "desc": "modelId"
+                },
+                {
+                    "name": "listTemplate",
+                    "type": "string",
+                    "required": false,
+                    "desc": "listTemplate"
+                },
+                {
+                    "name": "detailTemplate",
+                    "type": "string",
+                    "required": false,
+                    "desc": "detailTemplate"
+                },
+                {
+                    "name": "seoTitle",
+                    "type": "string",
+                    "required": false,
+                    "desc": "seoTitle"
+                },
+                {
+                    "name": "seoDescription",
+                    "type": "string",
+                    "required": false,
+                    "desc": "seoDescription"
+                },
+                {
+                    "name": "seoKeywords",
+                    "type": "string",
+                    "required": false,
+                    "desc": "seoKeywords"
+                },
+                {
+                    "name": "icon",
+                    "type": "string",
+                    "required": false,
+                    "desc": "icon"
+                },
+                {
+                    "name": "cover",
+                    "type": "string",
+                    "required": false,
+                    "desc": "cover"
+                },
+                {
+                    "name": "visitMemberGroupEnable",
+                    "type": "string",
+                    "required": false,
+                    "desc": "visitMemberGroupEnable"
+                },
+                {
+                    "name": "visitMemberGroups",
+                    "type": "string",
+                    "required": false,
+                    "desc": "visitMemberGroups"
+                },
+                {
+                    "name": "visitMemberVipEnable",
+                    "type": "string",
+                    "required": false,
+                    "desc": "visitMemberVipEnable"
+                },
+                {
+                    "name": "visitMemberVips",
+                    "type": "string",
+                    "required": false,
+                    "desc": "visitMemberVips"
+                },
+                {
+                    "name": "pageTemplate",
+                    "type": "string",
+                    "required": false,
+                    "desc": "pageTemplate"
+                },
+                {
+                    "name": "formTemplate",
+                    "type": "string",
+                    "required": false,
+                    "desc": "formTemplate"
+                },
+                {
+                    "name": "memberUserPostEnable",
+                    "type": "string",
+                    "required": false,
+                    "desc": "memberUserPostEnable"
+                },
+                {
+                    "name": "postMemberGroupEnable",
+                    "type": "string",
+                    "required": false,
+                    "desc": "postMemberGroupEnable"
+                },
+                {
+                    "name": "postMemberGroups",
+                    "type": "string",
+                    "required": false,
+                    "desc": "postMemberGroups"
+                },
+                {
+                    "name": "postMemberVipEnable",
+                    "type": "string",
+                    "required": false,
+                    "desc": "postMemberVipEnable"
+                },
+                {
+                    "name": "postMemberVips",
+                    "type": "string",
+                    "required": false,
+                    "desc": "postMemberVips"
+                },
+                {
+                    "name": "pageSize",
+                    "type": "string",
+                    "required": false,
+                    "desc": "pageSize"
+                },
+                {
+                    "name": "enable",
+                    "type": "string",
+                    "required": false,
+                    "desc": "enable"
+                },
+                {
+                    "name": "captchaProvider",
+                    "type": "string",
+                    "required": false,
+                    "desc": "captchaProvider"
+                }
+            ]
+        },
+        {
+            "key": "cms.cat.edit",
+            "title": "CMS系统 编辑",
+            "method": "post",
+            "url": "cms/cat/edit",
+            "scope": "cms.write",
+            "permission": "\\Module\\Cms\\Admin\\Controller\\CatController@edit",
+            "params": [
+                {
+                    "name": "id",
+                    "type": "int",
+                    "required": true,
+                    "desc": "记录ID"
+                },
+                {
+                    "name": "pid",
+                    "type": "int",
+                    "required": false,
+                    "desc": "pid"
+                },
+                {
+                    "name": "sort",
+                    "type": "int",
+                    "required": false,
+                    "desc": "sort"
+                },
+                {
+                    "name": "title",
+                    "type": "string",
+                    "required": false,
+                    "desc": "title"
+                },
+                {
+                    "name": "subTitle",
+                    "type": "string",
+                    "required": false,
+                    "desc": "subTitle"
+                },
+                {
+                    "name": "bannerBg",
+                    "type": "string",
+                    "required": false,
+                    "desc": "bannerBg"
+                },
+                {
+                    "name": "url",
+                    "type": "string",
+                    "required": false,
+                    "desc": "url"
+                },
+                {
+                    "name": "modelId",
+                    "type": "int",
+                    "required": false,
+                    "desc": "modelId"
+                },
+                {
+                    "name": "listTemplate",
+                    "type": "string",
+                    "required": false,
+                    "desc": "listTemplate"
+                },
+                {
+                    "name": "detailTemplate",
+                    "type": "string",
+                    "required": false,
+                    "desc": "detailTemplate"
+                },
+                {
+                    "name": "seoTitle",
+                    "type": "string",
+                    "required": false,
+                    "desc": "seoTitle"
+                },
+                {
+                    "name": "seoDescription",
+                    "type": "string",
+                    "required": false,
+                    "desc": "seoDescription"
+                },
+                {
+                    "name": "seoKeywords",
+                    "type": "string",
+                    "required": false,
+                    "desc": "seoKeywords"
+                },
+                {
+                    "name": "icon",
+                    "type": "string",
+                    "required": false,
+                    "desc": "icon"
+                },
+                {
+                    "name": "cover",
+                    "type": "string",
+                    "required": false,
+                    "desc": "cover"
+                },
+                {
+                    "name": "visitMemberGroupEnable",
+                    "type": "string",
+                    "required": false,
+                    "desc": "visitMemberGroupEnable"
+                },
+                {
+                    "name": "visitMemberGroups",
+                    "type": "string",
+                    "required": false,
+                    "desc": "visitMemberGroups"
+                },
+                {
+                    "name": "visitMemberVipEnable",
+                    "type": "string",
+                    "required": false,
+                    "desc": "visitMemberVipEnable"
+                },
+                {
+                    "name": "visitMemberVips",
+                    "type": "string",
+                    "required": false,
+                    "desc": "visitMemberVips"
+                },
+                {
+                    "name": "pageTemplate",
+                    "type": "string",
+                    "required": false,
+                    "desc": "pageTemplate"
+                },
+                {
+                    "name": "formTemplate",
+                    "type": "string",
+                    "required": false,
+                    "desc": "formTemplate"
+                },
+                {
+                    "name": "memberUserPostEnable",
+                    "type": "string",
+                    "required": false,
+                    "desc": "memberUserPostEnable"
+                },
+                {
+                    "name": "postMemberGroupEnable",
+                    "type": "string",
+                    "required": false,
+                    "desc": "postMemberGroupEnable"
+                },
+                {
+                    "name": "postMemberGroups",
+                    "type": "string",
+                    "required": false,
+                    "desc": "postMemberGroups"
+                },
+                {
+                    "name": "postMemberVipEnable",
+                    "type": "string",
+                    "required": false,
+                    "desc": "postMemberVipEnable"
+                },
+                {
+                    "name": "postMemberVips",
+                    "type": "string",
+                    "required": false,
+                    "desc": "postMemberVips"
+                },
+                {
+                    "name": "pageSize",
+                    "type": "string",
+                    "required": false,
+                    "desc": "pageSize"
+                },
+                {
+                    "name": "enable",
+                    "type": "string",
+                    "required": false,
+                    "desc": "enable"
+                },
+                {
+                    "name": "captchaProvider",
+                    "type": "string",
+                    "required": false,
+                    "desc": "captchaProvider"
+                }
+            ]
+        },
+        {
+            "key": "cms.cat.delete",
+            "title": "CMS系统 删除",
+            "method": "post",
+            "url": "cms/cat/delete",
+            "scope": "cms.write",
+            "permission": "\\Module\\Cms\\Admin\\Controller\\CatController@delete",
+            "params": [
+                {
+                    "name": "ids",
+                    "type": "string",
+                    "required": true,
+                    "desc": "记录ID，多个用逗号分隔"
+                }
+            ]
+        },
+        {
+            "key": "cms.cat.sort",
+            "title": "CMS系统 排序",
+            "method": "post",
+            "url": "cms/cat/sort",
+            "scope": "cms.write",
+            "permission": "\\Module\\Cms\\Admin\\Controller\\CatController@sort",
+            "params": [
+                {
+                    "name": "ids",
+                    "type": "string",
+                    "required": true,
+                    "desc": "记录ID，按目标顺序用逗号分隔"
+                }
+            ]
+        }
+    ]
+}

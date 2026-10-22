@@ -24,7 +24,7 @@ class MemberMoneyChargeController extends MemberFrameController implements Membe
 
     public function index()
     {
-        BizException::throwsIf('钱包充值未开启', !modstart_config('Member_MoneyChargeEnable', false));
+        BizException::throwsIf('钱包充值未开启', !modstart_config('Member_MoneyChargeEnable', false), ['statusCode' => 403]);
         return $this->view('memberMoneyCharge.index', [
             'pageTitle' => '钱包充值',
         ]);

@@ -27,7 +27,7 @@ class BaseCatController extends ModuleBaseController
                 $cat = CmsCatUtil::getByUrl($name);
             }
         }
-        BizException::throwsIfEmpty('分类不存在', $cat);
+        BizException::throwsIfEmpty('分类不存在', $cat, ['statusCode' => 404]);
         $catRoot = CmsCatUtil::root($cat['id']);
         $catChildren = CmsCatUtil::children($cat['id']);
         $catRootChildren = CmsCatUtil::children($catRoot['id']);

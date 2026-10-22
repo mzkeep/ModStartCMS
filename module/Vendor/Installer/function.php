@@ -106,7 +106,7 @@ function get_env_config($key, $default = '')
     }
     $osEnvMap = [
         'db_host' => ['DB_HOST', 'MYSQL_HOST'],
-        'db_port' => ['DB_DATABASE', 'MYSQL_PORT'],
+        'db_port' => ['DB_PORT', 'MYSQL_PORT'],
         'db_name' => ['DB_DATABASE', 'MYSQL_DB'],
         'db_username' => ['DB_USERNAME', 'MYSQL_USER'],
         'db_password' => ['DB_PASSWORD', 'MYSQL_PASSWORD'],
@@ -199,22 +199,40 @@ function request_post($k, $defaultValue = '')
     return isset($_POST[$k]) ? $_POST[$k] : $defaultValue;
 }
 
-function text_success($msg)
+function text_success($msg, $count = true)
 {
-    echo '<div class="ub-alert success">√ ' . $msg . '</div>';
+    if ($count) {
+        check_counter();
+    }
+    echo '<div class="ins-check is-ok">'
+        . '<i class="iconfont icon-check" aria-hidden="true"></i>'
+        . '<span class="ins-check-text">' . $msg . '</span>'
+        . '</div>';
 }
 
 function text_error($msg, $solutionUrl = null, $count = true)
 {
     if ($count) {
         error_counter();
+        check_counter();
     }
-    echo '<div class="ub-alert danger">× ' . $msg . ' ' . ($solutionUrl ? '<a target="_blank" href="' . $solutionUrl . '">解决办法</a>' : '') . '</div>';
+    echo '<div class="ins-check is-error">'
+        . '<i class="iconfont icon-close" aria-hidden="true"></i>'
+        . '<span class="ins-check-text">' . $msg . '</span>'
+        . ($solutionUrl ? '<a class="ins-check-link" target="_blank" rel="noopener" href="' . $solutionUrl . '">解决办法</a>' : '')
+        . '</div>';
 }
 
-function text_warning($msg, $solutionUrl = null)
+function text_warning($msg, $solutionUrl = null, $count = true)
 {
-    echo '<div class="ub-alert warning">? ' . $msg . ' ' . ($solutionUrl ? '<a target="_blank" href="' . $solutionUrl . '">解决办法</a>' : '') . '</div>';
+    if ($count) {
+        check_counter();
+    }
+    echo '<div class="ins-check is-warning">'
+        . '<i class="iconfont icon-warning" aria-hidden="true"></i>'
+        . '<span class="ins-check-text">' . $msg . '</span>'
+        . ($solutionUrl ? '<a class="ins-check-link" target="_blank" rel="noopener" href="' . $solutionUrl . '">解决办法</a>' : '')
+        . '</div>';
 }
 
 function error_counter($inc = 1)
@@ -222,6 +240,13 @@ function error_counter($inc = 1)
     static $error = 0;
     $error += $inc;
     return $error;
+}
+
+function check_counter($inc = 1)
+{
+    static $count = 0;
+    $count += $inc;
+    return $count;
 }
 
 function env_writable()

@@ -458,7 +458,7 @@ class MemberController extends Controller
         $input = InputPackage::buildFromInput();
         $status = $input->getType('status', MemberStatus::class);
         MemberUtil::updateStatus(CRUDUtil::ids(), $status);
-        if (str_contains(Request::headerReferer(), 'member/show')) {
+        if (false !== strpos(Request::headerReferer(), 'member/show')) {
             return Response::redirect('[reload]');
         }
         return Response::redirect(CRUDUtil::jsGridRefresh());

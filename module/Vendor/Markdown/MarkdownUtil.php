@@ -2,21 +2,12 @@
 
 namespace Module\Vendor\Markdown;
 
-use Illuminate\Support\Str;
-
 class MarkdownUtil
 {
     public static function convertToHtml($markdown)
     {
-        if (PHP_VERSION_ID >= 80000) {
-            return strval(Str::of($markdown)->markdown());
-        }
-        $converter = new MarkConverter([
-            'renderer' => [
-                'soft_break' => "<br />",
-            ],
-        ]);
-        return $converter->convertToHtml($markdown);
+        // 统一使用内置 Markdown 实现，避免依赖 league/commonmark 与表格扩展
+        return Markdown::toHtml($markdown);
     }
 
     public static function convertToMarkdown($html)

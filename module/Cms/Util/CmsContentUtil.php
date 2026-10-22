@@ -65,7 +65,7 @@ class CmsContentUtil
                 $paginateData['records'][$k]['cover'] = AssetsUtil::fixFull($record['cover']);
             }
             $paginateData['records'][$k]['_url'] = UrlUtil::content($record);
-            $paginateData['records'][$k]['_day'] = Carbon::parse($record['postTime'])->toDateString();
+            $paginateData['records'][$k]['_day'] = self::formatDay($record);
             $paginateData['records'][$k]['_tags'] = TagUtil::string2Array($record['tags']);
             $paginateData['records'][$k]['_tagList'] = array_map(function ($o) {
                 return [
@@ -100,7 +100,7 @@ class CmsContentUtil
                 $records[$k]['cover'] = AssetsUtil::fixFull($record['cover']);
             }
             $records[$k]['_url'] = UrlUtil::content($record);
-            $records[$k]['_day'] = Carbon::parse($record['postTime'])->toDateString();
+            $records[$k]['_day'] = self::formatDay($record);
             $records[$k]['_tags'] = TagUtil::string2Array($record['tags']);
             $records[$k]['_tagList'] = array_map(function ($o) {
                 return [
@@ -134,7 +134,7 @@ class CmsContentUtil
                 $records[$k]['cover'] = AssetsUtil::fixFull($record['cover']);
             }
             $records[$k]['_url'] = UrlUtil::content($record);
-            $records[$k]['_day'] = Carbon::parse($record['postTime'])->toDateString();
+            $records[$k]['_day'] = self::formatDay($record);
             $records[$k]['_tags'] = TagUtil::string2Array($record['tags']);
             $records[$k]['_tagList'] = array_map(function ($o) {
                 return [
@@ -200,7 +200,7 @@ class CmsContentUtil
                 $paginateData['records'][$k]['cover'] = AssetsUtil::fixFull($record['cover']);
             }
             $paginateData['records'][$k]['_url'] = UrlUtil::content($record);
-            $paginateData['records'][$k]['_day'] = Carbon::parse($record['postTime'])->toDateString();
+            $paginateData['records'][$k]['_day'] = self::formatDay($record);
             $paginateData['records'][$k]['_tags'] = TagUtil::string2Array($record['tags']);
             $paginateData['records'][$k]['_tagList'] = array_map(function ($o) {
                 return [
@@ -262,10 +262,27 @@ class CmsContentUtil
         }
     }
 
+    /**
+     * 记录日期（Y-m-d），列表与详情统一通过 _day 提供，避免各视图重复拼接
+     *
+     * @param array $record
+     * @return string
+     */
+    private static function formatDay($record)
+    {
+        if (!empty($record['postTime'])) {
+            return Carbon::parse($record['postTime'])->toDateString();
+        }
+        if (isset($record['created_at'])) {
+            return Carbon::parse($record['created_at'])->toDateString();
+        }
+        return '';
+    }
+
     public static function get($id)
     {
         $record = ModelUtil::get('cms_content', $id);
-        BizException::throwsIfEmpty('记录不存在', $record);
+        BizException::throwsIfEmpty('记录不存在', $record, ['statusCode' => 404]);
         $model = CmsModelUtil::get($record['modelId']);
         $table = "cms_m_$model[name]";
         $recordData = ModelUtil::get($table, $record['id']);
@@ -281,6 +298,7 @@ class CmsContentUtil
             $recordData[$v['name']] = $f->unserializeValue($recordData[$v['name']], $recordData);
         }
         $record['_url'] = UrlUtil::content($record);
+        $record['_day'] = self::formatDay($record);
         $record['_data'] = $recordData;
         if (!empty($record['cover'])) {
             $record['cover'] = AssetsUtil::fixFull($record['cover']);
@@ -316,7 +334,7 @@ class CmsContentUtil
     public static function getByAlias($alias)
     {
         $record = ModelUtil::get('cms_content', ['alias' => $alias]);
-        BizException::throwsIfEmpty('记录不存在', $record);
+        BizException::throwsIfEmpty('记录不存在', $record, ['statusCode' => 404]);
         $model = CmsModelUtil::get($record['modelId']);
         $table = "cms_m_$model[name]";
         $recordData = ModelUtil::get($table, $record['id']);
@@ -327,6 +345,7 @@ class CmsContentUtil
                 'url' => UrlUtil::tag($o),
             ];
         }, $record['_tags']);
+        $record['_day'] = self::formatDay($record);
         $record['_data'] = $recordData;
         if (!empty($record['cover'])) {
             $record['cover'] = AssetsUtil::fixFull($record['cover']);

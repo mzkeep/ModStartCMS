@@ -18,7 +18,7 @@
     --panel-menu-search-color: #FFFFFF;
     --panel-menu-search-tip-color: rgba(255, 255, 255, 0.42);
     --panel-menu-scrollbar-background: rgba(255, 255, 255, 0.18);
-    --panel-menu-page-tab-scrollbar-background: var(--color-primary);
+    --panel-menu-page-tab-scrollbar-color: var(--color-tertiary);
     --panel-menu-arrow-color: rgba(255, 255, 255, 0.42);
 }
 
@@ -35,7 +35,7 @@
     --panel-menu-search-color: var(--color-text);
     --panel-menu-search-tip-color: var(--color-muted);
     --panel-menu-scrollbar-background: var(--color-body-block-bg-hover);
-    --panel-menu-page-tab-scrollbar-background: var(--color-primary);
+    --panel-menu-page-tab-scrollbar-color: var(--color-tertiary);
     --panel-menu-arrow-color: var(--color-tertiary);
 }
 
@@ -56,35 +56,77 @@
         background: var(--panel-menu-background);
         overflow: hidden;
         z-index: 2000;
-        transition: all 0.2s linear;
+        transition: width 0.2s var(--ease-out), background 0.2s linear;
         border-right: 0.0625rem solid var(--color-body-line);
 
         .logo {
             height: 2.8125rem;
-            line-height: 2.8125rem;
+            display: flex;
+            align-items: center;
+            gap: 0.625rem;
             color: var(--panel-menu-text-color);
             font-size: var(--panel-menu-logo-font-size);
-            display: block;
-            text-align: left;
             padding: 0 0.9375rem;
             transition: all 0.2s linear;
+            text-decoration: none;
+            overflow: hidden;
 
-            .img {
-                width: 2.8125rem;
-                height: 2.8125rem;
-                display: inline-block;
-                vertical-align: top;
+            .logo-image {
+                display: block;
+                flex: 0 0 auto;
+                width: auto;
+                max-width: 2.25rem;
+                max-height: 1.75rem;
             }
 
-            .icon {
-                display: inline-block;
-                width: auto;
-                height: 2.8125rem;
-                text-align: center;
-                color: var(--panel-menu-logo-color);
+            .logo-mark {
+                width: 1.75rem;
+                height: 1.75rem;
+                flex: 0 0 auto;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: var(--size-radius-xs);
+                background: var(--panel-menu-active-background);
+                color: var(--panel-menu-active-color);
+
+                .icon {
+                    width: auto;
+                    height: auto;
+                    line-height: 1;
+                    font-size: 1rem;
+                    color: inherit;
+                }
+            }
+
+            .logo-brand {
+                display: flex;
+                flex-direction: column;
+                gap: 0.0625rem;
+                min-width: 0;
+                line-height: 1.15;
             }
 
             .text {
+                max-width: 100%;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                font-size: 0.9375rem;
+                font-weight: 600;
+                letter-spacing: 0.01em;
+                color: var(--panel-menu-logo-color);
+            }
+
+            .sub {
+                max-width: 100%;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                font-size: 0.6875rem;
+                font-weight: 400;
+                color: var(--panel-menu-text-color);
+                opacity: 0.62;
             }
         }
 
@@ -96,7 +138,7 @@
             width: var(--panel-menu-width);
             bottom: 0;
             overflow: auto;
-            transition: all 0.2s linear;
+            transition: width 0.2s var(--ease-out);
 
             &.moving {
                 cursor: grab;
@@ -117,54 +159,6 @@
 
             [data-keywords-item="show"] {
                 display: block !important;
-            }
-
-            .menu-search-container {
-                width: 100%;
-                height: 3.125rem;
-                position: relative;
-                overflow: hidden;
-                padding: 0.625rem 0.9375rem;
-
-                input {
-                    height: 1.875rem;
-                    background: var(--panel-menu-search-background);
-                    border: none;
-                    font-size: 0.8125rem;
-                    width: 100%;
-                    color: var(--panel-menu-search-color);
-                    padding-left: 1.875rem;
-                    border-radius: 1.25rem;
-
-                    &::-webkit-input-placeholder {
-                        color: var(--panel-menu-search-tip-color);
-                        font-size: 0.8125rem;
-                    }
-
-                    &::-moz-placeholder {
-                        color: var(--panel-menu-search-tip-color);
-                        font-size: 0.8125rem;
-                    }
-
-                    &::-ms-input-placeholder {
-                        color: var(--panel-menu-search-tip-color);
-                        font-size: 0.8125rem;
-                    }
-                }
-
-                i {
-                    display: block;
-                    position: absolute;
-                    z-index: 1000;
-                    left: 0.625rem;
-                    top: 0.3125rem;
-                    height: 2.5rem;
-                    line-height: 2.5rem;
-                    width: 2.8125rem;
-                    text-align: center;
-                    color: var(--panel-menu-search-color);
-                    font-size: 0.8125rem;
-                }
             }
 
             &::-webkit-scrollbar-track {
@@ -286,13 +280,13 @@
         right: 0;
         top: 0;
         bottom: 0;
-        transition: all 0.2s linear;
+        transition: left 0.2s var(--ease-out);
 
         .top {
+            position: relative;
             height: 2.8125rem;
             background: var(--color-content-bg);
             border-bottom: 0.0625rem solid var(--color-body-line);
-            transition: .5s;
             text-align: left;
             display: flex;
 
@@ -302,7 +296,7 @@
             // `.right-menu-trigger:hover + .menu-right` sibling selector still works).
             .right-menu-trigger {
                 display: none;
-                order: 4;
+                order: 5;
             }
 
             .left-trigger, .left-action {
@@ -317,6 +311,26 @@
 
                 &:hover {
                     color: var(--color-primary);
+                }
+            }
+
+            // 刷新当前标签：视觉上紧贴标签区右端，与右侧操作区用发丝线分隔
+            #adminTabRefresh {
+                order: 3;
+                flex: 0 0 auto;
+                margin-left: 0.25rem;
+                padding-left: 0.75rem;
+                padding-right: 0.75rem;
+                border-left: 0.0625rem solid var(--color-body-line);
+
+                &.is-hidden {
+                    visibility: hidden;
+                    width: 0;
+                    margin: 0;
+                    padding: 0;
+                    border: 0;
+                    overflow: hidden;
+                    pointer-events: none;
                 }
             }
 
@@ -336,65 +350,126 @@
                     }
                 }
 
-                &::-webkit-scrollbar-track {
-                    background: transparent;
-                }
+                // 隐藏原生滚动条（macOS 的 overlay 灰条无法做渐变），改用下方自绘渐变指示条
+                scrollbar-width: none;
+                -ms-overflow-style: none;
 
                 &::-webkit-scrollbar {
-                    width: 1px;
-                    height: 1px;
-                }
-
-                &::-webkit-scrollbar-thumb {
-                    background: var(--panel-menu-page-tab-scrollbar-background);
+                    display: none;
+                    width: 0;
+                    height: 0;
                 }
 
                 a {
-                    line-height: 2.625rem;
-                    color: var(--color-text);
-                    padding: 0 0.625rem;
-                    display: inline-block;
-                    border-top: 0.125rem solid transparent;
+                    display: inline-flex;
+                    align-items: center;
+                    height: 2.8125rem;
+                    line-height: 1;
+                    color: var(--color-tertiary);
+                    padding: 0 0.75rem;
                     text-decoration: none;
-                    border-radius: var(--size-radius-sm) var(--size-radius-sm) 0 0;
-                    transition: var(--transition);
+                    transition: var(--transition-fast);
 
-                    .close {
-                        color: var(--color-tertiary);
-
-                        &:hover {
-                            background-color: var(--color-danger);
-                            border-radius: 50%;
-                            color: #fff;
-                        }
+                    .text {
+                        display: inline-block;
+                        max-width: 10rem;
+                        overflow: hidden;
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
                     }
 
-                    &.active {
-                        border-color: var(--color-primary);
-                        color: var(--color-primary);
-                        background-color: var(--color-primary-light-bg);
+                    .close {
+                        display: inline-flex;
+                        align-items: center;
+                        justify-content: center;
+                        width: 1.5rem;
+                        height: 1.5rem;
+                        margin-left: 0.25rem;
+                        border-radius: 50%;
+                        color: var(--color-muted);
+                        font-size: 0.75rem;
+                        opacity: 0.5;
+                        cursor: pointer;
+                        transition: var(--transition-fast);
 
-                        &:before {
-                            content: '';
-                            background-color: var(--color-primary);
-                            width: 6px;
-                            height: 6px;
-                            display: inline-block;
-                            border-radius: 50%;
-                            vertical-align: middle;
-                            margin-top: -2px;
-                            margin-right: 4px;
+                        &:hover,
+                        &:focus-visible {
+                            background-color: var(--color-danger-light);
+                            color: var(--color-danger);
+                            opacity: 1;
                         }
                     }
 
                     &:hover {
                         color: var(--color-primary);
+                        background-color: var(--color-body-block-bg);
+
+                        .close {
+                            opacity: 1;
+                        }
+                    }
+
+                    // 单一激活信号：主色浅底 + 主色文字 + 2px 底部指示条（不再有额外圆点）
+                    &.active {
+                        color: var(--color-primary);
+                        background-color: var(--color-primary-light-bg);
+                        box-shadow: inset 0 -0.125rem 0 0 var(--color-primary);
+
+                        .close {
+                            color: var(--color-muted);
+                            opacity: 0.6;
+                        }
+
+                        // 激活标签上的关闭按钮：hover/聚焦时给足危险色反馈（顺序放在 .close 之后避免被覆盖）
+                        .close:hover,
+                        .close:focus-visible {
+                            color: var(--color-danger);
+                            opacity: 1;
+                            background-color: var(--color-danger-light);
+                        }
+                    }
+
+                    // 主入口标签弱化：固定在最左，只保留文字层级
+                    &[data-tab-menu-main] {
+                        padding-right: 0.875rem;
+                        font-weight: 600;
                     }
                 }
             }
 
+            // 标签栏自绘滚动条：两端透明渐隐，明确表达“这是滚动条”
+            .admin-tab-scrollbar {
+                display: none;
+                position: absolute;
+                left: 0;
+                bottom: 0.1875rem;
+                z-index: 2;
+                width: 0;
+                height: 0.1875rem;
+                border-radius: var(--size-radius-full);
+                // 灰色半透明滑块，两端透明渐隐，避免被误读成激活标签下划线
+                background-image: linear-gradient(
+                    90deg,
+                    transparent 0%,
+                    var(--panel-menu-page-tab-scrollbar-color) 22%,
+                    var(--panel-menu-page-tab-scrollbar-color) 78%,
+                    transparent 100%
+                );
+                opacity: 0.55;
+                pointer-events: none;
+                transition: opacity 0.2s var(--ease-out);
+
+                &.active {
+                    display: block;
+                }
+            }
+
+            &:hover .admin-tab-scrollbar {
+                opacity: 0.8;
+            }
+
             .menu-right {
-                order: 3;
+                order: 4;
                 padding-right: 1.25rem;
                 flex-shrink: 0;
 
@@ -459,10 +534,18 @@
                             display: inline-flex;
                             align-items: center;
                             justify-content: center;
+                            flex-shrink: 0;
                             border-radius: 50%;
                             background: var(--color-primary-light-bg);
                             color: var(--color-primary);
                             font-size: var(--font-size);
+                        }
+
+                        .name {
+                            max-width: 8rem;
+                            overflow: hidden;
+                            white-space: nowrap;
+                            text-overflow: ellipsis;
                         }
 
                         // 下拉指示箭头（沿用 .ub-dropdown-title 的"正方形旋转"画法）
@@ -627,35 +710,329 @@
     .ub-panel-frame .right .top .menu-right .dropdown {
         animation: none !important;
     }
+
+    .ub-panel-frame .left,
+    .ub-panel-frame .right,
+    .ub-panel-frame .left .menu,
+    .ub-panel-frame .left .menu .title,
+    .ub-panel-frame .right .top .menu a {
+        transition: none !important;
+    }
+}
+
+// ---------------------------------------------------------------------------
+// 顶栏菜单搜索：图标按钮 + 浮层结果面板（Cmd/Ctrl + K）
+// ---------------------------------------------------------------------------
+.admin-search {
+    display: none;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 3000;
+
+    &.active {
+        display: block;
+    }
+
+    .admin-search-mask {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: var(--color-mask);
+        cursor: pointer;
+    }
+
+    .admin-search-dialog {
+        position: relative;
+        width: 38rem;
+        max-width: calc(100vw - 2rem);
+        margin: 12vh auto 0;
+        background: var(--color-content-bg);
+        border: 0.0625rem solid var(--color-body-line);
+        border-radius: var(--size-radius-lg);
+        box-shadow: var(--box-shadow-lg), var(--shadow-highlight);
+        overflow: hidden;
+        animation: adminSearchIn 0.16s var(--ease-out);
+    }
+
+    .admin-search-head {
+        display: flex;
+        align-items: center;
+        gap: 0.625rem;
+        padding: 0.875rem 1rem;
+        border-bottom: 0.0625rem solid var(--color-body-line);
+
+        .iconfont {
+            color: var(--color-muted);
+            font-size: 1rem;
+        }
+
+        input {
+            flex: 1;
+            min-width: 0;
+            height: 1.75rem;
+            padding: 0;
+            border: 0;
+            outline: 0;
+            background: transparent;
+            color: var(--color-text);
+            font-size: var(--font-size-large);
+            box-shadow: none;
+
+            &:focus {
+                border: 0;
+                outline: 0;
+                box-shadow: none;
+            }
+        }
+    }
+
+    .admin-search-list {
+        max-height: 22rem;
+        overflow-y: auto;
+        padding: 0.375rem;
+
+        &::-webkit-scrollbar {
+            width: 0.375rem;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: var(--color-tertiary-light);
+            border-radius: var(--size-radius-full);
+        }
+    }
+
+    .admin-search-item {
+        display: flex;
+        align-items: center;
+        gap: 0.625rem;
+        padding: 0.5625rem 0.75rem;
+        border-radius: var(--size-radius-sm);
+        color: var(--color-text);
+        text-decoration: none;
+        cursor: pointer;
+        transition: var(--transition-fast);
+
+        .iconfont {
+            flex: 0 0 auto;
+            color: var(--color-muted);
+            font-size: 0.875rem;
+        }
+
+        .admin-search-item-main {
+            display: flex;
+            align-items: baseline;
+            gap: 0.625rem;
+            min-width: 0;
+            flex: 1;
+        }
+
+        .admin-search-item-title {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        .path {
+            margin-left: auto;
+            max-width: 55%;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            color: var(--color-tertiary);
+            font-size: var(--font-size-small);
+        }
+
+        mark {
+            background: transparent;
+            color: var(--color-primary);
+            font-weight: 600;
+        }
+
+        &.selected,
+        &:hover {
+            color: var(--color-primary);
+            background: var(--color-primary-light-bg);
+
+            .iconfont {
+                color: var(--color-primary);
+            }
+
+            .path {
+                color: var(--color-primary);
+                opacity: 0.72;
+            }
+        }
+    }
+
+    .admin-search-empty {
+        display: none;
+        padding: 2.25rem 1rem;
+        text-align: center;
+        color: var(--color-muted);
+    }
+
+    &.no-result {
+        .admin-search-list {
+            display: none;
+        }
+
+        .admin-search-empty {
+            display: block;
+        }
+    }
+
+    .admin-search-foot {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 0.5rem 1rem;
+        border-top: 0.0625rem solid var(--color-body-line);
+        color: var(--color-muted);
+        font-size: var(--font-size-small);
+    }
+
+    kbd {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 1.25rem;
+        height: 1.25rem;
+        padding: 0 0.25rem;
+        margin: 0 0.125rem;
+        border: 0.0625rem solid var(--color-body-line);
+        border-radius: var(--size-radius-xs);
+        background: var(--color-body-bg);
+        color: var(--color-tertiary);
+        font-family: inherit;
+        font-size: 0.6875rem;
+        line-height: 1;
+    }
+}
+
+// 顶栏、标签、搜索结果的键盘焦点环（全局 reset 关掉了 outline）
+.ub-panel-frame .right .top a:focus-visible,
+.ub-panel-frame .left .menu .title:focus-visible,
+.admin-search .admin-search-item:focus-visible,
+.admin-search .admin-search-head input:focus-visible {
+    outline: 0;
+    box-shadow: 0 0 0 0.1875rem var(--color-focus-ring);
+}
+
+@keyframes adminSearchIn {
+    from {
+        opacity: 0;
+        transform: translateY(-0.375rem) scale(0.99);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+// ---------------------------------------------------------------------------
+// 标签右键菜单：关闭当前 / 其他 / 全部
+// ---------------------------------------------------------------------------
+.admin-tab-context {
+    display: none;
+    position: fixed;
+    z-index: 3100;
+    min-width: 9rem;
+    padding: 0.375rem;
+    background: var(--color-content-bg);
+    border: 0.0625rem solid var(--color-body-line);
+    border-radius: var(--size-radius);
+    box-shadow: var(--box-shadow-pop), var(--shadow-highlight);
+
+    &.active {
+        display: block;
+    }
+
+    a {
+        display: block;
+        height: 2rem;
+        line-height: 2rem;
+        padding: 0 0.625rem;
+        border-radius: var(--size-radius-xs);
+        color: var(--color-text);
+        text-decoration: none;
+        white-space: nowrap;
+        transition: var(--transition-fast);
+
+        &:focus-visible {
+            outline: 0;
+            box-shadow: 0 0 0 0.1875rem var(--color-focus-ring);
+        }
+
+        &:hover {
+            color: var(--color-primary);
+            background: var(--color-primary-light-bg);
+        }
+
+        &[data-tab-action="all"] {
+            color: var(--color-danger);
+
+            &:hover {
+                color: var(--color-danger);
+                background: var(--color-danger-light);
+            }
+        }
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .admin-search .admin-search-dialog {
+        animation: none !important;
+    }
+}
+
+@media (max-width: 50rem) {
+    .admin-search {
+        .admin-search-dialog {
+            margin-top: 8vh;
+        }
+
+        .admin-search-item {
+            min-height: 2.75rem;
+
+            .path {
+                display: none;
+            }
+        }
+
+        // 触屏没有键盘，隐藏键位提示
+        .admin-search-foot {
+            display: none;
+        }
+    }
 }
 
 @media (min-width: 50rem) {
     .ub-panel-frame {
         overflow: hidden;
 
-        &.left-toggle {
-            .left:not(:hover) {
+        // 收起态：只由点击 pin（left-toggle）控制；hover 展开由 JS 延迟 300ms 加临时 left-hover 类
+        &.left-toggle:not(.left-hover) {
+            .left {
                 width: 2.8125rem;
 
                 .logo {
                     padding: 0;
+                    justify-content: center;
+                    gap: 0;
 
-                    .icon {
-                        font-size: var(--font-size-large);
-                        width: 2.8125rem;
-                    }
-
-                    .text {
+                    .logo-brand {
                         display: none;
                     }
                 }
 
                 .menu {
                     width: 2.8125rem;
-
-                    .menu-search-container {
-                        display: none;
-                    }
 
                     .menu-item {
                         .title {
@@ -700,6 +1077,27 @@
 
             }
         }
+
+        // hover 临时展开采用「覆盖式」：只加宽侧栏并浮在内容之上，内容区不动，避免整页横跳与 iframe 反复 resize
+        &.left-toggle.left-hover {
+            .left {
+                box-shadow: var(--box-shadow-lg);
+            }
+
+            .right {
+                left: 2.8125rem;
+
+                .content {
+                    &.fixed {
+                        left: 2.8125rem;
+                    }
+                }
+
+                .content-fixed-bottom-toolbox {
+                    left: 2.8125rem;
+                }
+            }
+        }
     }
 }
 
@@ -712,6 +1110,8 @@
 
             .left {
                 left: 0;
+                visibility: visible;
+                transition: left 0.2s var(--ease-out), visibility 0s;
 
                 .menu {
                     left: 0;
@@ -729,6 +1129,11 @@
             }
         }
 
+        // 移动端右侧快捷操作：点击展开，外点/Esc 关闭（不再依赖 :hover）
+        &.right-menu-open .right .top .menu-right {
+            display: flex;
+        }
+
         .left-menu-shrink {
             display: none;
             position: fixed;
@@ -742,9 +1147,14 @@
 
         .left {
             left: calc(0rem - var(--panel-menu-width));
+            // 关闭的抽屉不参与键盘焦点与读屏
+            visibility: hidden;
+            // 移动端抽屉动的是 left，延迟隐藏让滑出动画完整播放
+            transition: left 0.2s var(--ease-out), visibility 0s linear 0.2s;
 
             .menu {
                 left: calc(0rem - var(--panel-menu-width));
+                transition: left 0.2s var(--ease-out);
 
             }
         }
@@ -754,7 +1164,9 @@
 
             .top {
                 .right-menu-trigger {
-                    display: block;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
                     float: right;
                     height: 2.8125rem;
                     width: 2.8125rem;
@@ -762,14 +1174,11 @@
                     text-align: center;
                     color: var(--color-tertiary);
                     font-size: var(--font-size-large);
-                    transition: all 0.2s linear;
+                    cursor: pointer;
+                    transition: color 0.2s linear;
 
                     &:hover {
-                        transform: rotateZ(90deg);
-                    }
-
-                    &:hover + .menu-right {
-                        display: flex;
+                        color: var(--color-primary);
                     }
                 }
 
@@ -789,10 +1198,6 @@
                     border-radius: 0 0 var(--size-radius) var(--size-radius);
                     box-shadow: var(--box-shadow-pop), var(--shadow-highlight);
                     z-index: 1000;
-
-                    &:hover {
-                        display: flex;
-                    }
 
                     .menu-item {
                         flex: 0 0 auto;

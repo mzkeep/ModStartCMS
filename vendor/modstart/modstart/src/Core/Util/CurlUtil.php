@@ -3,6 +3,7 @@
 namespace ModStart\Core\Util;
 
 use Illuminate\Support\Str;
+use ModStart\Core\Compat\Curl;
 use ModStart\Core\Exception\BizException;
 
 /**
@@ -366,7 +367,7 @@ class CurlUtil
         if (0 === $result['code']) {
             $result['error'] = curl_error($ch);
         }
-        curl_close($ch);
+        Curl::close($ch);
         if ($result['body'] && bin2hex(substr($result['body'], 0, 2)) === '1f8b') {
             $result['body'] = gzdecode($result['body']);
         }
@@ -453,7 +454,7 @@ class CurlUtil
             curl_setopt($ch, CURLOPT_USERAGENT, $option['userAgent']);
         }
         $temp = curl_exec($ch);
-        curl_close($ch);
+        Curl::close($ch);
         return $temp;
     }
 
@@ -510,7 +511,7 @@ class CurlUtil
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $contentType = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
         $error = curl_error($ch);
-        curl_close($ch);
+        Curl::close($ch);
         if (!empty($option['returnRaw'])) {
             $ext = FileUtil::mimeToExt($contentType);
             return [

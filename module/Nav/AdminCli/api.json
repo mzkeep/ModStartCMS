@@ -1,0 +1,188 @@
+{
+    "module": "Nav",
+    "title": "通用导航",
+    "apis": [
+        {
+            "key": "nav.index",
+            "title": "通用导航 列表",
+            "method": "post",
+            "url": "nav/index",
+            "scope": "nav.read",
+            "permission": "\\Module\\Nav\\Admin\\Controller\\NavController@index",
+            "params": [
+                {
+                    "name": "page",
+                    "type": "int",
+                    "required": false,
+                    "desc": "页码"
+                },
+                {
+                    "name": "pageSize",
+                    "type": "int",
+                    "required": false,
+                    "desc": "每页数量"
+                },
+                {
+                    "name": "keyword",
+                    "type": "string",
+                    "required": false,
+                    "desc": "关键词"
+                }
+            ]
+        },
+        {
+            "key": "nav.add",
+            "title": "通用导航 新增",
+            "method": "post",
+            "url": "nav/add",
+            "scope": "nav.write",
+            "permission": "\\Module\\Nav\\Admin\\Controller\\NavController@add",
+            "params": [
+                {
+                    "name": "position",
+                    "type": "string",
+                    "required": false,
+                    "desc": "position"
+                },
+                {
+                    "name": "sort",
+                    "type": "int",
+                    "required": false,
+                    "desc": "sort"
+                },
+                {
+                    "name": "name",
+                    "type": "string",
+                    "required": false,
+                    "desc": "name"
+                },
+                {
+                    "name": "link",
+                    "type": "string",
+                    "required": false,
+                    "desc": "link"
+                },
+                {
+                    "name": "openType",
+                    "type": "string",
+                    "required": false,
+                    "desc": "openType"
+                },
+                {
+                    "name": "pid",
+                    "type": "int",
+                    "required": false,
+                    "desc": "pid"
+                },
+                {
+                    "name": "enable",
+                    "type": "string",
+                    "required": false,
+                    "desc": "enable"
+                },
+                {
+                    "name": "icon",
+                    "type": "string",
+                    "required": false,
+                    "desc": "icon"
+                }
+            ]
+        },
+        {
+            "key": "nav.edit",
+            "title": "通用导航 编辑",
+            "method": "post",
+            "url": "nav/edit",
+            "scope": "nav.write",
+            "permission": "\\Module\\Nav\\Admin\\Controller\\NavController@edit",
+            "params": [
+                {
+                    "name": "id",
+                    "type": "int",
+                    "required": true,
+                    "desc": "记录ID"
+                },
+                {
+                    "name": "position",
+                    "type": "string",
+                    "required": false,
+                    "desc": "position"
+                },
+                {
+                    "name": "sort",
+                    "type": "int",
+                    "required": false,
+                    "desc": "sort"
+                },
+                {
+                    "name": "name",
+                    "type": "string",
+                    "required": false,
+                    "desc": "name"
+                },
+                {
+                    "name": "link",
+                    "type": "string",
+                    "required": false,
+                    "desc": "link"
+                },
+                {
+                    "name": "openType",
+                    "type": "string",
+                    "required": false,
+                    "desc": "openType"
+                },
+                {
+                    "name": "pid",
+                    "type": "int",
+                    "required": false,
+                    "desc": "pid"
+                },
+                {
+                    "name": "enable",
+                    "type": "string",
+                    "required": false,
+                    "desc": "enable"
+                },
+                {
+                    "name": "icon",
+                    "type": "string",
+                    "required": false,
+                    "desc": "icon"
+                }
+            ]
+        },
+        {
+            "key": "nav.delete",
+            "title": "通用导航 删除",
+            "method": "post",
+            "url": "nav/delete",
+            "scope": "nav.write",
+            "permission": "\\Module\\Nav\\Admin\\Controller\\NavController@delete",
+            "params": [
+                {
+                    "name": "ids",
+                    "type": "string",
+                    "required": true,
+                    "desc": "记录ID，多个用逗号分隔"
+                }
+            ]
+        },
+        {
+            "key": "nav.sort",
+            "title": "通用导航 排序",
+            "method": "post",
+            "url": "nav/sort",
+            "scope": "nav.write",
+            "permission": "\\Module\\Nav\\Admin\\Controller\\NavController@sort",
+            "params": [
+                {
+                    "name": "ids",
+                    "type": "string",
+                    "required": true,
+                    "desc": "记录ID，按目标顺序用逗号分隔"
+                }
+            ]
+        }
+    ]
+}

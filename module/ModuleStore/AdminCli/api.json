@@ -1,0 +1,15 @@
+{
+    "module": "ModuleStore",
+    "title": "ModuleStore",
+    "apis": [
+        {
+            "key": "module_store.list",
+            "title": "模块市场 列表",
+            "method": "post",
+            "url": "module_store/list",
+            "scope": "module_store.read",
+            "permission": "\\Module\\ModuleStore\\Admin\\Controller\\ModuleStoreController@all",
+            "params": []
+        }
+    ]
+}

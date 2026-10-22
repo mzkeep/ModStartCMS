@@ -5,7 +5,7 @@ namespace Module\Member\Util;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
-use Intervention\Image\Facades\Image;
+use ModStart\Core\Util\Gd\GdImage as Image;
 use ModStart\Core\Assets\AssetsUtil;
 use ModStart\Core\Dao\ModelUtil;
 use ModStart\Core\Exception\BizException;

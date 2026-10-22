@@ -53,7 +53,7 @@ class InstallController extends Controller
         }
         if (file_exists($p = base_path('.env'))) {
             $content = file_get_contents($p);
-            if (str_contains($content, 'DB_HOST')) {
+            if (false !== strpos($content, 'DB_HOST')) {
                 return Response::jsonError('请先清空.env文件');
             }
         }
@@ -97,9 +97,9 @@ class InstallController extends Controller
             new PDO("mysql:host=$dbHost;port=$dbPort;dbname=$dbDatabase", $dbUsername, $dbPassword);
         } catch (\Exception $e) {
             $msg = $e->getMessage();
-            if (str_contains($msg, 'Server sent charset unknown to the client')) {
+            if (false !== strpos($msg, 'Server sent charset unknown to the client')) {
                 return Response::generateError('数据库编码不支持：' . $msg);
-            } else if (str_contains($msg, 'Access denied for user')) {
+            } else if (false !== strpos($msg, 'Access denied for user')) {
                 return Response::generateError('用户密码不匹配：' . $msg);
             }
             Log::error('InstallError -> ' . $e->getMessage() . ' -> ' . $e->getTraceAsString());

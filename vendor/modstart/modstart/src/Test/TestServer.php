@@ -25,6 +25,12 @@ class TestServer
     /** @var string|null 随机端口 */
     private static $port = null;
 
+    /** @var int 随机端口探测范围起始 */
+    private static $portRangeStart = 20000;
+
+    /** @var int 随机端口探测范围结束 */
+    private static $portRangeEnd = 60000;
+
     /** @var string|null 启动命令输出管道 */
     private static $pipes = null;
 
@@ -77,7 +83,14 @@ class TestServer
 
     /**
      * 启动 php artisan serve（后台进程），等待端口就绪
-     * @param int $port 指定端口，默认随机
+     *
+     * 端口策略（避免多项目并行测试 / 截图时端口冲突）：
+     *   1. 显式传入 $port 时优先使用（仅尝试一次）
+     *   2. 环境变量 MS_TEST_SERVER_PORT 可显式指定端口
+     *   3. 默认在 [20000, 60000] 范围内随机探测一个真正空闲的端口
+     * 端口被占用（如其它项目的 server 正在运行）或启动失败时自动换端口重试。
+     *
+     * @param int $port 指定端口，默认随机空闲端口
      * @return bool 启动成功返回 true
      */
     public static function start($port = 0)
@@ -86,7 +99,36 @@ class TestServer
             return true;
         }
         if ($port <= 0) {
-            $port = mt_rand(20000, 30000);
+            $env = getenv('MS_TEST_SERVER_PORT');
+            if (!empty($env) && intval($env) > 0) {
+                $port = intval($env);
+            }
+        }
+        // 显式指定端口只尝试一次，随机端口失败时换端口重试
+        $tries = $port > 0 ? 1 : 5;
+        for ($i = 0; $i < $tries; $i++) {
+            $tryPort = $port > 0 ? $port : self::randomFreePort();
+            if ($tryPort <= 0) {
+                break;
+            }
+            if (self::startOnPort($tryPort)) {
+                return true;
+            }
+        }
+        self::$port = null;
+        return false;
+    }
+
+    /**
+     * 在指定端口启动 serve 并等待就绪
+     * @param int $port
+     * @return bool
+     */
+    private static function startOnPort($port)
+    {
+        // 端口已被其它进程监听时直接放弃，避免误连到其它项目的 server
+        if (!self::portFree($port)) {
+            return false;
         }
         self::$port = $port;
         $base = base_path();
@@ -103,15 +145,50 @@ class TestServer
             self::$port = null;
             return false;
         }
-        // 等待端口就绪（最长 10 秒）
+        // 等待 serve 完成端口绑定，再判断进程是否存活（端口占用时 serve 会立即退出）
+        usleep(300000);
         $deadline = time() + 10;
         while (time() < $deadline) {
+            $status = proc_get_status(self::$process);
+            if (empty($status['running'])) {
+                break;
+            }
             if (self::portReady($port)) {
                 return true;
             }
             usleep(200000);
         }
         self::stop();
+        return false;
+    }
+
+    /**
+     * 随机探测一个空闲端口
+     * @return int 探测失败返回 0
+     */
+    private static function randomFreePort()
+    {
+        for ($i = 0; $i < 50; $i++) {
+            $port = mt_rand(self::$portRangeStart, self::$portRangeEnd);
+            if (self::portFree($port)) {
+                return $port;
+            }
+        }
+        return 0;
+    }
+
+    /**
+     * 检测端口是否空闲（可被监听）
+     * @param int $port
+     * @return bool
+     */
+    private static function portFree($port)
+    {
+        $sock = @stream_socket_server('tcp://127.0.0.1:' . $port, $errno, $errstr);
+        if ($sock) {
+            fclose($sock);
+            return true;
+        }
         return false;
     }
 

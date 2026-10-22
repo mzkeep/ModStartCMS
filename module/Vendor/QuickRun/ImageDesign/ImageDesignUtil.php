@@ -4,10 +4,11 @@
 namespace Module\Vendor\QuickRun\ImageDesign;
 
 
-use Intervention\Image\Facades\Image;
+use ModStart\Core\Util\Gd\GdImage as Image;
 use ModStart\Core\Exception\BizException;
 use ModStart\Core\Input\Response;
 use ModStart\Core\Provider\FontProvider;
+use ModStart\Core\Compat\Gd as GdCompat;
 use ModStart\Core\Util\ColorUtil;
 use ModStart\Core\Util\FileUtil;
 use ModStart\Core\Util\LogUtil;
@@ -352,7 +353,7 @@ class ImageDesignUtil
                     imagefilter($im, IMG_FILTER_COLORIZE, $color['r'], $color['g'], $color['b']);
                     $tempImage = FileUtil::generateLocalTempPath('png');
                     imagepng($im, $tempImage);
-                    imagedestroy($im);
+                    GdCompat::destroy($im);
                     $itemImage = Image::make($tempImage);
                     $image->insert($itemImage, 'top-left', $item['x'], $item['y']);
                     FileUtil::savePathToLocalTemp($tempImage);

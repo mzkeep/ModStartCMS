@@ -1,0 +1,28 @@
+{
+    "module": "CaptchaTecmz",
+    "title": "智能验证码",
+    "apis": [
+        {
+            "key": "captcha_tecmz.config",
+            "title": "智能验证码 配置",
+            "method": "post",
+            "url": "captcha_tecmz/config",
+            "scope": "captcha_tecmz.write",
+            "permission": "Module\\CaptchaTecmz\\Admin\\Controller\\ConfigController@setting",
+            "params": [
+                {
+                    "name": "CaptchaTecmz_AppId",
+                    "type": "string",
+                    "required": false,
+                    "desc": "CaptchaTecmz_AppId"
+                },
+                {
+                    "name": "CaptchaTecmz_AppSecret",
+                    "type": "string",
+                    "required": false,
+                    "desc": "CaptchaTecmz_AppSecret"
+                }
+            ]
+        }
+    ]
+}

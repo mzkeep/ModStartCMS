@@ -28,6 +28,16 @@ return [
          */
         'title' => null,
 
+        /**
+         * 后台 Logo 图片地址（留空时使用「品牌方块 + 名称」）
+         */
+        'logo' => null,
+
+        /**
+         * 后台副标题（版本号 / 环境标识），留空时显示当前 MSCore 版本
+         */
+        'subtitle' => null,
+
         'disabled' => env('ADMIN_DISABLED', false),
         /**
          * 后台管理路径

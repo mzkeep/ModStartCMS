@@ -44,20 +44,34 @@
         class="ub-panel-frame @if(Session::get('_adminFrameLeftToggle',false) && \ModStart\Core\Util\AgentUtil::isPC()) left-toggle @endif">
         <a href="javascript:;" class="left-menu-shrink"></a>
         <div class="left">
+            <?php
+            $t = config('modstart.admin.title');
+            $logo = config('modstart.admin.logo');
+            $subtitle = config('modstart.admin.subtitle');
+            if (empty($subtitle)) {
+                $subtitle = 'v' . modstart_version();
+            }
+            ?>
             <a class="logo" href="{{modstart_admin_url()}}">
-                <?php $t = config('modstart.admin.title'); ?>
-                {!! $t?$t:'<i class="icon iconfont icon-ms tw-transform  tw-scale-150 tw-mr-2"></i> <span class="text">'.L('AdminPanel').'</span>' !!}
+                @if($logo)
+                    <img class="logo-image" src="{{\ModStart\Core\Assets\AssetsUtil::fix($logo)}}" alt="{{\ModStart\Core\Util\MetaUtil::get('APP_NAME')?:L('AdminPanel')}}" />
+                @else
+                    <span class="logo-mark"><i class="icon iconfont icon-ms"></i></span>
+                @endif
+                <span class="logo-brand">
+                    <span class="text">{!! $t?$t:L('AdminPanel') !!}</span>
+                    @if($subtitle)
+                        <span class="sub">{{$subtitle}}</span>
+                    @endif
+                </span>
             </a>
             <div class="menu">
-                <div class="menu-search-container">
-                    <input type="text" id="menuSearchKeywords" placeholder="{{L('Search')}}" value=""/>
-                    <i class="iconfont icon-search"></i>
-                </div>
                 @foreach(\ModStart\Admin\Auth\AdminPermission::menu($_controllerMethod) as $_v1)
                     <div class="menu-item @if(!empty($_v1['_active'])) page-main active @endif">
                         @if(empty($_v1['children']))
                             <a href="{{\ModStart\Admin\Auth\AdminPermission::urlToLink($_v1['url'])}}" class="title"
                                draggable="false"
+                               title="{{$_v1['title']}}" aria-label="{{$_v1['title']}}"
                                data-keywords-item data-keywords-filter>
                                 {!! empty($_v1['icon'])?'<i class="icon iconfont icon-list"></i>':$_v1['icon'] !!}
                                 <span class="text">{{$_v1['title']}}</span>
@@ -65,6 +79,7 @@
                         @else
                             <a href="javascript:;" class="title @if(!empty($_v1['_active'])) open @endif"
                                draggable="false"
+                               title="{{$_v1['title']}}" aria-label="{{$_v1['title']}}"
                                data-keywords-item data-keywords-filter data-menu-title onclick="$(this).toggleClass('open')">
                                 <i class="arrow"></i>
                                 {!! empty($_v1['icon'])?'<i class="icon iconfont icon-list"></i>':$_v1['icon'] !!}
@@ -76,12 +91,14 @@
                                         @if(empty($_v2['children']))
                                             <a href="{{\ModStart\Admin\Auth\AdminPermission::urlToLink($_v2['url'])}}"
                                                draggable="false"
+                                               title="{{$_v2['title']}}" aria-label="{{$_v2['title']}}"
                                                class="title" data-keywords-item data-keywords-filter>
                                                 <span class="text">{{$_v2['title']}}</span>
                                             </a>
                                         @else
                                             <a href="javascript:;" data-keywords-item data-keywords-filter data-menu-title
                                                draggable="false"
+                                               title="{{$_v2['title']}}" aria-label="{{$_v2['title']}}"
                                                class="title @if(!empty($_v2['_active'])) open @endif"
                                                onclick="$(this).toggleClass('open')">
                                                 <i class="arrow"></i>
@@ -92,6 +109,7 @@
                                                     <div class="menu-item @if(!empty($_v3['_active'])) page-main active @endif">
                                                         <a href="{{\ModStart\Admin\Auth\AdminPermission::urlToLink($_v3['url'])}}"
                                                            draggable="false"
+                                                           title="{{$_v3['title']}}" aria-label="{{$_v3['title']}}"
                                                            class="title" data-keywords-filter>
                                                             <span class="text">{{$_v3['title']}}</span>
                                                         </a>
@@ -109,34 +127,38 @@
         </div>
         <div class="right">
             <div class="top">
-                <a href="javascript:;" class="left-trigger">
+                <a href="javascript:;" class="left-trigger" aria-label="{{L('ShrinkExpandMenu')}}" aria-expanded="false">
                     <i class="iconfont icon-list" data-tip-popover="{{L('ShrinkExpandMenu')}}"></i>
                 </a>
-                <a href="javascript:;" class="left-action" id="adminTabRefresh">
-                    <i class="iconfont icon-refresh" data-tip-popover="{{L('RefreshPage')}}"></i>
+                <a href="javascript:;" class="left-action" id="adminSearchTrigger" aria-label="{{L('Search')}}">
+                    <i class="iconfont icon-search" data-tip-popover="{{L('Search')}}"></i>
                 </a>
-                <div class="menu" id="adminTabMenu">
+                <a href="javascript:;" class="left-action" id="adminTabRefresh" aria-label="{{L('RefreshCurrentTab')}}">
+                    <i class="iconfont icon-refresh" data-tip-popover="{{L('RefreshCurrentTab')}}"></i>
+                </a>
+                <div class="menu" id="adminTabMenu" data-close-label="{{L('Close')}}">
                     @section('adminPageMenu')
                         <a href="javascript:;" data-tab-menu-main class="active" draggable="false">@section('pageTitle'){{empty($pageTitle)?'':$pageTitle}}@show</a>
                     @show
                 </div>
-                <a href="javascript:;" class="right-menu-trigger">
-                    <i class="iconfont icon-list"></i>
+                <div class="admin-tab-scrollbar" id="adminTabScrollbar" aria-hidden="true"></div>
+                <a href="javascript:;" class="right-menu-trigger" aria-label="{{L('QuickOperate')}}" aria-expanded="false">
+                    <i class="iconfont icon-list-alt"></i>
                 </a>
                 <div class="menu-right">
                     <div class="menu-item">
-                        <a class="title" href="{{modstart_web_url('')}}" target="_blank" style="transform:scale(1.1);">
+                        <a class="title" href="{{modstart_web_url('')}}" target="_blank" aria-label="{{L('VisitHome')}}">
                             <i class="iconfont icon-home" data-tip-popover="{{L('VisitHome')}}"></i>
                         </a>
                     </div>
                     <div class="menu-item">
-                        <a class="title" href="javascript:;" id="fullScreenTrigger">
+                        <a class="title" href="javascript:;" id="fullScreenTrigger" aria-label="{{L('FullScreen')}}">
                             <i class="iconfont icon-desktop" data-tip-popover="{{L('FullScreen')}}"></i>
                         </a>
                     </div>
                     @if(\ModStart\Admin\Auth\AdminPermission::permit('SystemManage'))
                         <div class="menu-item">
-                            <a class="title" href="javascript:;" data-ajax-request-loading
+                            <a class="title" href="javascript:;" data-ajax-request-loading aria-label="{{L('ClearCache')}}"
                                data-ajax-request="{{modstart_admin_url('system/clear_cache')}}">
                                 <i class="iconfont icon-magic-wand" data-tip-popover="{{L('ClearCache')}}"></i>
                             </a>
@@ -171,7 +193,7 @@
                     <div class="menu-item">
                         <a class="title admin-user" href="javascript:;">
                             <i class="iconfont icon-user"></i>
-                            {{$_adminUser?$_adminUser['username']:''}}
+                            <span class="name">{{$_adminUser?$_adminUser['username']:''}}</span>
                         </a>
                         <div class="dropdown">
                             @if(\ModStart\Admin\Auth\AdminPermission::permit('\ModStart\Admin\Controller\ProfileController@changePassword'))
@@ -185,7 +207,7 @@
                     </div>
                 </div>
             </div>
-            <div class="content fixed" style="background-image:url(https://modstart.com/license-logo.png);">
+            <div class="content fixed">
                 <div id="adminMainPage">
                     @section('bodyContent')@show
                 </div>
@@ -197,5 +219,27 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="admin-search" id="adminSearchPanel" aria-hidden="true">
+        <div class="admin-search-mask" data-search-close></div>
+        <div class="admin-search-dialog" role="dialog" aria-modal="true" aria-label="{{L('Search')}}">
+            <div class="admin-search-head">
+                <i class="iconfont icon-search"></i>
+                <input type="text" id="adminSearchInput" autocomplete="off" spellcheck="false"
+                       placeholder="{{L('SearchMenuPlaceholder')}}" />
+                <kbd>Esc</kbd>
+            </div>
+            <div class="admin-search-list" id="adminSearchList"></div>
+            <div class="admin-search-empty">{{L('SearchNoResult')}}</div>
+            <div class="admin-search-foot">
+                <span><kbd>↑</kbd><kbd>↓</kbd> {{L('SearchNavigate')}}</span>
+                <span><kbd>Enter</kbd> {{L('SearchOpen')}}</span>
+            </div>
+        </div>
+    </div>
+    <div class="admin-tab-context" id="adminTabContextMenu" aria-hidden="true">
+        <a href="javascript:;" data-tab-action="close">{{L('CloseCurrentTab')}}</a>
+        <a href="javascript:;" data-tab-action="others">{{L('CloseOtherTabs')}}</a>
+        <a href="javascript:;" data-tab-action="all">{{L('CloseAllTabs')}}</a>
     </div>
 @endsection

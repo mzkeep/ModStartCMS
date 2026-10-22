@@ -427,6 +427,46 @@ Util.getNextMaxZIndex = function (forceRefresh) {
     return currentMaxZIndex;
 }
 
+/**
+ * @Util 高度变化动画：执行回调改变内容，并把元素高度从旧值过渡到新值
+ * @method MS.util.animateHeight
+ * @param el HTMLElement|jQuery 需要动画的元素（如 .ub-modal-dialog）
+ * @param callback Function 改变内容/高度的回调
+ * @param duration number 动画时长（毫秒），默认 280
+ * @example
+ * MS.util.animateHeight($('.ub-modal-dialog'), function () {
+ *     $('.ub-modal-dialog .ub-modal-body').html(html)
+ * })
+ */
+Util.animateHeight = function (el, callback, duration) {
+    var $el = $(el)
+    if ($el.length === 0) {
+        callback && callback()
+        return
+    }
+    duration = duration || 280
+    var from = $el.height()
+    callback && callback()
+    var to = $el.height()
+    if (!from || from === to) {
+        return
+    }
+    var timer = $el.data('animateHeightTimer')
+    if (timer) {
+        clearTimeout(timer)
+    }
+    $el.css({height: from, transition: 'none'})
+    // Force reflow so the browser records the starting height
+    $el[0].offsetHeight
+    $el.css({
+        transition: 'height ' + duration + 'ms cubic-bezier(0.22, 1, 0.36, 1)',
+        height: to
+    })
+    $el.data('animateHeightTimer', setTimeout(function () {
+        $el.css({height: '', transition: ''}).removeData('animateHeightTimer')
+    }, duration + 30))
+}
+
 Util.browser = {
     /**
      * @Util 获取浏览器类型

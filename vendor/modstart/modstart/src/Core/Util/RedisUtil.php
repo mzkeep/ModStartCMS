@@ -37,7 +37,8 @@ class RedisUtil
     }
 
     /**
-     * @return \Predis\Client
+     * 获取 Redis 连接对象（phpredis 扩展或 Laravel Connection 形态）
+     * @return mixed
      */
     public static function client()
     {

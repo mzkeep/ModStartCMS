@@ -134,7 +134,7 @@ class AuthController extends ModuleBaseController
 
     public function loginPhone()
     {
-        BizException::throwsIf('短信验证登录未开启', !modstart_config('Member_LoginPhoneEnable', false));
+        BizException::throwsIf('短信验证登录未开启', !modstart_config('Member_LoginPhoneEnable', false), ['statusCode' => 403]);
         $input = InputPackage::buildFromInput();
         $redirectData = $this->getRedirectData($input);
         $this->api->checkRedirectSafety($redirectData['redirect']);
@@ -195,7 +195,7 @@ class AuthController extends ModuleBaseController
 
     public function register()
     {
-        BizException::throwsIf('禁止注册', modstart_config('registerDisable', false));
+        BizException::throwsIf('禁止注册', modstart_config('registerDisable', false), ['statusCode' => 403]);
         $input = InputPackage::buildFromInput();
         $redirectData = $this->getRedirectData($input);
         if (Request::isPost()) {
@@ -227,8 +227,8 @@ class AuthController extends ModuleBaseController
 
     public function registerPhone()
     {
-        BizException::throwsIf('禁止注册', modstart_config('registerDisable', false));
-        BizException::throwsIf('短信验证注册未开启', !modstart_config('Member_RegisterPhoneEnable', false));
+        BizException::throwsIf('禁止注册', modstart_config('registerDisable', false), ['statusCode' => 403]);
+        BizException::throwsIf('短信验证注册未开启', !modstart_config('Member_RegisterPhoneEnable', false), ['statusCode' => 403]);
         $input = InputPackage::buildFromInput();
         $redirectData = $this->getRedirectData($input);
         $this->api->checkRedirectSafety($redirectData['redirect']);

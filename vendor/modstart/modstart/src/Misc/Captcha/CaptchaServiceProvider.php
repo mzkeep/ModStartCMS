@@ -5,8 +5,7 @@ namespace ModStart\Misc\Captcha;
 use Illuminate\Support\ServiceProvider;
 
 /**
- * Class CaptchaServiceProvider
- * @package Mews\Captcha
+ * 验证码服务注册（内置实现，由 ModStart\ModStartServiceProvider 注册）
  */
 class CaptchaServiceProvider extends ServiceProvider
 {
@@ -39,7 +38,6 @@ class CaptchaServiceProvider extends ServiceProvider
             return new Captcha(
                 $app['Illuminate\Filesystem\Filesystem'],
                 $app['Illuminate\Config\Repository'],
-                $app['Intervention\Image\ImageManager'],
                 $app['Illuminate\Session\Store'],
                 $app['Illuminate\Hashing\BcryptHasher'],
                 $app['Illuminate\Support\Str']

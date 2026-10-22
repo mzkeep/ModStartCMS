@@ -1,0 +1,15 @@
+{
+    "module": "AdminManager",
+    "title": "系统升级",
+    "apis": [
+        {
+            "key": "admin_manager.version",
+            "title": "版本信息",
+            "method": "post",
+            "url": "admin_manager/version",
+            "scope": "admin_manager.read",
+            "permission": "\\Module\\AdminManager\\Admin\\Controller\\UpgradeController@index",
+            "params": []
+        }
+    ]
+}

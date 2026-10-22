@@ -1,15 +1,19 @@
 <?php
 return [
-    "ChangeAvatar" => "ChangeAvatar",
-    "ChangePassword" => "ChangePassword",
+    "ChangeAvatar" => "Change Avatar",
+    "ChangePassword" => "Change Password",
     "Credit" => "Credit",
-    "Login" => "Login",
-    "LogoutConfirm" => "Confirm logout?",
+    "Login" => "Log In",
+    "LogoutConfirm" => "Are you sure you want to log out?",
     "MemberCenter" => "Member Center",
-    "MenuAccount" => "MenuAccount",
-    "MenuLogout" => "MenuLogout",
-    "MenuMessage" => "MenuMessage",
-    "MenuSecurity" => "MenuSecurity",
-    "MenuWallet" => "MenuWallet",
-    "My" => "My"
+    "MenuAccount" => "Account",
+    "MenuAddress" => "My Addresses",
+    "MenuLogout" => "Log Out",
+    "MenuMessage" => "Messages",
+    "MenuSecurity" => "Security",
+    "MenuWallet" => "My Wallet",
+    "My" => "My",
+    "Open VIP" => "Open VIP",
+    "Register" => "Sign Up",
+    "积分" => "Points"
 ];

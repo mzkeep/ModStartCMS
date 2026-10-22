@@ -21,6 +21,9 @@ class TestHttp
     /** @var string|null 当前 api-token（= session id） */
     private static $apiToken = null;
 
+    /** @var array 附加请求头 */
+    private static $headers = [];
+
     /**
      * 设置 api-token（用于 Member 认证）
      * @param string|null $token
@@ -36,6 +39,25 @@ class TestHttp
     public static function clearToken()
     {
         self::$apiToken = null;
+    }
+
+    /**
+     * 设置附加请求头（如 admin-api-key）
+     * @param array $headers ['admin-api-key' => 'xxx']
+     * @return void
+     */
+    public static function useHeaders($headers)
+    {
+        self::$headers = array_merge(self::$headers, (array)$headers);
+    }
+
+    /**
+     * 清除附加请求头
+     * @return void
+     */
+    public static function clearHeaders()
+    {
+        self::$headers = [];
     }
 
     /**
@@ -96,12 +118,80 @@ class TestHttp
         if ($ajax) {
             $server['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest';
         }
+        // SessionMiddleware 按 api_token（下划线参数）/ api-token（请求头）/ api_token（Cookie）顺序读取，
+        // 这里显式写入 api-token 请求头，确保登录态会话被正确恢复
+        if (self::$apiToken) {
+            $server['HTTP_API_TOKEN'] = self::$apiToken;
+        }
+        foreach (self::$headers as $headerName => $headerValue) {
+            $server['HTTP_' . strtoupper(str_replace('-', '_', $headerName))] = $headerValue;
+        }
 
-        $request = \Illuminate\Http\Request::create($path, $method, $params, [], $files, $server);
+        // 模拟真实客户端：同时携带 Session Cookie 与 api-token，
+        // 保证全局 StartSession 中间件直接用该 Session 恢复登录态
+        $cookies = [];
+        if (self::$apiToken) {
+            // Session Cookie 默认会被 EncryptCookies 中间件解密校验，测试里需要先加密
+            $cookieValue = self::$apiToken;
+            try {
+                if (app()->bound('encrypter')) {
+                    $cookieValue = app('encrypter')->encrypt(self::$apiToken, false);
+                }
+            } catch (\Exception $e) {
+            }
+            $cookies[config('session.cookie')] = $cookieValue;
+        }
+
+        $request = \Illuminate\Http\Request::create($path, $method, $params, $cookies, $files, $server);
+
+        // 重置进程内 Session 状态：
+        // Laravel 5.1 的 Store::loadSession() 是 array_merge 语义，同一进程内连续发请求时，
+        // 上一个请求的登录态会泄漏到下一个请求（未登录用例被误判为已登录、登录用例拿到空会话）。
+        // 每次请求前清空内存中的 Session 属性并换一个空会话 ID，
+        // 让每个请求只依赖自己携带的 api-token / Cookie 来恢复 Session。
+        self::resetSessionState();
+
+        if (self::$apiToken) {
+            $h = app('session.store')->getHandler();
+            $raw = $h->read(self::$apiToken);
+            @file_put_contents(base_path('_temp/mw-debug.log'), json_encode([
+                'before_request' => ['tokenHasUid' => false !== strpos($raw, 'memberUserId'), 'size' => strlen($raw)],
+            ]) . "\n", FILE_APPEND);
+        }
 
         /** @var \Illuminate\Foundation\Http\Kernel $kernel */
         $kernel = app('Illuminate\Contracts\Http\Kernel');
         return $kernel->handle($request);
+    }
+
+    /**
+     * 重置进程内 Session 状态，避免请求之间互相串登录态
+     * @return void
+     */
+    private static function resetSessionState()
+    {
+        $stores = [];
+        try {
+            $stores[] = app('session.store');
+        } catch (\Exception $e) {
+        }
+        try {
+            $stores[] = \Illuminate\Support\Facades\Session::getFacadeRoot()->driver();
+        } catch (\Exception $e) {
+        }
+        $seen = [];
+        foreach ($stores as $store) {
+            if (!$store instanceof \Illuminate\Session\Store) {
+                continue;
+            }
+            $hash = spl_object_hash($store);
+            if (isset($seen[$hash])) {
+                continue;
+            }
+            $seen[$hash] = true;
+            $store->flush();
+            $store->setId(md5(uniqid('', true) . mt_rand()) . substr(md5(mt_rand()), 0, 8));
+        }
     }
 
     /**

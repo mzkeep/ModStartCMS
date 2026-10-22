@@ -38,7 +38,7 @@ class ModuleClassLoader
         if (!ends_with($namespace, '\\')) {
             $namespace = $namespace . '\\';
         }
-        $namespacesAdded[$namespace] = $path;
+        self::$namespacesAdded[$namespace] = $path;
         self::$loader->addPsr4($namespace, [$path]);
     }
 
@@ -59,6 +59,6 @@ class ModuleClassLoader
         if (!ends_with($namespace, '\\')) {
             $namespace = $namespace . '\\';
         }
-        return isset($namespacesAdded[$namespace]);
+        return isset(self::$namespacesAdded[$namespace]);
     }
 }

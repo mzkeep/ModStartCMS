@@ -1,0 +1,34 @@
+{
+    "module": "SmsTecmz",
+    "title": "魔众短信",
+    "apis": [
+        {
+            "key": "sms_tecmz.config",
+            "title": "魔众短信 配置",
+            "method": "post",
+            "url": "sms_tecmz/config",
+            "scope": "sms_tecmz.write",
+            "permission": "Module\\SmsTecmz\\Admin\\Controller\\ConfigController@setting",
+            "params": [
+                {
+                    "name": "SmsTecmz_Enable",
+                    "type": "string",
+                    "required": false,
+                    "desc": "SmsTecmz_Enable"
+                },
+                {
+                    "name": "SmsTecmz_AppId",
+                    "type": "string",
+                    "required": false,
+                    "desc": "SmsTecmz_AppId"
+                },
+                {
+                    "name": "SmsTecmz_AppSecret",
+                    "type": "string",
+                    "required": false,
+                    "desc": "SmsTecmz_AppSecret"
+                }
+            ]
+        }
+    ]
+}
