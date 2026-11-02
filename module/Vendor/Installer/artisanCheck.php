@@ -90,7 +90,7 @@ if (artisan_check_is_linux()) {
     if (function_exists('posix_getuid')) {
         $uid = posix_getuid();
         if ($uid == 0) {
-            echo "You can't run this command as root ( uid = ${uid} ).\n";
+            echo "You can't run this command as root ( uid = {$uid} ).\n";
             if (artisan_check_is_bt()) {
                 $suggestPhp = artisan_check_bt_suggest_php();
                 echo "宝塔环境建议使用以下命令替代 php artisan：\n";

@@ -14,8 +14,11 @@ use ModStart\Core\Util\FileUtil;
  *   - 通过 CDP（Chrome DevTools Protocol）截图，后台页面自动追加 `?_is_tab=1` 仅截取内容区
  *   - 截图后自动压缩：优先系统命令 ss-image-compress，回退 Imagick / GD（ImageUtil::compress）
  *   - 长图自动检测「左右半幅重复」（浏览器长截图偶发缺陷）并重试
- *   - 截图统一存储到 module/<Module>/ScreenShot/image/<name>.png
- *     （该目录随模块一起提交；ModuleDeveloper 打包时自动排除 ScreenShot）
+ *   - 截图脚本统一位于 module/<Module>/Test/ScreenShot.php
+ *   - 静态截图统一存储到 module/<Module>/Temp/ScreenShotImage/<mode>.<name>.png
+ *     （<mode> 为设备前缀：pc / pcFull / m / mFull，后台页面默认为 pc）
+ *   - 滚动动图统一存储到 module/<Module>/Temp/ScreenShotView/<name>.webp
+ *     （Temp 目录随模块一起提交，ModuleDeveloper 打包时自动排除）
  *
  * 用法：
  *   // 前台主题预览图（PC + 手机，4 组共 N 张）
@@ -46,11 +49,19 @@ class TestScreenShot
     /** @var int 默认截图高度 */
     const DEFAULT_HEIGHT = 800;
 
-    /** @var string 截图输出子目录（模块根下，随模块提交，打包时排除） */
-    const SCREENSHOT_DIR = 'ScreenShot/image';
+    /** @var string 静态截图输出子目录（模块 Temp 下，随模块提交，打包时排除） */
+    const SCREENSHOT_DIR = 'Temp/ScreenShotImage';
 
-    /** @var string 滚动动图输出子目录 */
-    const ANIMATION_DIR = 'ScreenShot/animation';
+    /** @var string 滚动动图输出子目录（模块 Temp 下，随模块提交，打包时排除） */
+    const ANIMATION_DIR = 'Temp/ScreenShotView';
+
+    /** @var array 历史目录（仅用于迁移提示，不再读写） */
+    const LEGACY_DIRS = [
+        'ScreenShot/image' => 'Temp/ScreenShotImage',
+        'ScreenShot/animation' => 'Temp/ScreenShotView',
+        'Temp/ScreenShot-View' => 'Temp/ScreenShotImage',
+        'Temp/ScreenShot-Full' => 'Temp/ScreenShotView',
+    ];
 
     /**
      * 前台预览截图模式：前缀 => [宽度, 高度, 是否手机]
@@ -114,13 +125,42 @@ class TestScreenShot
     }
 
     /**
-     * 模块截图目录（绝对路径）
+     * 模块静态截图目录（绝对路径）
      * @param string $module 模块标识，如 CmsThemeHuagong1
      * @return string
      */
     public static function screenShotDir($module)
     {
         return base_path('module/' . $module . '/' . self::SCREENSHOT_DIR);
+    }
+
+    /**
+     * 模块滚动动图目录（绝对路径）
+     * @param string $module 模块标识，如 CmsThemeHuagong1
+     * @return string
+     */
+    public static function animationDir($module)
+    {
+        return base_path('module/' . $module . '/' . self::ANIMATION_DIR);
+    }
+
+    /**
+     * 检出模块内仍在使用历史截图目录（ScreenShot/image、ScreenShot/animation）的文件
+     * @param string $module 模块标识
+     * @return array 形如 ['ScreenShot/image' => [文件名...]]
+     */
+    public static function legacyFiles($module)
+    {
+        $result = [];
+        foreach (self::LEGACY_DIRS as $legacy => $target) {
+            $dir = base_path('module/' . $module . '/' . $legacy);
+            if (is_dir($dir)) {
+                $files = array_values(array_diff(scandir($dir), ['.', '..']));
+                $result[$legacy] = $files;
+                echo "⚠️  {$module} 存在历史目录 {$legacy}（{$target} 为当前目录），请迁移后删除\n";
+            }
+        }
+        return $result;
     }
 
     /**
@@ -161,7 +201,21 @@ class TestScreenShot
             'compress' => true,
             'quality' => 85,
             'clear' => true,
+            // null = 默认四组（pc / pcFull / m / mFull）；传 ['pc','m'] 只截视口图（快速自检用）
+            'modes' => null,
+            // 是否删除目录里「本次未生成」的旧文件；快速模式（只截部分页面 / 部分模式）必须传 false
+            'prune' => true,
         ], $option);
+
+        /* 允许只截部分模式：开发期快速自检（改一处 CSS 后看单页效果）不必等整页长图 */
+        $modeMap = self::THEME_MODES;
+        if (!empty($option['modes'])) {
+            $modeMap = array_intersect_key(self::THEME_MODES, array_flip((array)$option['modes']));
+            if (!$modeMap) {
+                echo "ERROR: modes 参数无有效值（可用 " . implode(' / ', array_keys(self::THEME_MODES)) . "）\n";
+                return [];
+            }
+        }
 
         $ownServer = false;
         $baseUrl = $option['baseUrl'];
@@ -199,13 +253,13 @@ class TestScreenShot
         }
 
         $expected = [];
-        foreach (self::THEME_MODES as $prefix => $device) {
+        foreach ($modeMap as $prefix => $device) {
             foreach ($pages as $name => $path) {
                 $expected[] = $prefix . '.' . $name . '.png';
             }
         }
 
-        foreach (self::THEME_MODES as $prefix => $device) {
+        foreach ($modeMap as $prefix => $device) {
             $fullPage = strpos($prefix, 'Full') !== false;
             echo "\n📷 {$prefix} ({$device[0]}x{$device[1]}" . ($device[2] ? ' 手机' : '') . ")\n";
             foreach ($pages as $name => $path) {
@@ -221,7 +275,8 @@ class TestScreenShot
         }
 
         // 清理非标准文件：目录里只保留本次生成的标准文件（避免调试残留被提交）
-        foreach (glob($outDir . '/*') as $f) {
+        // ⚠️ 只截部分页面 / 部分模式（快速自检）时必须传 prune=false，否则会把其它页面的截图删掉
+        foreach ($option['prune'] ? glob($outDir . '/*') : array() as $f) {
             if (!in_array(basename($f), $expected, true)) {
                 @unlink($f);
                 echo "  🧹 清理多余文件: " . basename($f) . "\n";
@@ -297,7 +352,7 @@ class TestScreenShot
             return [];
         }
 
-        $outDir = base_path('module/' . $module . '/' . self::ANIMATION_DIR);
+        $outDir = self::animationDir($module);
         if ($option['clear'] && is_dir($outDir)) {
             foreach (glob($outDir . '/*') as $f) {
                 @unlink($f);
@@ -544,7 +599,7 @@ class TestScreenShot
     }
 
     /**
-     * 批量截取后台页面（自动压缩），存储到 module/<Module>/ScreenShot/image/<name>.png
+     * 批量截取后台页面（自动压缩），存储到 module/<Module>/Temp/ScreenShotImage/<mode>.<name>.png
      * @param string $module 模块标识，如 AiAutoArticle
      * @param array $pages 页面列表 [ name => 后台路由路径 ]
      * @param array $option 截图/压缩选项，见 capturePage
@@ -564,10 +619,11 @@ class TestScreenShot
     /**
      * 截取后台页面（自动压缩）
      * 后台页面自动追加 `?_is_tab=1`，仅截图 iframe 内的内容区（不包含后台框架外壳）
+     * 截图文件统一使用设备前缀命名（默认 pc），即 `<mode>.<name>.png`
      * @param string $module 模块标识，如 AiAutoArticle
      * @param string $path 后台路由路径，如 /admin/ai_auto_article/task
-     * @param string $name 截图文件名（不含扩展名），如 task
-     * @param array $option [ 'fullPage'=>true, 'maxWidth'=>1100, 'maxHeight'=>800, 'quality'=>85, 'tab'=>true ]
+     * @param string $name 截图文件名（不含设备前缀与扩展名），如 task
+     * @param array $option [ 'mode'=>'pc', 'fullPage'=>true, 'maxWidth'=>1100, 'maxHeight'=>800, 'quality'=>85, 'tab'=>true ]
      * @return string|bool 截图文件绝对路径，失败返回 false
      */
     public static function capturePage($module, $path, $name, $option = [])
@@ -576,17 +632,20 @@ class TestScreenShot
             return false;
         }
         $option = array_merge([
+            'mode' => 'pc',
             'fullPage' => true,
             'maxWidth' => self::DEFAULT_WIDTH,
             'maxHeight' => self::DEFAULT_HEIGHT,
             'quality' => 85,
             'tab' => true,
         ], $option);
+        $option['mode'] = trim($option['mode'], '.');
         if ($option['tab']) {
             // 后台页面仅截图 iframe 内容区：追加 _is_tab=1
             $path = self::withTabQuery($path);
         }
-        echo "截图 $path → $name.png ...\n";
+        $filename = $option['mode'] . '.' . $name . '.png';
+        echo "截图 $path → $filename ...\n";
         $ret = TestUi::browserGet($path, false);
         if (empty($ret['ok'])) {
             echo "  [跳过] 页面访问失败: " . (isset($ret['error']) ? $ret['error'] : 'unknown') . "\n";
@@ -600,7 +659,7 @@ class TestScreenShot
             echo "  [跳过] 无法创建截图目录 $outDir\n";
             return false;
         }
-        $file = $outDir . '/' . $name . '.png';
+        $file = $outDir . '/' . $filename;
         if (!TestUi::browserScreenshotCompressed($file, $option['fullPage'], $option)) {
             echo "  [跳过] 截图失败\n";
             return false;

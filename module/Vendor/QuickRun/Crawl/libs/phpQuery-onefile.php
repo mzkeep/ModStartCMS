@@ -1,5 +1,18 @@
 <?php
 /**
+ * PHP 8 兼容层
+ *
+ * create_function() 已在 PHP 8.0 中移除，而本库（phpQuery 0.9.5）内部多处依赖它。
+ * 这里提供行为等价的替代实现（同样以 eval 生成匿名函数），避免升级 PHP 8 后
+ * 加载本文件时报 "Call to undefined function create_function()"。
+ */
+if (!function_exists('create_function')) {
+    function create_function($args, $code)
+    {
+        return eval('return function(' . $args . ') {' . $code . '};');
+    }
+}
+/**
  * phpQuery is a server-side, chainable, CSS3 selector driven
  * Document Object Model (DOM) API based on jQuery JavaScript Library.
  *
@@ -2153,7 +2166,7 @@ class phpQueryObject
 				if (! $param)
 					break;
 					// nth-child(n+b) to nth-child(1n+b)
-				if ($param{0} == 'n')
+				if ($param[0] == 'n')
 					$param = '1'.$param;
 				// :nth-child(index/even/odd/equation)
 				if ($param == 'even' || $param == 'odd')
@@ -2168,17 +2181,17 @@ class phpQueryObject
 								return null;'),
 						new CallbackParam(), $param
 					);
-				else if (mb_strlen($param) > 1 && $param{1} == 'n')
+				else if (mb_strlen($param) > 1 && $param[1] == 'n')
 					// an+b
 					$mapped = $this->map(
 						create_function('$node, $param',
 							'$prevs = pq($node)->prevAll()->size();
 							$index = 1+$prevs;
 							$b = mb_strlen($param) > 3
-								? $param{3}
+								? $param[3]
 								: 0;
-							$a = $param{0};
-							if ($b && $param{2} == "-")
+							$a = $param[0];
+							if ($b && $param[2] == "-")
 								$b = -$b;
 							if ($a > 0) {
 								return ($index-$b)%$a == 0
@@ -4206,7 +4219,7 @@ class phpQueryObject
 					.($node->getAttribute('id')
 						? '#'.$node->getAttribute('id'):'')
 					.($node->getAttribute('class')
-						? '.'.join('.', split(' ', $node->getAttribute('class'))):'')
+						? '.'.join('.', explode(' ', $node->getAttribute('class'))):'')
 					.($node->getAttribute('name')
 						? '[name="'.$node->getAttribute('name').'"]':'')
 					.($node->getAttribute('value') && strpos($node->getAttribute('value'), '<'.'?php') === false

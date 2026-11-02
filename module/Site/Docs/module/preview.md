@@ -1,1 +1,1 @@
-ScreenShot/image/setting.png
+Temp/ScreenShotImage/pc.setting.png

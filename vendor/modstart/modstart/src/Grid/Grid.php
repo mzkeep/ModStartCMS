@@ -275,7 +275,7 @@ class Grid
      * @param null $repository
      * @param Closure|null $builder
      */
-    public function __construct($repository = null, \Closure $builder = null)
+    public function __construct($repository = null, $builder = null)
     {
         $this->id = IdUtil::generate('Grid');
         $this->model = new Model($this, $repository);
@@ -292,7 +292,7 @@ class Grid
      * @param Closure|null $builder = function(Grid $grid){  }
      * @return Grid
      */
-    public static function make($model, \Closure $builder = null)
+    public static function make($model, $builder = null)
     {
         if ($model && is_object($model)) {
             return new static($model, $builder);

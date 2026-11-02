@@ -247,7 +247,8 @@ class TimeUtil
      */
     public static function isDatetimeEmpty($datetime)
     {
-        $timestamp = strtotime($datetime);
+        // PHP 8.1 起 strtotime(null) 会触发废弃告警，这里先归一化为字符串
+        $timestamp = strtotime(strval($datetime));
         if (empty($timestamp) || $timestamp < 0) {
             return true;
         }

@@ -8,6 +8,7 @@ use Illuminate\Routing\Controller;
 use ModStart\Core\Exception\BizException;
 use ModStart\Core\Input\InputPackage;
 use ModStart\Core\Input\Response;
+use Module\Member\Util\MemberDocUtil;
 
 
 /**
@@ -32,10 +33,11 @@ class MemberDocController extends Controller
     {
         $input = InputPackage::buildFromInput();
         $type = $input->getTrimString('type');
-        BizException::throwsIf('类型错误', !in_array($type, ['agreement', 'privacy', 'appeal']));
+        BizException::throwsIf('类型错误', !MemberDocUtil::isType($type));
+        $doc = MemberDocUtil::get($type);
         return Response::generateSuccessData([
-            'title' => modstart_config('Member_' . ucfirst($type) . 'Title'),
-            'content' => modstart_config('Member_' . ucfirst($type) . 'Content'),
+            'title' => $doc['title'],
+            'content' => $doc['content'],
         ]);
     }
 }

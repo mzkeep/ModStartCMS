@@ -88,7 +88,8 @@ class Response
     public static function generate($code, $msg, $data = null, $redirect = null)
     {
         if (null === $redirect) {
-            if ($_redirect = trim(Input::get('_redirect'))) {
+            // PHP 8.1 起 trim(null) 会触发废弃告警，先归一化为字符串
+            if ($_redirect = trim(strval(Input::get('_redirect')))) {
                 $redirect = $_redirect;
             }
         }

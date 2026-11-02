@@ -1,1 +1,1 @@
-ScreenShot/image/nav.png
+Temp/ScreenShotImage/pc.nav.png

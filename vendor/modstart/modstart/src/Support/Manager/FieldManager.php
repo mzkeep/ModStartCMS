@@ -131,7 +131,8 @@ class FieldManager
     public static function findFieldClass($method)
     {
         $class = array_get(static::$availableFields, $method);
-        if (class_exists($class)) {
+        // PHP 8.1 起 class_exists(null) 会触发废弃告警
+        if ($class && class_exists($class)) {
             return $class;
         }
         return false;

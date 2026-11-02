@@ -588,8 +588,8 @@ if (!function_exists('array_build')) {
 
         foreach ($array as $key => $value) {
             list($innerKey, $innerValue) = call_user_func($callback, $key, $value);
-
-            $results[$innerKey] = $innerValue;
+            // null 作数组下标在 PHP 8.1 起废弃，统一转成字符串（null 等价于空字符串键）
+            $results[strval($innerKey)] = $innerValue;
         }
 
         return $results;
@@ -704,6 +704,54 @@ if (!function_exists('ends_with')) {
             }
         }
         return false;
+    }
+}
+
+// array_pluck / array_only / array_flatten 在 Laravel 6 起已移除，模块代码仍有调用
+if (!function_exists('array_pluck')) {
+    function array_pluck($array, $value, $key = null)
+    {
+        $results = [];
+        foreach ($array as $item) {
+            $itemValue = is_array($item)
+                ? array_get($item, $value)
+                : (is_object($item) ? (isset($item->$value) ? $item->$value : null) : null);
+            if (is_null($key)) {
+                $results[] = $itemValue;
+            } else {
+                $itemKey = is_array($item)
+                    ? array_get($item, $key)
+                    : (is_object($item) ? (isset($item->$key) ? $item->$key : null) : null);
+                // PHP 8.1 起 null 作为数组下标会触发废弃告警
+                $results[strval($itemKey)] = $itemValue;
+            }
+        }
+        return $results;
+    }
+}
+
+if (!function_exists('array_only')) {
+    function array_only($array, $keys)
+    {
+        return array_intersect_key($array, array_flip((array)$keys));
+    }
+}
+
+if (!function_exists('array_flatten')) {
+    function array_flatten($array, $depth = INF)
+    {
+        $result = [];
+        foreach ($array as $item) {
+            if (!is_array($item)) {
+                $result[] = $item;
+                continue;
+            }
+            $values = 1 === $depth ? array_values($item) : array_flatten($item, $depth - 1);
+            foreach ($values as $value) {
+                $result[] = $value;
+            }
+        }
+        return $result;
     }
 }
 

@@ -37,7 +37,14 @@ class Chart extends AbstractWidget
         ];
     }
 
-    public static function make()
+    /**
+     * 同 Box::make()：Laravel 13 的 Illuminate\Support\Fluent 自带
+     * `public static function make($attributes = [])`，子类参数个数不能少于父类，
+     * 否则加载类时就是 fatal error。改用 variadic 承接（调用方本来就都不传参）。
+     *
+     * @return static
+     */
+    public static function make(...$arguments)
     {
         return new static();
     }

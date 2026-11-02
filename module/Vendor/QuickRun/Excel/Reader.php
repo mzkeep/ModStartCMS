@@ -101,7 +101,8 @@ class Reader
         if (false === $handle) {
             return $rows;
         }
-        while (false !== ($row = fgetcsv($handle))) {
+        // PHP 8.4 起 fgetcsv() 要求显式传入 $escape，显式传 '\\' 保持原有转义行为
+        while (false !== ($row = fgetcsv($handle, 0, ',', '"', '\\'))) {
             $rows[] = array_map(function ($value) {
                 return is_string($value) ? trim($value) : $value;
             }, $row);

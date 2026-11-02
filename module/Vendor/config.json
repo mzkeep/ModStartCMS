@@ -1,13 +1,14 @@
 {
     "name": "Vendor",
     "title": "通用功能包",
-    "version": "5.2.0",
+    "version": "5.4.1",
     "author": "官方",
     "description": "提供基础功能",
     "modstartVersion": ">=6.0.0",
     "env": [
         "laravel5",
-        "laravel9"
+        "laravel9",
+        "laravel13"
     ],
     "types": [
         "Arch"

@@ -10,6 +10,9 @@ use ModStart\Core\Compat\Runtime;
  * 未安装 doctrine/dbal 时，把所有 MySQL 连接（含带前缀）的 Schema 语法替换为
  * ModStart\Core\Compat\Schema\MySqlGrammar，使 renameColumn / change 不依赖 DBAL。
  * 宿主项目已安装 doctrine/dbal 时不做任何替换，保持 Laravel 原生行为。
+ *
+ * Laravel 10 起 change / renameColumn 已内置实现（不再依赖 DBAL），且 Grammar 构造函数
+ * 需要传入 Connection，此时直接使用原生语法，不做任何替换。
  */
 class SchemaCompat
 {
@@ -27,6 +30,9 @@ class SchemaCompat
             return;
         }
         self::$registered = true;
+        if (self::nativeChangeSupported()) {
+            return;
+        }
         if (Runtime::has('Doctrine\DBAL\Connection')) {
             return;
         }
@@ -50,7 +56,29 @@ class SchemaCompat
                 $connection->setSchemaGrammar($grammar);
             } catch (\Exception $e) {
                 // 连接配置异常时保持 Laravel 默认行为
+            } catch (\Throwable $e) {
+                // PHP 7+ 的 Error（如 ArgumentCountError）同样兜底，PHP 5.6 下不会命中
             }
         }
+    }
+
+    /**
+     * 框架是否已内置 change / renameColumn
+     *
+     * Laravel 10+ 的 Grammar 构造函数需要 Connection，且 Schema 原生支持修改 / 重命名列，
+     * 此时无需替换语法。这里用反射探测构造函数参数，避免硬编码版本号。
+     * @return bool
+     */
+    private static function nativeChangeSupported()
+    {
+        if (!class_exists('Illuminate\Database\Grammar')) {
+            return false;
+        }
+        $reflection = new \ReflectionClass('Illuminate\Database\Grammar');
+        $constructor = $reflection->getConstructor();
+        if (null === $constructor) {
+            return false;
+        }
+        return $constructor->getNumberOfRequiredParameters() > 0;
     }
 }

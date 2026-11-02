@@ -92,7 +92,22 @@ class TestHttp
      */
     public static function postFile($path, $params = [], $fileField = 'file', $filePath = '')
     {
-        $file = new \Symfony\Component\HttpFoundation\File\UploadedFile($filePath, basename($filePath), null, null, null, true);
+        // UploadedFile 构造函数在不同 Symfony 版本中不一致：
+        //   Symfony 2.7 ~ 3.4：(path, originalName, ?mimeType, ?size, ?error, bool $test)
+        //   Symfony 4.0+      ：(path, originalName, ?mimeType, ?error, bool $test)
+        // 且 PHP 8.1+ 下 $test 为强类型 bool，传 null 会抛 TypeError。
+        // 这里按实际构造参数定位 $test 的位置，兼容 Symfony 2.7 ~ 6.x（PHP 5.6 ~ 8.2）。
+        $fileClass = 'Symfony\Component\HttpFoundation\File\UploadedFile';
+        $args = array($filePath, basename($filePath), null, null, null);
+        $reflection = new \ReflectionMethod($fileClass, '__construct');
+        foreach ($reflection->getParameters() as $param) {
+            if ($param->getName() === 'test') {
+                $args = array_slice($args, 0, $param->getPosition());
+                $args[$param->getPosition()] = true;
+                break;
+            }
+        }
+        $file = (new \ReflectionClass($fileClass))->newInstanceArgs($args);
         return self::request('POST', $path, $params, [$fileField => $file]);
     }
 

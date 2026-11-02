@@ -19,7 +19,7 @@ class Page implements Renderable
     protected $view;
     private $viewData = [];
 
-    public function __construct(\Closure $callback = null)
+    public function __construct($callback = null)
     {
         if ($callback instanceof Closure) {
             $callback($this);
@@ -166,7 +166,7 @@ class Page implements Renderable
      * @param $data array|null
      * @return $this
      */
-    public function handleForm($form, $callback, array $data = null)
+    public function handleForm($form, $callback, $data = null)
     {
         if (Request::isPost()) {
             return $form->formRequest($callback, $data);

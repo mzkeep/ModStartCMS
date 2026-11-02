@@ -1,6 +1,9 @@
 ## [Unreleased]
 
+- 新增：模块 README 集成说明（module/Banner/README.md，其他系统集成先读此文件）
 - 新增：模块资源目录增加 .nvmrc（Node 14）规范构建环境
+- 优化：测试种子统一为单文件 Test/Seed.php
+- 新增：支持 Laravel 13 / PHP 8.5，config.json 环境声明新增 laravel13
 
 ---
 

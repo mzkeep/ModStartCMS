@@ -1,1 +1,1 @@
-ScreenShot/image/m.distribution.png
+Temp/ScreenShotImage/m.distribution.png

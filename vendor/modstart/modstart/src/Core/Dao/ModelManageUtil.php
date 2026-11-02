@@ -116,7 +116,9 @@ class ModelManageUtil
 
     public static function query($sql, $conn = 'mysql')
     {
-        $results = DB::connection($conn)->select(DB::raw($sql));
+        // Laravel 13 的 Connection::select() 只接受字符串，传 DB::raw() 得到的 Expression
+        // 会让 PDO::prepare() 抛 TypeError（PHP 5.6 / Laravel 5.1 时代会容忍）
+        $results = DB::connection($conn)->select($sql);
         if (is_array($results)) {
             foreach ($results as $k => $result) {
                 if ($result instanceof \stdClass) {

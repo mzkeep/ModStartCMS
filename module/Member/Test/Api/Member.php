@@ -18,6 +18,20 @@ TestCase::describe('Member Api', function () {
         TestCase::assertTrue(true, 'Member API: oauth/login 跳过（第三方登录）');
         $ret = TestHttp::post('/api/member_doc/get');
         TestCase::assertTrue(isset($ret['code']), 'Member API: member_doc/get 返回合法响应');
+
+        // 协议文档：站点 public/theme/Member/{Agreement,Privacy,Appeal}.md 存在时优先使用文件内容
+        foreach (\Module\Member\Util\MemberDocUtil::types() as $type) {
+            $ret = TestHttp::post('/api/member_doc/get', ['type' => $type]);
+            TestCase::assertSuccess($ret, 'Member API: member_doc/get 类型 ' . $type);
+            $doc = \Module\Member\Util\MemberDocUtil::get($type);
+            TestCase::assertTrue($ret['data']['title'] === $doc['title'], 'Member API: member_doc/get 类型 ' . $type . ' 标题与数据源一致');
+            TestCase::assertTrue($ret['data']['content'] === $doc['content'], 'Member API: member_doc/get 类型 ' . $type . ' 内容与数据源一致');
+            if (file_exists(\Module\Member\Util\MemberDocUtil::file($type))) {
+                TestCase::assertTrue($doc['from'] === 'file', 'Member API: member_doc/get 类型 ' . $type . ' 存在 Markdown 文件时优先读取文件');
+            }
+        }
+        $ret = TestHttp::post('/api/member_doc/get', ['type' => 'unknown']);
+        TestCase::assertError($ret, 'Member API: member_doc/get 非法类型拒绝');
     });
 
     TestCase::test('登录用户接口正常', function () use ($hasTable) {

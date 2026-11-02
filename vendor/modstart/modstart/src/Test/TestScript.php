@@ -5,11 +5,12 @@ namespace ModStart\Test;
 /**
  * 独立测试脚本引导工具 — 免去每个脚本重复写「找项目根 + 加载 bootstrap + 启动 Laravel + 解析参数」
  *
- * 典型用法（模块里的独立脚本，如 module/CmsThemeXxx/ScreenShot/ScreenShot.php）：
+ * 典型用法（模块里的独立脚本，如 module/CmsThemeXxx/Test/ScreenShot.php）：
  *
  *   <?php
  *   require __DIR__ . '/../../../vendor/autoload.php';   // 仅需先加载 composer 自动加载
- *   \ModStart\Test\TestScreenShot::themeScript('CmsThemeXxx', 'xxx', array('index' => '/'));
+ *   TestScript::boot(__DIR__);
+ *   TestScreenShot::captureFrontPages('CmsThemeXxx', array('index' => '/'), array('urlSuffix' => 'msSiteTemplate=xxx'));
  *
  * 或手动控制流程：
  *

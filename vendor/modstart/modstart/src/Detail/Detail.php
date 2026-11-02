@@ -91,7 +91,7 @@ class Detail implements Renderable
      * Form constructor.
      * @param Model|\Illuminate\Database\Eloquent\Builder|Repository $model
      */
-    public function __construct($repository, \Closure $builder = null)
+    public function __construct($repository, $builder = null)
     {
         $this->id = IdUtil::generate('Grid');
         $this->repository = Repository::instance($repository);
@@ -101,7 +101,7 @@ class Detail implements Renderable
         $this->builder($builder);
     }
 
-    public static function make($model, \Closure $builder = null)
+    public static function make($model, $builder = null)
     {
         if ($model && is_object($model)) {
             return new static($model, $builder);

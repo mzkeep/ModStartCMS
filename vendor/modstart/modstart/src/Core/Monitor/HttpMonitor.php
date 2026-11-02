@@ -63,7 +63,7 @@ class HttpMonitor
                 $param = ArrayUtil::serializeForLog($request->input());
             }
             if ($time > 5000) {
-                Log::warning("LONG_REQUEST $method [$url] ${time}ms $param");
+                Log::warning("LONG_REQUEST $method [$url] {$time}ms $param");
             }
             if ($queryCountPerRequest > 30) {
                 Log::warning("MASS_REQUEST_SQL $method [$url] $queryCountPerRequest $param -> "

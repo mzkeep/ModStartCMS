@@ -9,7 +9,8 @@
     "description": "魔众API短信发送配置",
     "env": [
         "laravel5",
-        "laravel9"
+        "laravel9",
+        "laravel13"
     ],
     "types": [
         "Arch"

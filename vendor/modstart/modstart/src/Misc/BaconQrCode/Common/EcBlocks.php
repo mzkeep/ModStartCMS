@@ -41,7 +41,7 @@ class EcBlocks
      * @param EcBlock      $ecb1
      * @param EcBlock|null $ecb2
      */
-    public function __construct($ecCodewordsPerBlock, EcBlock $ecb1, EcBlock $ecb2 = null)
+    public function __construct($ecCodewordsPerBlock, EcBlock $ecb1, $ecb2 = null)
     {
         $this->ecCodewordsPerBlock = $ecCodewordsPerBlock;
 

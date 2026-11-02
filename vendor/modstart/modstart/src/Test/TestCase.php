@@ -214,6 +214,9 @@ class TestCase
             // describe 内注册的 test 在注册时立即执行（见 self::test）
         } catch (\Exception $e) {
             TestContext::fail($name, 'describe error: ' . $e->getMessage());
+        } catch (\Throwable $e) {
+            // PHP 7+ 的 TypeError / Error 不能中断整个测试进程；PHP 5.6 下该 catch 永不命中
+            TestContext::fail($name, 'describe error: ' . $e->getMessage());
         }
         self::$currentGroup = $prevGroup;
         self::$beforeEach = $prevBeforeEach;
@@ -252,6 +255,9 @@ class TestCase
             call_user_func($callback, new static());
         } catch (\Exception $e) {
             TestContext::fail($fullName, $e->getMessage());
+        } catch (\Throwable $e) {
+            // PHP 7+ 的 TypeError / Error 只让当前用例失败；PHP 5.6 下该 catch 永不命中
+            TestContext::fail($fullName, $e->getMessage());
         }
     }
 
@@ -267,7 +273,7 @@ class TestCase
     /**
      * 截图（便捷方法，委托 TestScreenShot::capturePage）
      * 自动启动 server + 浏览器并登录后台，CDP 截图 + 自动压缩，
-     * 存储到 module/<Module>/ScreenShot/image/<name>.png（默认 1100x800）
+     * 存储到 module/<Module>/Temp/ScreenShotImage/<name>.png（默认 1100x800）
      * @param string $module 模块标识，如 AiAutoArticle
      * @param string $path 后台路由路径，如 /admin/ai_auto_article/task
      * @param string $name 截图文件名（不含扩展名），如 task

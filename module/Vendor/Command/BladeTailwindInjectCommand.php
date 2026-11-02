@@ -182,15 +182,17 @@ class BladeTailwindInjectCommand extends Command
      */
     private function buildCommand($nodeBin, $script, $files)
     {
-        $parts = array(escapeshellarg($nodeBin), escapeshellarg($script));
+        // Symfony Process 6 起构造函数 $command 仅接受 array（传 string 会抛 TypeError），
+        // 数组模式下参数由 Process 自行转义，因此这里不再做 escapeshellarg 处理
+        $parts = array($nodeBin, $script);
         foreach ($files as $file) {
             $parts[] = '--html';
-            $parts[] = escapeshellarg($file);
+            $parts[] = $file;
         }
         if ($this->option('watch')) {
             $parts[] = '--watch';
         }
-        return implode(' ', $parts);
+        return $parts;
     }
 
     /**

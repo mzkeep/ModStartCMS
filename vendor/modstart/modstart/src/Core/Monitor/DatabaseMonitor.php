@@ -24,13 +24,14 @@ class DatabaseMonitor
         try {
             DB::listen(function ($query, $bindings = null, $time = null, $connectionName = null) {
                 self::$queryCountPerRequest++;
-                $sql = $query;
-                if (method_exists(\ModStart\ModStart::class, 'env')
-                    && \ModStart\ModStart::env() == 'laravel9') {
-                    /** @var QueryExecuted $query */
+                if ($query instanceof QueryExecuted) {
+                    // Laravel 5.2+ 传入 QueryExecuted 对象（laravel9 及之后的 10/11/12/13 同样如此）
                     $sql = $query->sql;
                     $bindings = $query->bindings;
                     $time = $query->time;
+                } else {
+                    // Laravel 5.1 传入原始 SQL 字符串
+                    $sql = $query;
                 }
                 self::$queryCountPerRequestSqls[] = [
                     'sql' => $sql,
@@ -38,7 +39,7 @@ class DatabaseMonitor
                 ];
                 // Log::info("SQL $sql, " . json_encode($bindings));
                 if ($time > config('modstart.trackLongSqlThreshold', 5000)) {
-                    Log::warning("LONG_SQL ${time}ms, $sql, " . ArrayUtil::serializeForLog($bindings));
+                    Log::warning("LONG_SQL {$time}ms, $sql, " . ArrayUtil::serializeForLog($bindings));
                 }
             });
         } catch (\Exception $e) {

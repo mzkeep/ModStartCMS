@@ -6,7 +6,8 @@
     ],
     "env": [
         "laravel5",
-        "laravel9"
+        "laravel9",
+        "laravel13"
     ],
     "tags": [],
     "version": "1.4.0",

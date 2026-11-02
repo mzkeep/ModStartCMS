@@ -35,7 +35,7 @@ class MySqlGrammar extends BaseMySqlGrammar
      * @param Connection|null $connection
      * @return string|array
      */
-    public function compileChange(Blueprint $blueprint, Fluent $command, Connection $connection = null)
+    public function compileChange(Blueprint $blueprint, Fluent $command, $connection = null)
     {
         if ($this->hasDoctrineDbal()) {
             return parent::compileChange($blueprint, $command, $connection);
@@ -63,7 +63,7 @@ class MySqlGrammar extends BaseMySqlGrammar
      * @param Connection|null $connection
      * @return string|array
      */
-    public function compileRenameColumn(Blueprint $blueprint, Fluent $command, Connection $connection = null)
+    public function compileRenameColumn(Blueprint $blueprint, Fluent $command, $connection = null)
     {
         if ($this->hasDoctrineDbal()) {
             return parent::compileRenameColumn($blueprint, $command, $connection);
@@ -84,7 +84,7 @@ class MySqlGrammar extends BaseMySqlGrammar
      * @param Connection|null $connection
      * @return string|null
      */
-    protected function getColumnDefinition(Blueprint $blueprint, $column, Connection $connection = null)
+    protected function getColumnDefinition(Blueprint $blueprint, $column, $connection = null)
     {
         if (null === $connection) {
             return null;

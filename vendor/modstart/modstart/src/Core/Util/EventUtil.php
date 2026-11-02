@@ -20,7 +20,9 @@ class EventUtil
         if (is_string($event)) {
             $event = new $event();
         }
-        if (PHP_VERSION_ID >= 80000) {
+        // dispatch() 自 Laravel 5.5 起可用，fire() 在 Laravel 6 中被移除，
+        // 这里按方法是否存在判断，避免用 PHP 版本号误判框架能力。
+        if (method_exists(Event::getFacadeRoot(), 'dispatch')) {
             Event::dispatch($event);
         } else {
             Event::fire($event);

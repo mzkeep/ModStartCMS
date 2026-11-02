@@ -53,7 +53,8 @@ class CmsBackupUtil
     {
         BizException::throwsIf('备份文件损坏', empty($backup['structure']));
         BizException::throwsIf('备份文件损坏', empty($backup['backup']));
-        $tableBackupBatch = '_del_' . date('Ymd_His_');
+        // 加随机后缀：同一秒内并发 / 连续触发恢复时，旧表名不会冲突
+        $tableBackupBatch = '_del_' . date('Ymd_His_') . substr(md5(uniqid(mt_rand(), true)), 0, 4) . '_';
         foreach ($backup['structure'] as $table => $structure) {
             if (!self::isCmsTable($table) && !self::isCmsBackupTable($table)) {
                 continue;

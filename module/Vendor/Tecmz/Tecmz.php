@@ -67,6 +67,8 @@ class Tecmz
     public static function instance($appId, $appSecret = null)
     {
         static $map = [];
+        // PHP 8.1 起用 null 作为数组下标会触发废弃告警，这里统一归一化为字符串
+        $appId = strval($appId);
         if (!isset($map[$appId])) {
             $map[$appId] = new self($appId, $appSecret);
         }

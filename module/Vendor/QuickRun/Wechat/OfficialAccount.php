@@ -8,6 +8,7 @@ use Module\Vendor\QuickRun\Wechat\Api\MediaApi;
 use Module\Vendor\QuickRun\Wechat\Api\MenuApi;
 use Module\Vendor\QuickRun\Wechat\Api\QrcodeApi;
 use Module\Vendor\QuickRun\Wechat\Api\TemplateMessageApi;
+use Module\Vendor\QuickRun\Wechat\Api\UserApi;
 
 /**
  * 微信公众号应用
@@ -19,6 +20,7 @@ use Module\Vendor\QuickRun\Wechat\Api\TemplateMessageApi;
  *   $app->jssdk->buildConfig($apis, $debug, $beta, $json, $openTagList, $url)
  *   $app->menu->create($menu)
  *   $app->template_message->send($data)
+ *   $app->user->get($openId)
  *   $app->server->push(callable) / $app->server->serve()
  */
 class OfficialAccount extends Application
@@ -42,6 +44,8 @@ class OfficialAccount extends Application
                 return new MenuApi($this);
             case 'template_message':
                 return new TemplateMessageApi($this);
+            case 'user':
+                return new UserApi($this);
             case 'server':
                 return new Server($this);
         }

@@ -2,7 +2,8 @@
     "name": "Banner",
     "env": [
         "laravel5",
-        "laravel9"
+        "laravel9",
+        "laravel13"
     ],
     "types": [
         "PC",

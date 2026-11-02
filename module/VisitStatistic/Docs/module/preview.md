@@ -1,3 +1,3 @@
-ScreenShot/image/config.png
-ScreenShot/image/item.png
-ScreenShot/image/report.png
+Temp/ScreenShotImage/pc.config.png
+Temp/ScreenShotImage/pc.item.png
+Temp/ScreenShotImage/pc.report.png

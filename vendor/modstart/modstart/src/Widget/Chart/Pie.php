@@ -52,8 +52,17 @@ class Pie extends Chart
         return $this;
     }
 
-    public function data($data)
+    /**
+     * Laravel 13 的 Illuminate\Support\Fluent 新增了 `data($key = null, $default = null)`，
+     * 非静态的成员方法同样受签名兼容约束。这里原签名只有一个必需参数，加载类即 fatal，
+     * 故改写成 variadic（调用方只会传一个 $data，参见 random() 与上方 usages）。
+     *
+     * @param array $data
+     * @return $this
+     */
+    public function data(...$arguments)
     {
+        $data = isset($arguments[0]) ? $arguments[0] : array();
         $this->option['series'][0]['data'] = $data;
         return $this;
     }

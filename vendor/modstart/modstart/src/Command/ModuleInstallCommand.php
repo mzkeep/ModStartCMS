@@ -3,9 +3,9 @@
 namespace ModStart\Command;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Event;
 use ModStart\Core\Events\ModuleInstalledEvent;
 use ModStart\Core\Exception\BizException;
+use ModStart\Core\Util\EventUtil;
 use ModStart\Core\Util\FileUtil;
 use ModStart\Core\Util\VersionUtil;
 use ModStart\ModStart;
@@ -84,11 +84,7 @@ class ModuleInstallCommand extends Command
 
         $event = new ModuleInstalledEvent();
         $event->name = $module;
-        if (PHP_VERSION_ID >= 80000) {
-            Event::dispatch($event);
-        } else {
-            Event::fire($event);
-        }
+        EventUtil::fire($event);
 
         $this->info('Module Install Success');
     }

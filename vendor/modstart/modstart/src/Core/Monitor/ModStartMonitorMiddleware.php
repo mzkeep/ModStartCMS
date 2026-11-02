@@ -26,7 +26,7 @@ class ModStartMonitorMiddleware
             $method = $request->method();
             if ($time > 1000) {
                 $param = SerializeUtil::jsonEncode($input);
-                Log::warning("LONG_REQUEST $method [$url] ${time}ms $param");
+                Log::warning("LONG_REQUEST $method [$url] {$time}ms $param");
             }
             $queryCountPerRequest = DatabaseMonitor::getQueryCountPerRequest();
             if ($queryCountPerRequest > 10) {

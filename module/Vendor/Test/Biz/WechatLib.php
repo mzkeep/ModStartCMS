@@ -20,6 +20,7 @@ use Module\Vendor\QuickRun\Wechat\Api\MediaApi;
 use Module\Vendor\QuickRun\Wechat\Api\PaymentJssdkApi;
 use Module\Vendor\QuickRun\Wechat\Api\QrcodeApi;
 use Module\Vendor\QuickRun\Wechat\Api\TemplateMessageApi;
+use Module\Vendor\QuickRun\Wechat\Api\UserApi;
 
 TestCase::describe('微信内置库', function () {
 
@@ -89,6 +90,7 @@ TestCase::describe('微信内置库', function () {
         TestCase::assertTrue($officialAccount->media instanceof MediaApi, '公众号素材接口');
         TestCase::assertTrue($officialAccount->jssdk instanceof JssdkApi, '公众号 JS-SDK 接口');
         TestCase::assertTrue($officialAccount->template_message instanceof TemplateMessageApi, '公众号模板消息接口');
+        TestCase::assertTrue($officialAccount->user instanceof UserApi, '公众号用户管理接口');
 
         $miniProgram = new MiniProgram(['app_id' => 'wx-test', 'secret' => 'secret']);
         TestCase::assertNotEmpty($miniProgram->auth, '小程序登录接口');
@@ -109,10 +111,39 @@ TestCase::describe('微信内置库', function () {
         TestCase::assertEquals('media-123', $image->toReplyData()['MediaId'], '图片被动回复 media_id');
     });
 
+    TestCase::test('小程序登录接口从应用读取 AppSecret', function () {
+        $app = new MiniProgram(['app_id' => 'wx-test-appid', 'secret' => 'wx-test-secret']);
+        TestCase::assertEquals('wx-test-secret', $app->secret(), '应用可读取 AppSecret');
+        $api = $app->auth;
+        TestCase::assertTrue($api instanceof \Module\Vendor\QuickRun\Wechat\Api\MiniProgramAuthApi, '小程序登录接口已实例化');
+        TestCase::assertFalse(method_exists($api, 'secret'), '登录接口自身不提供 secret 方法');
+        $source = file_get_contents(base_path('module/Vendor/QuickRun/Wechat/Api/MiniProgramAuthApi.php'));
+        TestCase::assertTrue(false !== strpos($source, '$this->app->secret()'), 'AppSecret 通过应用读取');
+        TestCase::assertFalse(false !== strpos($source, '$this->secret('), '不再误调不存在的 secret 方法');
+    });
+
     TestCase::test('模板消息数据自动包装为 value 结构', function () {
         $api = new TemplateMessageApi(new OfficialAccount(['app_id' => 'wx-test', 'secret' => 'secret']));
         $reflection = new \ReflectionMethod($api, 'send');
         TestCase::assertTrue($reflection->isPublic(), '模板消息发送方法可用');
+    });
+
+    TestCase::test('用户信息接口参数校验', function () {
+        $api = new UserApi(new OfficialAccount(['app_id' => 'wx-test', 'secret' => 'secret']));
+        $throws = function ($callback) {
+            try {
+                $callback();
+            } catch (\Exception $e) {
+                return true;
+            }
+            return false;
+        };
+        TestCase::assertTrue($throws(function () use ($api) {
+            $api->get('');
+        }), 'OpenId 为空时获取用户信息抛出异常');
+        TestCase::assertTrue($throws(function () use ($api) {
+            $api->batchGet([]);
+        }), 'OpenId 列表为空时批量获取用户信息抛出异常');
     });
 
 });

@@ -283,7 +283,7 @@ class Form implements Renderable
      * Form constructor.
      * @param Model|\Illuminate\Database\Eloquent\Builder|Repository $model
      */
-    public function __construct($repository, \Closure $builder = null)
+    public function __construct($repository, $builder = null)
     {
         $this->id = IdUtil::generate('Grid');
         $this->repository = Repository::instance($repository);
@@ -293,7 +293,7 @@ class Form implements Renderable
         $this->builder($builder);
     }
 
-    public static function make($model = null, \Closure $builder = null)
+    public static function make($model = null, $builder = null)
     {
         if ($model && is_object($model)) {
             return new static($model, $builder);
@@ -503,7 +503,7 @@ class Form implements Renderable
      *
      * @
      */
-    public function formRequest($callback, array $data = null)
+    public function formRequest($callback, $data = null)
     {
         $this->mode(FormMode::FORM);
         $this->build();
@@ -591,7 +591,7 @@ class Form implements Renderable
      * @param array|null $data
      * @return mixed
      */
-    public function addRequest(array $data = null)
+    public function addRequest($data = null)
     {
         if (!$this->canAdd) return Response::pagePermissionDenied();
         $this->mode(FormMode::ADD);
@@ -666,7 +666,7 @@ class Form implements Renderable
      * @throws BizException
      * @throws ResultException
      */
-    public function editRequest($id, array $data = null)
+    public function editRequest($id, $data = null)
     {
         if (!$this->canEdit) return Response::pagePermissionDenied();
         $this->dataSubmitted = $data ? $data : Input::all();
@@ -859,8 +859,8 @@ class Form implements Renderable
             case 'pageSizes':
             case 'canBatchSelect':
             case 'batchOperatePrepend':
-            case 'gridToolbar';
-            case 'pageJumpEnable';
+            case 'gridToolbar':
+            case 'pageJumpEnable':
             case 'textEdit':
             case 'gridTableTopView':
             case 'gridBeforeRequestScriptView':

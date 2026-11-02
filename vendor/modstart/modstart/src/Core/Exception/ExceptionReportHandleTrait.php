@@ -48,9 +48,12 @@ trait ExceptionReportHandleTrait
                 return;
             }
             $error = [];
+            $error['DOMAIN'] = $this->errorReportDomain();
             $error['URL'] = Request::url();
-            if (empty($error['URL']) || in_array($error['URL'], ['http://localhost',])) {
-                $error['URL'] = base_path();
+            $urlHost = parse_url($error['URL'], PHP_URL_HOST);
+            if (empty($urlHost) || in_array(strtolower($urlHost), ['localhost', '127.0.0.1', '::1'])) {
+                // 后台任务 / CLI 场景没有真实请求地址，用 DOMAIN 兜底，避免报错里 URL 为空无法定位站点
+                $error['URL'] = $error['DOMAIN'];
                 $error['HOST'] = gethostname();
             }
             $error['METHOD'] = 'GET';
@@ -59,13 +62,54 @@ trait ExceptionReportHandleTrait
             }
             $error['FILE'] = $exception->getFile() . ':' . $exception->getLine();
             $error['MESSAGE'] = $exception->getMessage();
-            foreach ($error as &$v) {
+            foreach ($error as $k => &$v) {
+                // 只剥离服务器绝对路径，URL / DOMAIN 必须保留（此前 URL 兜底为项目路径后被替换成空）
+                if ($k === 'URL' || $k === 'DOMAIN') {
+                    continue;
+                }
                 $v = str_replace(base_path(), '', $v);
             }
+            unset($v);
             CurlUtil::get($errorReportUrl, ['data' => SerializeUtil::jsonEncode($error)]);
         } catch (\Exception $e) {
             // do nothing
         }
+    }
+
+    /**
+     * 报错所属站点域名
+     * 优先级：当前请求域名 > APP_URL 域名 > 项目目录名（如 /path/to/xxx.com => xxx.com）> 主机名
+     * 后台任务 / CLI 没有请求域名时用项目目录名兜底，便于按站点定位报错
+     * @return string
+     */
+    private function errorReportDomain()
+    {
+        $domain = \ModStart\Core\Input\Request::domain();
+        if (!empty($domain)) {
+            $host = strtolower($domain);
+            if (($pos = strpos($host, ':')) !== false) {
+                $host = substr($host, 0, $pos);
+            }
+            if (in_array($host, ['localhost', '127.0.0.1', '::1'])) {
+                $domain = null;
+            }
+        }
+        if (empty($domain)) {
+            $appUrl = config('env.APP_URL');
+            if (!empty($appUrl)) {
+                $host = parse_url($appUrl, PHP_URL_HOST);
+                if (!empty($host)) {
+                    $domain = $host;
+                }
+            }
+        }
+        if (empty($domain)) {
+            $domain = basename(base_path());
+        }
+        if (empty($domain)) {
+            $domain = gethostname();
+        }
+        return trim($domain);
     }
 
     private function isExceptionIgnore($exception)

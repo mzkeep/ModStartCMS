@@ -1,7 +1,12 @@
 ## [Unreleased]
 
+- 新增：模块 README 集成说明（module/AdminManager/README.md，其他系统集成先读此文件）
+- 优化：截图命名统一为 `<设备前缀>.<页面>.png`（pc / pcFull / m / mFull，后台页面为 pc.）
+- 优化：模块预览图路径统一到 Temp/ScreenShotImage
 - 优化：系统升级界面增加关闭防篡改等安全软件提示
 - 优化：后台仪表盘服务器信息改用单色图标并统一标签列对齐，版本号、运行时信息与参数标签更易读
+- 优化：模块截图脚本适配统一截图工具链
+- 新增：支持 Laravel 13 / PHP 8.5，config.json 环境声明新增 laravel13
 
 ---
 

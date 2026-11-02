@@ -58,8 +58,24 @@ class Box extends AbstractWidget
         }
     }
 
-    public static function make($content, $title = '', $classList = '')
+    /**
+     * 说明：Laravel 13 的 Illuminate\Support\Fluent 新增了 `public static function make($attributes = [])`，
+     * 而 Box 通过 AbstractWidget 继承 Fluent。子类静态方法签名必须与父类兼容，若这里写成
+     * `make($content, $title = '', $classList = '')`，第一个参数是**必需**的，
+     * 比父类多出必需参数，PHP 会直接抛
+     * `Declaration of Box::make(...) must be compatible with Fluent::make(...)` 的 fatal error。
+     * 因此统一改写成 variadic —— 与基础库其他 Widget（TextLink / ButtonLink 等）一致。
+     *
+     * @param string|Renderable $content
+     * @param string $title
+     * @param string $classList
+     * @return Box|$this
+     */
+    public static function make(...$arguments)
     {
+        $content = isset($arguments[0]) ? $arguments[0] : '';
+        $title = isset($arguments[1]) ? $arguments[1] : '';
+        $classList = isset($arguments[2]) ? $arguments[2] : '';
         return new Box($content, $title, $classList);
     }
 

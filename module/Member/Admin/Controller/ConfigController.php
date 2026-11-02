@@ -13,6 +13,7 @@ use ModStart\Support\Concern\HasFields;
 use Module\Member\Config\MemberOauth;
 use Module\Member\Type\MemberPasswordStrength;
 use Module\Member\Util\MemberDataStatisticUtil;
+use Module\Member\Util\MemberDocUtil;
 use Module\Member\Util\MemberParamUtil;
 use Module\Vendor\Provider\Captcha\CaptchaProvider;
 
@@ -167,20 +168,20 @@ class ConfigController extends Controller
         $builder->pageTitle('用户协议');
         $builder->switch('Member_AgreementEnable', '用户使用协议开启')
             ->when('=', true, function ($builder) {
-                $builder->text('Member_AgreementTitle', '用户使用协议标题')->help('默认为 用户使用协议');
-                $builder->richHtml('Member_AgreementContent', '用户使用协议内容');
+                $builder->text('Member_AgreementTitle', '用户使用协议标题')->help(MemberDocUtil::configHelp('agreement', '用户使用协议'));
+                $builder->richHtml('Member_AgreementContent', '用户使用协议内容')->help(MemberDocUtil::configHelp('agreement'));
             });
 
         $builder->switch('Member_PrivacyEnable', '用户隐私协议开启')
             ->when('=', true, function ($builder) {
-                $builder->text('Member_PrivacyTitle', '用户隐私协议标题')->help('默认为 用户隐私协议');
-                $builder->richHtml('Member_PrivacyContent', '用户隐私协议内容');
+                $builder->text('Member_PrivacyTitle', '用户隐私协议标题')->help(MemberDocUtil::configHelp('privacy', '用户隐私协议'));
+                $builder->richHtml('Member_PrivacyContent', '用户隐私协议内容')->help(MemberDocUtil::configHelp('privacy'));
             });
 
         $builder->switch('Member_AppealEnable', '账号申诉开启')
             ->when('=', true, function ($builder) {
-                $builder->text('Member_AppealTitle', '账号申诉标题')->help('默认为 账号申诉');
-                $builder->richHtml('Member_AppealContent', '账号申诉内容');
+                $builder->text('Member_AppealTitle', '账号申诉标题')->help(MemberDocUtil::configHelp('appeal', '账号申诉'));
+                $builder->richHtml('Member_AppealContent', '账号申诉内容')->help(MemberDocUtil::configHelp('appeal'));
             });
         $builder->formClass('wide');
         return $builder->perform();

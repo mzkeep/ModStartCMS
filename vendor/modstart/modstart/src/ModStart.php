@@ -199,7 +199,7 @@ class ModStart
 
     /**
      * 获取当前运行环境
-     * @return string laravel5|laravel9
+     * @return string laravel5|laravel9|laravel10|laravel11|laravel12|laravel13
      */
     public static function env()
     {

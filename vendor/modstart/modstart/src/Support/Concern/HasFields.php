@@ -6,7 +6,6 @@ namespace ModStart\Support\Concern;
 use Illuminate\Support\Collection;
 use ModStart\Field\AbstractField;
 use ModStart\Field\Type\FieldRenderMode;
-use ModStart\ModStart;
 
 /**
  * 字段管理能力
@@ -249,12 +248,7 @@ trait HasFields
      */
     public function getFieldByName($name)
     {
-        if ('laravel9' == ModStart::env()) {
-            return $this->fields->first(function (AbstractField $item, $k) use ($name) {
-                return $item->name() == $name;
-            });
-        }
-        return $this->fields->first(function ($k, AbstractField $item) use ($name) {
+        return $this->firstField(function (AbstractField $item) use ($name) {
             return $item->name() == $name;
         });
     }
@@ -266,14 +260,33 @@ trait HasFields
      */
     public function getFieldByColumn($column)
     {
-        if ('laravel9' == ModStart::env()) {
-            return $this->fields->first(function (AbstractField $item, $k) use ($column) {
-                return $item->column() == $column;
-            });
-        }
-        return $this->fields->first(function ($k, AbstractField $item) use ($column) {
+        return $this->firstField(function (AbstractField $item) use ($column) {
             return $item->column() == $column;
         });
+    }
+
+    /**
+     * 按条件查找第一个字段
+     *
+     * Collection 遍历回调的参数顺序随框架版本不同：
+     * Laravel 5.x 传入 ($key, $item)，Laravel 9+ 传入 ($item, $key)，
+     * 这里按类型判断参数位置，避免写死版本号（laravel9 之后的 10/11/12/13 同样适用）。
+     * @param \Closure $matcher 入参为 AbstractField，返回 bool
+     * @return AbstractField|null
+     */
+    protected function firstField(\Closure $matcher)
+    {
+        $found = null;
+        $this->fields->each(function ($a, $b = null) use ($matcher, &$found) {
+            if (null !== $found) {
+                return;
+            }
+            $item = $a instanceof AbstractField ? $a : $b;
+            if ($item instanceof AbstractField && call_user_func($matcher, $item)) {
+                $found = $item;
+            }
+        });
+        return $found;
     }
 
     public function getFieldColumnLabelMap()

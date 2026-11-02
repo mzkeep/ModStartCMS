@@ -5,31 +5,23 @@ namespace Module\Member\Web\Controller;
 
 
 use ModStart\Module\ModuleBaseController;
+use Module\Member\Util\MemberDocUtil;
 
 class PageController extends ModuleBaseController
 {
     public function agreement()
     {
-        return $this->view('member.page', [
-            'pageTitle' => modstart_config('Member_AgreementTitle'),
-            'pageContent' => modstart_config('Member_AgreementContent'),
-        ]);
+        return $this->docPage('agreement');
     }
 
     public function privacy()
     {
-        return $this->view('member.page', [
-            'pageTitle' => modstart_config('Member_PrivacyTitle'),
-            'pageContent' => modstart_config('Member_PrivacyContent'),
-        ]);
+        return $this->docPage('privacy');
     }
 
     public function appeal()
     {
-        return $this->view('member.page', [
-            'pageTitle' => modstart_config('Member_AppealTitle'),
-            'pageContent' => modstart_config('Member_AppealContent'),
-        ]);
+        return $this->docPage('appeal');
     }
 
     public function vip()
@@ -37,6 +29,15 @@ class PageController extends ModuleBaseController
         return $this->view('member.page', [
             'pageTitle' => modstart_config('Member_VipTitle', '会员协议'),
             'pageContent' => modstart_config('Member_VipContent'),
+        ]);
+    }
+
+    private function docPage($type)
+    {
+        $doc = MemberDocUtil::get($type);
+        return $this->view('member.page', [
+            'pageTitle' => $doc['title'],
+            'pageContent' => $doc['content'],
         ]);
     }
 }

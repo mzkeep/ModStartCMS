@@ -35,8 +35,8 @@ class LayoutTab extends AbstractField
         $scripts = <<< JS
 <script>
 $(function(){
-    var tab = $('[data-layout-tab=${column}]');
-    tab.find('.ub-nav-tab').html(${titles});
+    var tab = $('[data-layout-tab={$column}]');
+    tab.find('.ub-nav-tab').html({$titles});
     var tabAs = tab.find('.ub-nav-tab > a');
     var active = function(index){
         tabAs.removeClass('active').eq(index).addClass('active');

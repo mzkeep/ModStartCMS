@@ -65,8 +65,8 @@ class AuthMiddleware
         if (empty($adminUserId)) {
             $authAdminUserId = intval(Request::headerGet('auth-admin-user-id'));
             $authAdminTimestamp = intval(Request::headerGet('auth-admin-timestamp'));
-            $authAdminRequestId = trim(Request::headerGet('auth-admin-request-id'));
-            $authAdminSign = trim(Request::headerGet('auth-admin-sign'));
+            $authAdminRequestId = trim(strval(Request::headerGet('auth-admin-request-id')));
+            $authAdminSign = trim(strval(Request::headerGet('auth-admin-sign')));
             if ($authAdminUserId > 0) {
                 if ($authAdminTimestamp < time() - 1800 || $authAdminTimestamp > time() + 1800) {
                     return Response::json(-1, "auth-admin-timestamp error, server time " . time());

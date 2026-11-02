@@ -1,3 +1,13 @@
+## [Unreleased]
+
+- 新增：模块 README 集成说明（module/Cms/README.md，其他系统集成先读此文件）
+- 新增：新增主题演示数据导入工具 CmsThemeDemoUtil，可按模块导入 Backup/init_data.json
+- 优化：数据库恢复的临时表名增加随机后缀，避免同一秒内连续恢复冲突
+- 优化：测试种子统一为单文件 module/Cms/Test/Seed.php
+- 新增：支持 Laravel 13 / PHP 8.5，config.json 环境声明新增 laravel13
+
+---
+
 ## 4.1.1 内容详情记录补充 _day 日期字段
 
 - 优化：内容详情记录补充 _day 日期字段，列表与详情统一，模板无需再自行拼接发布时间

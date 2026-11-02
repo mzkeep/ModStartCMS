@@ -21,7 +21,7 @@ trait HasRepositoryFilter
      * @param Closure $callback function(RepositoryFilter $filter){ $filter->where('userId','1'); }
      * @return $this|RepositoryFilter
      */
-    public function repositoryFilter(Closure $callback = null)
+    public function repositoryFilter($callback = null)
     {
         if (null === $callback) {
             return $this->repositoryFilter;

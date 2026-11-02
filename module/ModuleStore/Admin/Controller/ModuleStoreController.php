@@ -359,6 +359,8 @@ class ModuleStoreController extends Controller
         AdminPermission::permitCheck('ModuleStoreManage');
         BizException::throwsIf('模块标识不合法', !ModuleManager::isValidModuleName($module));
         $basic = ModuleManager::getModuleBasic($module);
+        // 模块标识合法但未安装时 getModuleBasic() 返回 null，PHP 8 下取下标会 ErrorException
+        BizException::throwsIfEmpty('模块不存在或未安装', $basic);
         $builder->useDialog();
         $builder->pageTitle(htmlspecialchars($basic['title']) . ' ' . L('ModuleConfig'));
         $builder->layoutHtml('<div class="ub-alert danger"><i class="iconfont icon-warning"></i> 本页面包含的配置仅供开发使用，设置不当可能会导致系统功能异常</div>');

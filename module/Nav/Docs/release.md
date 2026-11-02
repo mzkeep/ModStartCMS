@@ -1,6 +1,12 @@
 ## [Unreleased]
 
+- 新增：模块 README 集成说明（module/Nav/README.md，其他系统集成先读此文件）
+- 优化：截图命名统一为 `<设备前缀>.<页面>.png`（pc / pcFull / m / mFull，后台页面为 pc.）
+- 优化：模块预览图路径统一到 Temp/ScreenShotImage
 - 优化：多语言管理菜单显示优化
+- 优化：模块截图脚本适配统一截图工具链
+- 优化：测试种子统一为单文件 Test/Seed.php
+- 新增：支持 Laravel 13 / PHP 8.5，config.json 环境声明新增 laravel13
 
 ---
 

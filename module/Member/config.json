@@ -1,13 +1,14 @@
 {
     "name": "Member",
     "title": "用户系统",
-    "version": "5.3.2",
+    "version": "5.5.0",
     "modstartVersion": ">=6.0.0",
     "author": "官方",
     "description": "提供基础的用户注册、登录服务",
     "env": [
         "laravel5",
-        "laravel9"
+        "laravel9",
+        "laravel13"
     ],
     "types": [
         "PC"

@@ -1,10 +1,16 @@
 ## [Unreleased]
 
+- 新增：模块 README 集成说明（module/AigcBase/README.md，其他系统集成先读此文件）
+- 优化：截图命名统一为 `<设备前缀>.<页面>.png`（pc / pcFull / m / mFull，后台页面为 pc.）
+- 优化：模块预览图路径统一到 Temp/ScreenShotImage
+- 优化：截图脚本迁移到 Test/ScreenShot.php，截图产物输出到 Temp/ScreenShotImage
+- 优化：测试种子合并为单文件 Test/Seed.php
 - 新增：模块资源目录增加 .nvmrc（Node 14）规范构建环境
 
 - 优化：文案「声音克隆」统一调整为「声音复刻」
 
 - 修复：移除指向不存在 FileController 的死路由，修复 /api/aigc_base/file 报错
+- 新增：支持 Laravel 13 / PHP 8.5，config.json 环境声明新增 laravel13
 
 ---
 

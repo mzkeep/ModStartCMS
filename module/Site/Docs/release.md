@@ -1,3 +1,13 @@
+## [Unreleased]
+
+- 新增：模块 README 集成说明（module/Site/README.md，其他系统集成先读此文件）
+- 优化：截图命名统一为 `<设备前缀>.<页面>.png`（pc / pcFull / m / mFull，后台页面为 pc.）
+- 优化：模块预览图路径统一到 Temp/ScreenShotImage
+- 优化：模块截图脚本适配统一截图工具链
+- 新增：支持 Laravel 13 / PHP 8.5，config.json 环境声明新增 laravel13
+
+---
+
 ## 1.7.1 后台配置控制器逻辑优化
 
 - 优化：后台配置控制器逻辑，改善配置管理体验

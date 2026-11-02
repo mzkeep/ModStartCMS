@@ -7,11 +7,14 @@ namespace Module\Member\Admin\Controller;
 use Illuminate\Routing\Controller;
 use ModStart\Admin\Concern\HasAdminQuickCRUD;
 use ModStart\Admin\Layout\AdminCRUDBuilder;
+use ModStart\Form\Form;
+use ModStart\Repository\RepositoryUtil;
 use ModStart\Core\Type\TypeUtil;
 use ModStart\Field\AbstractField;
 use ModStart\Grid\GridFilter;
 use ModStart\Support\Concern\HasFields;
 use Module\Member\Util\MemberCmsUtil;
+use Module\Member\Core\MemberMoneyChargePayCenterBiz;
 use Module\Vendor\Type\OrderStatus;
 
 class MemberMoneyChargeOrderController extends Controller
@@ -29,7 +32,7 @@ class MemberMoneyChargeOrderController extends Controller
                 $builder->display('memberUserId', '用户')->hookRendering(function (AbstractField $field, $item, $index) {
                     return MemberCmsUtil::showFromId($item->memberUserId);
                 });
-                $builder->display('money', '支付金额');
+                $builder->currency('money', '支付金额')->editable(true);
                 $builder->type('status', '状态')->type(OrderStatus::class);
             })
             ->gridFilter(function (GridFilter $filter) {
@@ -40,7 +43,16 @@ class MemberMoneyChargeOrderController extends Controller
                     OrderStatus::COMPLETED => TypeUtil::name(OrderStatus::class, OrderStatus::COMPLETED),
                 ]);
             })
-            ->disableCUD()->canShow(false)
+            ->dialogSizeSmall()
+            ->hookChanged(function (Form $form) {
+                RepositoryUtil::makeItems($form->item())->map(function ($item) {
+                    if ($item->status == OrderStatus::WAIT_PAY) {
+                        // 待支付订单改价：同步支付中心订单金额；改为 0 元时直接完成支付
+                        MemberMoneyChargePayCenterBiz::updateFeeAndAutoPay($item->id, $item->money);
+                    }
+                });
+            })
+            ->disableCUD()->canShow(false)->canEdit(true)
             ->title('用户-钱包充值订单');
     }
 }

@@ -53,7 +53,7 @@ class TenantModelUtil
     {
         $t = self::tenant($tenant);
         if ($t && $t['type'] === TenantType::PREFIXED) {
-            return "t_${tenant}_${table}";
+            return "t_{$tenant}_{$table}";
         }
         return $table;
     }

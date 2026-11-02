@@ -6,7 +6,7 @@
 
 | 应用 | 用法 | 说明 |
 | --- | --- | --- |
-| 公众号 | `new OfficialAccount($config)` | `$app->qrcode->temporary()`、`$app->media->uploadImage()`、`$app->customer_service->message($msg)->to($openId)->send()`、`$app->jssdk->buildConfig()`、`$app->menu->create()`、`$app->template_message->send()`、`$app->server->push()/serve()` |
+| 公众号 | `new OfficialAccount($config)` | `$app->qrcode->temporary()`、`$app->media->uploadImage()`、`$app->customer_service->message($msg)->to($openId)->send()`、`$app->jssdk->buildConfig()`、`$app->menu->create()`、`$app->template_message->send()`、`$app->user->get($openId)` / `$app->user->batchGet([$openId])`、`$app->server->push()/serve()` |
 | 小程序 | `new MiniProgram($config)` | `$app->auth->session($code)`、`$app->app_code->getUnlimit($scene, $params)`、`$app->phone_number->getUserPhoneNumber($code)`、`$app->template_message->send()` |
 | 微信支付 | `new Payment($config)` | `$payment->order->unify()` / `query()` / `close()`、`$payment->jssdk->bridgeConfig($prepayId)`、`$payment->handlePaidNotify($handler)` |
 

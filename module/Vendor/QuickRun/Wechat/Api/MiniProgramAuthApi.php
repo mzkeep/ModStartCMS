@@ -30,7 +30,7 @@ class MiniProgramAuthApi
     {
         $ret = Http::get('https://api.weixin.qq.com/sns/jscode2session', [
             'appid' => $this->app->appId(),
-            'secret' => $this->secret(),
+            'secret' => $this->app->secret(),
             'js_code' => strval($code),
             'grant_type' => 'authorization_code',
         ]);

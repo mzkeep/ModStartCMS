@@ -27,10 +27,9 @@ trait ProviderTrait
      */
     public static function listAll()
     {
-        static $processed = false;
-        if ($processed) {
-            return self::$list;
-        }
+        // 只缓存“是否已按 order 排序”，不缓存“是否已把闭包 / 类名解析为实例”：
+        // 后注册的提供者如果跳过解析，会残留字符串，调用 $provider->title() 直接报错。
+        static $sorted = false;
         $hasOrder = false;
         foreach (self::$list as $k => $v) {
             if ($v instanceof \Closure) {
@@ -38,19 +37,19 @@ trait ProviderTrait
             } else if (is_string($v)) {
                 self::$list[$k] = app($v);
             }
-            if (!$hasOrder && method_exists(self::$list[$k], 'order')) {
+            if (!$hasOrder && is_object(self::$list[$k]) && method_exists(self::$list[$k], 'order')) {
                 $hasOrder = true;
             }
         }
-        if ($hasOrder) {
+        if ($hasOrder && !$sorted) {
             @usort(self::$list, function ($o1, $o2) {
                 if ($o1->order() == $o2->order()) {
                     return 0;
                 }
                 return $o1->order() > $o2->order() ? 1 : -1;
             });
+            $sorted = true;
         }
-        $processed = true;
         return self::$list;
     }
 

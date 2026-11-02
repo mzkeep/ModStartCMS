@@ -7,6 +7,8 @@ namespace Module\Member\Admin\Controller;
 use Illuminate\Routing\Controller;
 use ModStart\Admin\Concern\HasAdminQuickCRUD;
 use ModStart\Admin\Layout\AdminCRUDBuilder;
+use ModStart\Form\Form;
+use ModStart\Repository\RepositoryUtil;
 use ModStart\Core\Type\TypeUtil;
 use ModStart\Field\AbstractField;
 use ModStart\Grid\GridFilter;
@@ -14,6 +16,7 @@ use ModStart\Support\Concern\HasFields;
 use Module\Member\Model\MemberVipOrder;
 use Module\Member\Util\MemberCmsUtil;
 use Module\Member\Util\MemberVipUtil;
+use Module\Member\Core\MemberVipPayCenterBiz;
 use Module\Vendor\Type\OrderStatus;
 
 class MemberVipOrderController extends Controller
@@ -36,7 +39,7 @@ class MemberVipOrderController extends Controller
                 $builder->display('vipId', 'VIP')->hookRendering(function (AbstractField $field, $item, $index) {
                     return MemberVipUtil::get($item->vipId, 'title');
                 });
-                $builder->display('payFee', '支付金额');
+                $builder->currency('payFee', '支付金额')->editable(true);
                 $builder->type('status', '状态')->type(OrderStatus::class);
                 $builder->display('expire', '执行后会员过期时间')->width(200);
             })
@@ -49,7 +52,16 @@ class MemberVipOrderController extends Controller
                     OrderStatus::COMPLETED => TypeUtil::name(OrderStatus::class, OrderStatus::COMPLETED),
                 ]);
             })
-            ->disableCUD()->canShow(false)
+            ->dialogSizeSmall()
+            ->hookChanged(function (Form $form) {
+                RepositoryUtil::makeItems($form->item())->map(function ($item) {
+                    if ($item->status == OrderStatus::WAIT_PAY) {
+                        // 待支付订单改价：同步支付中心订单金额；改为 0 元时直接完成支付
+                        MemberVipPayCenterBiz::updateFeeAndAutoPay($item->id, $item->payFee);
+                    }
+                });
+            })
+            ->disableCUD()->canShow(false)->canEdit(true)
             ->title('用户VIP订单');
     }
 }

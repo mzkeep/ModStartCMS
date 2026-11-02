@@ -28,7 +28,8 @@ class CsvWriter
                 }
                 $line[] = strval($value);
             }
-            fputcsv($handle, $line);
+            // PHP 8.4 起 fputcsv() 要求显式传入 $escape，显式传 '\\' 保持原有转义行为
+            fputcsv($handle, $line, ',', '"', '\\');
         }
         fclose($handle);
     }

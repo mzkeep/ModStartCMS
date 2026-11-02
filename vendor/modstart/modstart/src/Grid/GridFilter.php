@@ -66,7 +66,7 @@ class GridFilter
      *
      * @param Model $model
      */
-    public function __construct(Model $model = null)
+    public function __construct($model = null)
     {
         $this->model = $model;
         $this->fixedScopes = collect();

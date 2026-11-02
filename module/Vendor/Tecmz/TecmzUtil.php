@@ -20,7 +20,7 @@ class TecmzUtil
     public static function instance($configPrefix)
     {
         $config = modstart_config();
-        return Tecmz::instance($config->getWithEnv("${configPrefix}AppId"), $config->getWithEnv("${configPrefix}AppSecret"));
+        return Tecmz::instance($config->getWithEnv("{$configPrefix}AppId"), $config->getWithEnv("{$configPrefix}AppSecret"));
     }
 
 

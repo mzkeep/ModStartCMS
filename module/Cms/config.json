@@ -3,7 +3,8 @@
     "title": "CMS系统",
     "env": [
         "laravel5",
-        "laravel9"
+        "laravel9",
+        "laravel13"
     ],
     "require": [
         "Vendor:>=1.9.0",

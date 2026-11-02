@@ -167,7 +167,7 @@ class BitMatrix
      * @param  BitArray $row
      * @return BitArray
      */
-    public function getRow($y, BitArray $row = null)
+    public function getRow($y, $row = null)
     {
         if ($row === null || $row->getSize() < $this->width) {
             $row = new BitArray($this->width);

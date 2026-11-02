@@ -38,16 +38,18 @@ class ScheduleRunAllCommand extends Command
             });
         foreach ($projects as $project) {
             $start = TimeUtil::millitime();
-            if (ModStart::env() === 'laravel9') {
+            // laravel5 站点可能跑在 PHP 5.6 上，proc_open() 直到 PHP 7.4 才支持数组形式命令，
+            // 因此仅 laravel5 保留字符串拼接；其余版本统一走数组形式（无需手工处理引号与空格）
+            if (ModStart::env() === 'laravel5') {
+                $command = "$php {$project['pathname']}/artisan schedule:run";
+                Log::info("Vendor.ScheduleRunAllCommand.Run - {$command}");
+            } else {
                 $command = [
                     $php,
                     $project['pathname'] . '/artisan',
                     'schedule:run'
                 ];
                 Log::info("Vendor.ScheduleRunAllCommand.Run - " . join(' ', $command));
-            } else {
-                $command = "$php {$project['pathname']}/artisan schedule:run";
-                Log::info("Vendor.ScheduleRunAllCommand.Run - {$command}");
             }
             $result = ShellUtil::runInNewProcess($command, false);
             $result = str_replace([

@@ -8,6 +8,7 @@
 - 统一的使用者（Biz）机制：计划任务等常用应用服务
 - 安装引导：安装检测、安装准备、执行安装、安装锁定
 - 基础能力：验证码、会话管理、占位图、内容审核接口
+- 内置开发库：微信（公众号/小程序/微信支付/消息加解密）、Excel 读写（xlsx/csv）、Markdown 转换，无需再安装第三方依赖
 
 ```mind
 功能特性
@@ -26,6 +27,16 @@
         安装引导
         验证码
         会话管理
+    内置开发库
+        微信 QuickRun/Wechat
+            OfficialAccount 公众号
+            MiniProgram 小程序
+            Payment 微信支付
+            Crypt 消息加解密
+        Excel QuickRun/Excel
+            Writer/Reader 读写
+            Xlsx/Csv 格式
+        Markdown MarkdownUtil 转换
 ```
 
 ## 使用场景

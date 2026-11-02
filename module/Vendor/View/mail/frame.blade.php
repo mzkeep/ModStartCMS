@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="color-scheme" content="light dark">
+    <meta name="supported-color-schemes" content="light dark">
     <title>[{{modstart_config('siteName')}}] @yield('pageTitle')</title>
     <style type="text/css">
         /* ===== Reset & Base ===== */
@@ -335,6 +337,84 @@
         .ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass td {
             line-height: 100%;
         }
+
+        /* ===== Dark Mode (best effort, overrides inline light colors) ===== */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background-color: #14181F !important;
+                color: #C8D2DE !important;
+            }
+            .email-card {
+                background: #1B2129 !important;
+                border-color: #2A323D !important;
+            }
+            .email-header {
+                border-bottom-color: #2A323D !important;
+            }
+            .email-header .logo {
+                color: #EDF2F7 !important;
+            }
+            .email-body {
+                color: #C8D2DE !important;
+            }
+            .email-body strong,
+            .email-body b,
+            .email-body h1,
+            .email-body h2,
+            .email-body h3,
+            .email-body h4 {
+                color: #EDF2F7 !important;
+            }
+            .email-body small,
+            .email-body .text-muted {
+                color: #8C9AAC !important;
+            }
+            .email-body hr {
+                background: #2A323D !important;
+            }
+            .email-body code {
+                background: #2A323D !important;
+                color: #F0A6C4 !important;
+            }
+            .email-body pre {
+                background: #2A323D !important;
+                color: #C8D2DE !important;
+            }
+            .email-body blockquote {
+                background: #20262F !important;
+                color: #C3CEDC !important;
+            }
+            .email-footer {
+                background: #161B22 !important;
+                border-top-color: #2A323D !important;
+                color: #7A8798 !important;
+            }
+            .ub-email-table,
+            .ub-email-table td,
+            .ub-email-table th {
+                color: #C8D2DE !important;
+            }
+            .ub-email-table td,
+            .ub-email-table th {
+                border-color: #2A323D !important;
+            }
+            .ub-email-table tr:nth-child(even) td {
+                background-color: #20262F !important;
+            }
+            .ub-email-table th {
+                background: #232B36 !important;
+                color: #EDF2F7 !important;
+            }
+            #content {
+                background: #1B2129 !important;
+                color: #C8D2DE !important;
+            }
+            #foot {
+                background: #161B22 !important;
+                border-top-color: #2A323D !important;
+                color: #7A8798 !important;
+            }
+        }
     </style>
     <!--[if mso]>
     <style type="text/css">
@@ -361,7 +441,7 @@
         {{-- Header --}}
         <div class="email-header" style="padding:24px 32px 20px;text-align:center;border-bottom:1px solid #F0F2F5;">
             <a class="logo" href="http://{{modstart_config('siteDomain')}}" target="_blank" style="display:inline-block;color:#1A202C;font-size:20px;font-weight:700;line-height:1.4;text-decoration:none;letter-spacing:0.3px;">
-                <span class="logo-text" style="display:block;">{{modstart_config('siteName')}}</span>
+                <span class="logo-text" style="display:block;">{{modstart_config('siteName') ?: modstart_config('siteDomain')}}</span>
             </a>
         </div>
 
@@ -380,7 +460,11 @@
                     </div>
                 @endif
                 <div style="margin-top:4px;font-size:12px;color:#B8C4D0;">
-                    此邮件由系统自动发送，请勿直接回复
+                    @if(trim($__env->yieldContent('footerNote')))
+                        @yield('footerNote')
+                    @else
+                        此邮件由系统自动发送，请勿直接回复
+                    @endif
                 </div>
             </div>
         @show

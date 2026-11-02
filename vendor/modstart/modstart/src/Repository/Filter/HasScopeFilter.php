@@ -23,7 +23,7 @@ trait HasScopeFilter
      * @param $callback \Closure function(ScopeFilter $filter){ $filter->where('userId','1'); }
      * @return $this
      */
-    public function scopeFilter($name, $title, \Closure $callback = null)
+    public function scopeFilter($name, $title, $callback = null)
     {
         $filter = new ScopeFilter();
         call_user_func($callback, $filter);

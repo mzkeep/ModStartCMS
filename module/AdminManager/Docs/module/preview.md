@@ -1,2 +1,2 @@
-ScreenShot/image/auth.png
-ScreenShot/image/upgrade.png
+Temp/ScreenShotImage/pc.auth.png
+Temp/ScreenShotImage/pc.upgrade.png

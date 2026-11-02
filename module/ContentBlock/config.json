@@ -3,7 +3,8 @@
     "title": "内容区块",
     "env": [
         "laravel5",
-        "laravel9"
+        "laravel9",
+        "laravel13"
     ],
     "types": [
         "PC",

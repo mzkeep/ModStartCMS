@@ -173,7 +173,7 @@ class CRUDUtil
      */
     public static function jsGridRefresh($index = 0, $flag = 'js')
     {
-        return "[${flag}]window.__grids.get($index).lister.refresh();";
+        return "[{$flag}]window.__grids.get($index).lister.refresh();";
     }
 
     /**
@@ -184,7 +184,7 @@ class CRUDUtil
      */
     public static function jsDialogCloseAndParentGridRefresh($index = 0, $flag = 'js')
     {
-        return "[${flag}]parent.__grids.get($index).lister.refresh();__dialogClose();";
+        return "[{$flag}]parent.__grids.get($index).lister.refresh();__dialogClose();";
     }
 
     /**
@@ -194,7 +194,7 @@ class CRUDUtil
      */
     public static function jsDialogClose($flag = 'js')
     {
-        return "[${flag}]__dialogClose();";
+        return "[{$flag}]__dialogClose();";
     }
 
     /**
@@ -204,7 +204,7 @@ class CRUDUtil
      */
     public static function jsDialogCloseAndParentRefresh($flag = 'js')
     {
-        return "[${flag}]parent.location.reload();";
+        return "[{$flag}]parent.location.reload();";
     }
 
     /**
