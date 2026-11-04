@@ -59,6 +59,13 @@ class SessionMiddleware
 
         /** @var Response $response */
         $response = $next($request);
+        // 登录成功后服务端会更换会话 ID（防会话固定），这里把新的 api-token 回传给客户端，
+        // 否则客户端继续使用旧 token 会丢失登录态
+        $currentSessionId = Session::getId();
+        if (!empty($currentSessionId) && $currentSessionId != $apiToken) {
+            $setApiToken = true;
+            $apiToken = $currentSessionId;
+        }
         // Log::info('SessionMiddleware - Response - ' . get_class($response));
         if ($setApiToken) {
             $illuminateResponse = 'Illuminate\Http\Response';

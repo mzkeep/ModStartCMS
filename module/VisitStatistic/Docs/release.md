@@ -1,5 +1,6 @@
 ## [Unreleased]
 
+- 优化：后台菜单「运营报表」更名为「运营管理」，与运营类统计菜单合并为统一入口（含注册来源归因）
 - 新增：模块 README 集成说明（module/VisitStatistic/README.md，其他系统集成先读此文件）
 - 优化：截图命名统一为 `<设备前缀>.<页面>.png`（pc / pcFull / m / mFull，后台页面为 pc.）
 - 优化：多语言管理菜单显示优化

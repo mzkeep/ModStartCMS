@@ -42,9 +42,11 @@
 @endsection
 
 
+@section('bodyProperties') class="ub-page-fill" @endsection
+
 @section('bodyContent')
 
-    <div class="ub-account pb-member-login-account">
+    <div class="ub-account ub-page-fill-main pb-member-login-account">
 
         <div class="box" data-member-login-box>
             <div class="nav">

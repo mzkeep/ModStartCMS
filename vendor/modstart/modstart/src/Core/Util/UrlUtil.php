@@ -10,11 +10,12 @@ use ModStart\Core\Input\Request;
 class UrlUtil
 {
     /**
-     * @Util 判断跳转地址是否安全（仅允许站内相对地址或与当前请求域名一致的同源 http/https 地址）
+     * @Util 判断跳转地址是否安全（默认仅允许站内相对地址或与当前请求域名同源的 http/https 地址，绝不会放行 javascript:/data: 等危险协议）
      * @param $url string 待校验的跳转地址
+     * @param $allowExternal boolean 是否额外允许外站 http/https 地址（仍会拒绝危险协议、协议相对地址与域名混淆写法）
      * @return bool
      */
-    public static function isSafeRedirect($url)
+    public static function isSafeRedirect($url, $allowExternal = false)
     {
         $url = trim((string)$url);
         if ('' === $url) {
@@ -46,6 +47,9 @@ class UrlUtil
             // 拒绝 userinfo（https://user@host 形式），避免域名混淆
             if (isset($info['user']) || isset($info['pass'])) {
                 return false;
+            }
+            if ($allowExternal) {
+                return true;
             }
             return $host === self::currentHost();
         }

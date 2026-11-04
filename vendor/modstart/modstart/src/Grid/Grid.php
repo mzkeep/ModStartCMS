@@ -726,6 +726,11 @@ class Grid
         try {
             return $this->render();
         } catch (\Exception $e) {
+            // PHP 7.4+ 允许 __toString 抛出异常：交给全局异常处理变成 5xx 并触发错误上报，
+            // 避免渲染失败被静默降级成页面错误文本（PHP 5.6 / 7.0 下抛出会 fatal 且无法上报，只能兜底）
+            if (PHP_VERSION_ID >= 70400) {
+                throw $e;
+            }
             return $e->getMessage();
         }
     }

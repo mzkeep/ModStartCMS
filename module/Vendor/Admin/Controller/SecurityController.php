@@ -23,6 +23,10 @@ class SecurityController extends Controller
     {
         $input = InputPackage::buildFromInput();
         $redirect = $input->getTrimString('redirect', modstart_admin_url(''));
+        // 防止开放重定向 / javascript: 协议跳转 XSS：只允许站内安全地址
+        if (!\ModStart\Core\Util\UrlUtil::isSafeRedirect($redirect)) {
+            $redirect = modstart_admin_url('');
+        }
         $form = Form::make('');
         $form->password('password', '安全验证密码');
         $form->showReset(false);

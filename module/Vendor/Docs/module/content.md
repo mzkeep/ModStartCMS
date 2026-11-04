@@ -83,7 +83,7 @@
 - `/install/execute` 执行安装
 - `/install/lock` 安装锁定
 - `/captcha/image` 验证码
-- `/session` 会话管理
+- `/session` 会话初始化（签名票据：`timestamp` / `nonce` / `param`（含 `api_token`、`redirect`）/ `sign`；票据 5 分钟内有效且仅可使用一次，`redirect` 仅允许站内地址，浏览器最终使用服务端新生成的会话 ID）
 - `/placeholder/{width}x{height}` 占位图
 - `/content_verify/{name}` 内容审核
 

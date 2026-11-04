@@ -370,7 +370,7 @@ class ModuleServiceProvider extends ServiceProvider
                     ]
                 ],
                 [
-                    'title' => '运营报表',
+                    'title' => '运营管理',
                     'icon' => 'chart',
                     'sort' => 150,
                     'children' => [

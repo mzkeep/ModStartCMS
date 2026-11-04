@@ -15,25 +15,15 @@
     {!! \ModStart\Core\Hook\ModStartHook::fireInView('MemberLoginPageBodyAppend'); !!}
 @endsection
 
+{{-- 与 /login 一致：整页填充布局，卡片在页头与页脚之间垂直居中 --}}
+@section('bodyProperties') class="ub-page-fill" @endsection
+
 @section('bodyContent')
 
-    <div class="ub-account pb-member-login-account">
+    <div class="ub-account ub-page-fill-main pb-member-login-account">
 
-        <div class="box" data-member-login-box>
-            <div style="min-height:18.75rem;" data-member-login-other></div>
-        </div>
-
-        @include('module::Member.View.pc.oauthButtons')
-
-        @if(!modstart_config('retrieveDisable',false))
-            <div class="retrieve">
-                忘记密码?
-                <a target="_parent"
-                   href="{{modstart_web_url('retrieve',['redirect'=>empty($redirect)?null:$redirect])}}">找回密码</a>
-            </div>
-        @endif
+        @include('module::Member.View.pc.inc.loginOtherPanel')
 
     </div>
-
 
 @endsection

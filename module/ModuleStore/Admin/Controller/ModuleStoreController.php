@@ -256,7 +256,6 @@ class ModuleStoreController extends Controller
         $input = InputPackage::buildFromInput();
         $token = $input->getTrimString('token');
         $step = $input->getTrimString('step');
-        BizException::throwsIfEmpty('请先登录ModStartCMS账号', $token);
         $dataInput = $input->getJsonAsInput('data');
         $module = $dataInput->getTrimString('module');
         $version = $dataInput->getTrimString('version');
@@ -283,6 +282,8 @@ class ModuleStoreController extends Controller
                     ]);
             }
         } else {
+            // remote install (download package from module store) requires a store account
+            BizException::throwsIfEmpty('请先登录ModStartCMS账号', $token);
             switch ($step) {
                 case 'installModule':
                     $ret = ModuleManager::install($module, true);

@@ -1,10 +1,17 @@
 ## [Unreleased]
 
-- 修复：phpQuery 与 BladeTailwindInject 命令在 PHP 8 下的兼容问题（create_function 移除、花括号字符串偏移、split 移除、Process 需数组参数）
 - 新增：支持 Laravel 13 / PHP 8.5，config.json 环境声明新增 laravel13
+- 新增：新增 `public/install.php` 浏览器安装向导入口，环境检查 → 数据库与管理员配置 → 一键安装
+- 优化：安装向导环境模板兼容 `.env.example`（缺少 `env.example` 时自动回退，Laravel 11+ 项目只维护一份模板）
+- 优化：安装向导对 Laravel 9 产品的 PHP 版本要求补充 8.2.x 支持
+- 修复：phpQuery 与 BladeTailwindInject 命令在 PHP 8 下的兼容问题（create_function 移除、花括号字符串偏移、split 移除、Process 需数组参数）
 - 修复：PHP 8.1 起将 null 隐式转为字符串已废弃，请求头取值统一经 strval()
 - 修复：字符串插值 ${var} 写法在 PHP 8.2 起废弃，统一改为 {$var}
 - 修复：PHP 8.4 起 fgetcsv()/fputcsv() 要求显式传入 $escape 参数
+- 修复：Laravel 13 产品（CMS13 / BLOG13 / LOOM）PHP 版本检查改为读取 `composer.json` 的 `require.php` 约束，避免误判版本不满足而无法安装
+- 修复：安装前生成的引导 `.env` 补齐缓存与会话驱动，避免 Laravel 11+ 默认 database 驱动导致安装检测 500
+- 修复：安装向导数据库连接失败时因缺少 `Log` 门面引入报致命错误，改为返回友好提示
+- 修复：安装向导在手机横屏等矮屏下侧栏占满首屏、底部操作栏被裁切，改为紧凑侧栏并让内容区内部滚动
 
 ---
 

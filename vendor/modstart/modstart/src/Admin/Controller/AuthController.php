@@ -15,6 +15,7 @@ use ModStart\Core\Input\Request;
 use ModStart\Core\Input\Response;
 use ModStart\Core\Util\AgentUtil;
 use ModStart\Core\Util\StrUtil;
+use ModStart\Core\Util\UrlUtil;
 use ModStart\Misc\Captcha\CaptchaFacade;
 
 class AuthController extends Controller
@@ -24,10 +25,23 @@ class AuthController extends Controller
         return CaptchaFacade::create('default');
     }
 
+    /**
+     * 过滤不安全的跳转地址（javascript:/data: 等危险协议、协议相对地址、跨站地址一律回退后台首页）
+     * @param $redirect string 跳转地址
+     * @return string
+     */
+    private function safeRedirect($redirect)
+    {
+        if (!UrlUtil::isSafeRedirect($redirect)) {
+            return modstart_admin_url();
+        }
+        return $redirect;
+    }
+
     public function login()
     {
         $input = InputPackage::buildFromInput();
-        $redirect = $input->getTrimString('redirect', modstart_admin_url());
+        $redirect = $this->safeRedirect($input->getTrimString('redirect', modstart_admin_url()));
         if (Admin::id()) {
             return Response::redirect($redirect);
         }
@@ -115,6 +129,8 @@ class AuthController extends Controller
             }
             $adminUser = $ret['data'];
             Session::put(Admin::ADMIN_USER_ID_SESSION_KEY, $adminUser['id']);
+            // 登录成功后更换会话 ID，防止会话固定攻击（会话数据会迁移到新的 ID）
+            Session::regenerate();
             Session::forget('_adminUserPasswordWeak');
             if ($isSmsCaptchaQuickLogin) {
                 // do nothing
@@ -127,7 +143,7 @@ class AuthController extends Controller
                 'IP' => Request::ip(),
             ]);
             AdminUserLoginedEvent::fire($adminUser['id'], Request::ip(), AgentUtil::getUserAgent());
-            $redirect = $input->getTrimString('redirect', modstart_admin_url());
+            $redirect = $this->safeRedirect($input->getTrimString('redirect', modstart_admin_url()));
             return Response::redirect($redirect);
         }
         return view('modstart::admin.login', [
@@ -150,10 +166,12 @@ class AuthController extends Controller
         $sign = md5($id . ':' . $ts . ':' . $adminUser['password'] . ':' . $adminUser['passwordSalt']);
         BizException::throwsIf('登录失败', $sign != $input->getTrimString('sign'));
         Session::put(Admin::ADMIN_USER_ID_SESSION_KEY, $adminUser['id']);
+        // 登录成功后更换会话 ID，防止会话固定攻击
+        Session::regenerate();
         Admin::addInfoLog($adminUser['id'], L('LoginSuccess'), [
             'IP' => Request::ip(),
         ]);
-        $redirect = $input->getTrimString('redirect', modstart_admin_url());
+        $redirect = $this->safeRedirect($input->getTrimString('redirect', modstart_admin_url()));
         return Response::redirect($redirect);
     }
 
@@ -170,6 +188,10 @@ class AuthController extends Controller
                     return Response::send(-1, L('ConfigAdminSSOServerMissing'));
                 }
                 $clientRedirect = $input->getTrimString('redirect', '/');
+                // SSO 客户端可能在其它域名，只拦截危险协议，不限制域名
+                if (!UrlUtil::isSafeRedirect($clientRedirect, true)) {
+                    $clientRedirect = '/';
+                }
                 $clientLogout = Request::domainUrl() . '/logout?server=true&redirect=' . urlencode($clientRedirect);
                 $ssoServerLogout = $ssoServer . '_logout?redirect=' . urlencode($clientLogout);
                 return Response::redirect($ssoServerLogout);
@@ -226,6 +248,8 @@ class AuthController extends Controller
                 $adminUser = Admin::get($adminUser['id']);
             }
             Session::put('_adminUserId', $adminUser['id']);
+            // 登录成功后更换会话 ID，防止会话固定攻击
+            Session::regenerate();
             $ssoRedirect = Session::get('adminSSORedirect', null);
             if (empty($ssoRedirect)) {
                 return Response::send(0, 'Login success, adminSSORedirect missing');
@@ -235,6 +259,10 @@ class AuthController extends Controller
         } else {
 
             $redirect = trim($input->getTrimString('redirect'));
+            // 登录成功后同域内跳转，跨域地址由 SSO 服务端签发，这里只拦截危险协议
+            if (!UrlUtil::isSafeRedirect($redirect, true)) {
+                $redirect = modstart_admin_url();
+            }
             Session::put('adminSSORedirect', $redirect);
 
             $client = Request::domainUrl() . modstart_admin_url('sso/client');
@@ -327,7 +355,7 @@ class AuthController extends Controller
     {
         $input = InputPackage::buildFromInput();
         Session::forget('_adminUserId');
-        $redirect = $input->getTrimString('redirect', modstart_admin_url());
+        $redirect = $this->safeRedirect($input->getTrimString('redirect', modstart_admin_url()));
         return Response::redirect($redirect);
     }
 }

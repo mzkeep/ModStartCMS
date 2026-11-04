@@ -60,6 +60,27 @@ TestCase::describe('Nav Seed', function () {
         ModelUtil::insert('nav', $row);
     }
 
+    // 顶栏导航（position=head），供前台 header 与首页视觉验收使用
+    $headRows = [
+        ['id' => 10, 'name' => '模块市场', 'link' => '/store', 'sort' => 1, 'openType' => 1],
+        ['id' => 11, 'name' => '下载', 'link' => '/download', 'sort' => 2, 'openType' => 1],
+        ['id' => 12, 'name' => '在线演示', 'link' => 'https://demo.modstart.com', 'sort' => 3, 'openType' => 2],
+        ['id' => 13, 'name' => '开发文档', 'link' => 'https://modstart.com/doc', 'sort' => 4, 'openType' => 2],
+        ['id' => 14, 'name' => '关于我们', 'link' => '/article/about', 'sort' => 5, 'openType' => 1],
+    ];
+    foreach ($headRows as $row) {
+        TestSeed::upsert('nav', ['id' => $row['id']], [
+            'position' => 'head',
+            'name' => $row['name'],
+            'link' => $row['link'],
+            'sort' => $row['sort'],
+            'openType' => $row['openType'],
+            'pid' => 0,
+            'enable' => 1,
+            'icon' => '',
+        ]);
+    }
+
     TestCase::test('测试数据填充执行完成', function () {
         TestCase::assertTrue(true, 'Nav Seed: 执行完成');
     });

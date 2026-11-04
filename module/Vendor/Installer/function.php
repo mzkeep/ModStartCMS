@@ -14,7 +14,12 @@ include APP_PATH . '/vendor/modstart/modstart/src/Core/Util/CurlUtil.php';
 include APP_PATH . '/vendor/modstart/modstart/src/Core/Util/FileUtil.php';
 
 define('INSTALL_LOCK_FILE', APP_PATH . '/storage/install.lock');
-define('ENV_FILE_EXAMPLE', APP_PATH . '/env.example');
+// ModStart 传统模板为 env.example，基于 Laravel 11+ 骨架的项目使用 .env.example，两者都支持
+$envExampleFile = APP_PATH . '/env.example';
+if (!file_exists($envExampleFile) && file_exists(APP_PATH . '/.env.example')) {
+    $envExampleFile = APP_PATH . '/.env.example';
+}
+define('ENV_FILE_EXAMPLE', $envExampleFile);
 define('ENV_FILE', APP_PATH . '/.env');
 if (file_exists($licenseFile = APP_PATH . '/license_url.txt')) {
     define('LICENSE_URL', trim(file_get_contents($licenseFile)));
@@ -49,7 +54,10 @@ if (!defined('INSTALL_APP_VERSION')) {
 }
 
 if (!file_exists(ENV_FILE)) {
-    file_put_contents(ENV_FILE, "APP_ENV=beta\nAPP_DEBUG=true\nAPP_KEY=" . \ModStart\Core\Util\RandomUtil::string(32));
+    // 安装前的引导 .env：必须先给出 Laravel 11+ 的安全默认值，
+    // 否则 SESSION_DRIVER / CACHE_STORE 会回落到 database，数据库还不存在时 /install/* 直接 500
+    file_put_contents(ENV_FILE, "APP_ENV=beta\nAPP_DEBUG=true\nAPP_KEY=" . \ModStart\Core\Util\RandomUtil::string(32)
+        . "\nCACHE_DRIVER=file\nCACHE_STORE=file\nSESSION_DRIVER=file\nQUEUE_CONNECTION=sync\n");
 }
 
 function php_is_laravel9()
@@ -57,11 +65,40 @@ function php_is_laravel9()
     return in_array(INSTALL_APP, ['CMS9', 'BLOG9']);
 }
 
+function php_is_laravel13()
+{
+    // 基于 Laravel 13 的产品（AppConstant::APP）：CMS13 / BLOG13 / LOOM
+    return in_array(INSTALL_APP, ['CMS13', 'BLOG13', 'LOOM']);
+}
+
+function php_version_min_required()
+{
+    // 从 composer.json 的 require.php 约束中取最低版本（如 ^8.3 / >=8.4.1）
+    static $min = false;
+    if (false !== $min) {
+        return $min;
+    }
+    $min = null;
+    if (file_exists($file = APP_PATH . '/composer.json')) {
+        $composer = json_decode(file_get_contents($file), true);
+        if (!empty($composer['require']['php']) && preg_match('/(\d+\.\d+(?:\.\d+)?)/', $composer['require']['php'], $matched)) {
+            $min = $matched[1];
+        }
+    }
+    return $min;
+}
+
 function php_version_requires()
 {
+    // Laravel 13 产品 PHP 最低版本按 composer.json 约束判断
+    if (php_is_laravel13()) {
+        $min = php_version_min_required();
+        return $min ? ($min . ' 及以上') : '8.3 及以上';
+    }
     if (php_is_laravel9()) {
         return join('，', [
             '8.1.x',
+            '8.2.x',
         ]);
     }
     return join(', ', [
@@ -72,7 +109,18 @@ function php_version_requires()
 
 function php_version_ok()
 {
+    if (php_is_laravel13()) {
+        $min = php_version_min_required();
+        if (empty($min)) {
+            $min = '8.3';
+        }
+        if (2 == substr_count($min, '.')) {
+            return version_compare(PHP_VERSION, $min, '>=');
+        }
+        return version_compare(PHP_VERSION, $min . '.0', '>=');
+    }
     if (php_is_laravel9()) {
+        // Laravel 9 产品：8.1.x / 8.2.x 均支持（8.3+ 未列入官方支持范围，仍保持宽松不阻塞）
         if (version_compare(PHP_VERSION, '8.1.0', '<')) {
             return false;
         }

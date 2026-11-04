@@ -1,5 +1,36 @@
 @import "../../component/form/form";
 
+// 通用页面布局：主内容区填满页头与页脚之间的剩余高度，内容在区域内垂直居中。
+// 用法：页面模板 @section('bodyProperties') class="ub-page-fill" @endsection，
+//       主内容根元素加 .ub-page-fill-main（如登录页的 .ub-account）。
+// 背景：账户页原用 calc(100vh - 240px) 估算面板高度，而页脚实际 285px，
+// 导致卡片贴顶、下方大片空白，并恒定多出约 100px 滚动。
+// @since 2026-11
+body.ub-page-fill {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+body.ub-page-fill > .ub-page-fill-main {
+    flex: 1;
+    // 覆盖主内容自身的 min-height，交由 flex 分配空间（内容更高时自然撑高）
+    min-height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    // 上下内边距压到 0.75rem：内容较高时（如注册页）也不会把页脚顶出首屏，
+    // 内容较矮时由 justify-content 居中，内边距不参与视觉节奏
+    padding: 0.75rem 2.5rem;
+
+    // 注意：不要在这里单独加宽登录卡。账户页（登录 / 注册 / 找回密码）卡片宽度
+    // 统一沿用砖块默认 max-width: 21.25rem(340)，保持三个页面视觉一致；
+    // 若确实要整体加宽，请改 .ub-account .box 的基础值，让所有账户页一起变。
+    .box {
+        width: 100%;
+    }
+}
+
 .ub-account {
     min-height: calc(100vh - 240px);
     padding: 2.5rem;
@@ -17,7 +48,10 @@
         box-shadow: var(--box-shadow-lg), var(--shadow-highlight);
         box-sizing: border-box;
         border-radius: var(--size-radius-lg);
-        padding: 1.25rem 0;
+        // 上下留白按「文字到卡片边缘」对齐：标题行自带 44px 触控高度（文字上下各 11px 内边距）
+        // + 顶部 1rem 间距 + 容器 1.25rem，合计约 48px；底部用 2rem 让最末行（忘记密码 / 主按钮）
+        // 的文字到卡片下沿也是约 48px，避免「上松下紧」。
+        padding: 1.25rem 0 2rem;
         margin: 0 auto;
         text-align: center;
 
@@ -44,22 +78,37 @@
         .nav {
             font-size: var(--font-size-large);
             color: var(--color-tertiary);
-            margin-top: 1.25rem;
+            margin-top: 1rem;
 
-            a {
+            // 登录 / 注册 切换：统一 44px 触控高度；当前项用 span 表达「当前页」，
+            // 不再渲染成 href="javascript:;" 的无跳转死链接。
+            a,
+            .active {
+                display: inline-block;
+                padding: 0.6875rem 0.375rem;
+                line-height: 1.375rem;
+                border-radius: var(--size-radius-sm);
                 color: var(--color-tertiary);
                 text-decoration: none;
                 font-size: var(--font-size-large);
                 transition: var(--transition);
+            }
 
+            a {
                 &:hover {
                     color: var(--color-primary);
+                    background: var(--color-primary-light-bg);
                 }
 
-                &.active {
-                    color: var(--color-primary);
-                    font-weight: 600;
+                &:focus-visible {
+                    outline: 0;
+                    box-shadow: 0 0 0 0.1875rem var(--color-focus-ring);
                 }
+            }
+
+            .active {
+                color: var(--color-primary);
+                font-weight: 600;
             }
         }
 
@@ -79,6 +128,61 @@
                         &:focus {
                             border-color: var(--color-primary);
                             box-shadow: 0 0 0 0.1875rem var(--color-focus-ring);
+                        }
+                    }
+
+                    // 浏览器默认占位色 #98A2B3 白底只有 2.6:1，手机屏上几乎不可读，
+                    // 统一提升到 --color-tertiary（约 4.9:1）。opacity 为 Firefox 兜底。
+                    input::placeholder {
+                        color: var(--color-tertiary);
+                        opacity: 1;
+                    }
+
+                    // 密码可见性切换：输入框右侧 36px 图标按钮（命中区仍由输入框高度撑满）
+                    .field-toggle {
+                        position: relative;
+
+                        input {
+                            padding-right: 2.75rem;
+                        }
+
+                        .field-toggle-btn {
+                            position: absolute;
+                            right: 0.25rem;
+                            top: 50%;
+                            transform: translateY(-50%);
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            width: 2rem;
+                            height: 2rem;
+                            padding: 0;
+                            border: 0;
+                            border-radius: var(--size-radius-xs);
+                            background: transparent;
+                            color: var(--color-tertiary);
+                            cursor: pointer;
+                            transition: var(--transition);
+
+                            &:hover {
+                                color: var(--color-primary);
+                                background: var(--color-primary-light-bg);
+                            }
+
+                            &:focus-visible {
+                                outline: 0;
+                                box-shadow: 0 0 0 0.1875rem var(--color-focus-ring);
+                            }
+                        }
+                    }
+
+                    // 主按钮需要可见的键盘焦点（原 .btn:focus-visible 的焦点环被 .btn-primary 的阴影覆盖）：
+                    // 与输入框同一套「主色柔光环」，再补一圈 2px 实色主色环保证对比度（≥3:1）
+                    button[type=submit] {
+                        &:focus-visible {
+                            box-shadow: 0 0 0 0.1875rem var(--color-focus-ring);
+                            outline: 0.125rem solid var(--color-primary);
+                            outline-offset: 0.1875rem;
                         }
                     }
                 }
@@ -156,17 +260,49 @@
         }
     }
 
+    // 第三方登录页（/login/other）空态：没有任何第三方登录方式时，模块不会往
+    // [data-member-login-other] 注入内容，此时不撑高空白卡片，改为展示提示与「账号密码登录」入口。
+    .member-login-other-empty {
+        display: none;
+        padding: 0 1.875rem;
+        color: var(--color-tertiary);
+
+        .member-login-other-empty-text {
+            padding-bottom: 1.25rem;
+        }
+    }
+
+    [data-member-login-other]:empty {
+        min-height: 0 !important;
+
+        + .member-login-other-empty {
+            display: block;
+        }
+    }
+
     .retrieve {
         text-align: center;
         color: var(--color-tertiary);
-        margin-top: 1.25rem;
+        margin-top: 0.625rem;
 
+        // 找回密码：从 15px 高的纯文字链接提升到 44px 触控高度
         a {
+            display: inline-flex;
+            align-items: center;
+            min-height: 2.75rem;
+            padding: 0 0.5rem;
+            border-radius: var(--size-radius-sm);
             color: var(--color-link);
             transition: var(--transition);
 
             &:hover {
                 color: var(--color-link-hover);
+                background: var(--color-primary-light-bg);
+            }
+
+            &:focus-visible {
+                outline: 0;
+                box-shadow: 0 0 0 0.1875rem var(--color-focus-ring);
             }
         }
     }
@@ -174,11 +310,14 @@
 
 @media (max-width: 800px) {
     .ub-account {
-        padding: 0;
+        // 账户页（登录 / 注册 / 找回密码）统一左右留 1rem：卡片不通栏贴屏幕边、圆角完整，
+        // 且三个页面宽度保持一致（390 视口下均为 358）
+        padding: 1rem;
         min-height: 100vh;
 
         .box {
             margin: 0 auto;
+            width: 100%;
             max-width: 25rem;
             box-shadow: var(--box-shadow);
             border-radius: var(--size-radius-lg);
@@ -187,5 +326,28 @@
                 width: auto;
             }
         }
+
+        // 触屏控件补到 44px 高（移动端可达性下限）
+        input[type].form-lg,
+        input:not([type]).form-lg {
+            height: 2.75rem;
+        }
+
+        .ub-form .line .field button[type=submit] {
+            height: 2.75rem;
+        }
+
+        // 触屏上眼睛按钮略放大，贴近 44px 目标
+        .box .ub-form .line .field .field-toggle .field-toggle-btn {
+            width: 2.25rem;
+            height: 2.25rem;
+        }
+    }
+
+    // 使用「主内容区填充」布局的页面（如登录页）：
+    // 面板左右留白让卡片不贴屏幕边、上下给出呼吸空间（底部 ≥32px，避免白色卡片被深色页脚“托住”）
+    body.ub-page-fill > .ub-page-fill-main {
+        min-height: auto;
+        padding: 1rem 1rem 2rem;
     }
 }

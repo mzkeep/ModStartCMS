@@ -28,9 +28,11 @@
     </script>
 @endsection
 
+@section('bodyProperties') class="ub-page-fill" @endsection
+
 @section('bodyContent')
 
-    <div class="ub-account">
+    <div class="ub-account ub-page-fill-main">
 
         <div class="box">
 

@@ -250,6 +250,10 @@ class Detail implements Renderable
         try {
             return $this->render();
         } catch (\Exception $e) {
+            // PHP 7.4+ 允许 __toString 抛出异常：交给全局异常处理变成 5xx 并触发错误上报
+            if (PHP_VERSION_ID >= 70400) {
+                throw $e;
+            }
             return $e->getMessage();
         }
     }

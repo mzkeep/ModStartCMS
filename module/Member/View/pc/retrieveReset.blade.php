@@ -4,9 +4,11 @@
 @section('pageKeywords')设置新密码@endsection
 @section('pageDescription')设置新密码@endsection
 
+@section('bodyProperties') class="ub-page-fill" @endsection
+
 @section('bodyContent')
 
-    <div class="ub-account">
+    <div class="ub-account ub-page-fill-main">
 
         <div class="box">
 

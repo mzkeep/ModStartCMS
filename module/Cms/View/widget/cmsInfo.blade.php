@@ -11,7 +11,7 @@
                 <div style="min-height:6.875rem;">
                     <div class="tw-mb-2">
                         当前正在使用
-                        <b>ModStartCMS</b>
+                        <b>{{\ModStart\Core\Util\MetaUtil::get('APP_NAME')}}</b>
                         <b>V{{\App\Constant\AppConstant::VERSION}}</b>
                     </div>
                     @if(!config('modstart.admin.versionCheckDisable',false))

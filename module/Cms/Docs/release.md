@@ -1,5 +1,6 @@
 ## [Unreleased]
 
+- 优化：后台首页系统信息中的应用名称改为读取 MetaUtil APP_NAME，不再硬编码
 - 新增：模块 README 集成说明（module/Cms/README.md，其他系统集成先读此文件）
 - 新增：新增主题演示数据导入工具 CmsThemeDemoUtil，可按模块导入 Backup/init_data.json
 - 优化：数据库恢复的临时表名增加随机后缀，避免同一秒内连续恢复冲突

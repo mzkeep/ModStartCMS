@@ -6,7 +6,6 @@ namespace ModStart\Field;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\View;
 use ModStart\Core\Dao\ModelUtil;
@@ -692,8 +691,10 @@ class AbstractField implements Renderable
                     return htmlspecialchars($value);
             }
         } catch (\Throwable $e) {
-            Log::error('FieldRenderError - ' . $e->getMessage() . ' - ' . $e->getTraceAsString());
-            return htmlspecialchars('FieldRenderError - ' . $e->getMessage());
+            // 渲染异常必须向上抛出：静默兜底会把坏数据长期藏在页面文本里，
+            // 只有变成 5xx 才能进入异常处理链（错误日志 + ERROR_REPORT_URL 报警）
+            $column = isset($column) ? (string)$column : '';
+            throw new \RuntimeException('FieldRenderError [' . $column . '] - ' . $e->getMessage(), 0, $e);
         }
         throw new \Exception('FieldRenderNotExist');
     }

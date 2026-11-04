@@ -16,6 +16,8 @@
     {!! \ModStart\Core\Hook\ModStartHook::fireInView('MemberRegisterPageBodyAppend'); !!}
 @endsection
 
+@section('bodyProperties') class="ub-page-fill" @endsection
+
 @section('bodyContent')
-    @include('module::Member.View.pc.inc.registerPhonePanel')
+    @include('module::Member.View.pc.inc.registerPhonePanel', ['fillMain' => true])
 @endsection

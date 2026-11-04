@@ -102,6 +102,9 @@ class ModuleStoreUtil
                     '_localVersion' => $info['version'],
                     '_isSystem' => $config['isSystem'],
                     '_hasConfig' => !empty($info['config']),
+                    // local only module (not exists in remote store), it can only be installed from local directory
+                    '_hasLocalUninstalled' => !$config['isInstalled'],
+                    '_localUninstalledVersion' => $info['version'],
                 ];
             }
         }

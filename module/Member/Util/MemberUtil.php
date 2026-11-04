@@ -4,7 +4,9 @@ namespace Module\Member\Util;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
+use ModStart\App\Core\CurrentApp;
 use ModStart\Core\Util\Gd\GdImage as Image;
 use ModStart\Core\Assets\AssetsUtil;
 use ModStart\Core\Dao\ModelUtil;
@@ -945,8 +947,21 @@ class MemberUtil
         MemberUserDeletedEvent::fire($memberUserId);
     }
 
-    public static function fireLogin($memberUserId)
+    /**
+     * 记录登录信息
+     * @param $memberUserId integer 会员用户 ID
+     * @param $regenerate boolean 登录成功后是否更换会话 ID（防会话固定，默认开启；跨设备扫码等需要复用同一会话的交接场景传 false）
+     */
+    public static function fireLogin($memberUserId, $regenerate = true)
     {
+        // API / OpenApi 的会话 ID 就是客户端持有的 api_token 凭证：客户端会继续用它调用接口，
+        // 也会用它打开 /api/app_manager/enter?api_token=交接网页登录态 交接会话给浏览器，
+        // 登录时轮换会让客户端手里的 token 立刻变成未登录状态，所以只有浏览器 Cookie 场景（Web / Admin）才轮换。
+        if ($regenerate && !CurrentApp::isApi() && !CurrentApp::isOpenApi()) {
+            // Rotate the session id right after login to prevent session fixation attacks.
+            // Session data (member user id, flash data, ...) is migrated to the new id.
+            Session::regenerate();
+        }
         $ip = Request::ip();
         ModelUtil::update('member_user', $memberUserId, [
             'lastLoginTime' => Carbon::now(),

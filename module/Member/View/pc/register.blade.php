@@ -45,9 +45,11 @@
     {!! \ModStart\Core\Hook\ModStartHook::fireInView('MemberRegisterPageBodyAppend'); !!}
 @endsection
 
+@section('bodyProperties') class="ub-page-fill" @endsection
+
 @section('bodyContent')
 
-    <div class="ub-account" style="min-height:calc( 100vh - 220px );">
+    <div class="ub-account ub-page-fill-main">
 
         <div class="box">
 

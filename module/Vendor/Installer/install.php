@@ -1221,6 +1221,77 @@ $initialProgress = round(($initialIndex + 1) / $stepCount * 100, 3);
             }
         }
 
+        /* stacked layout on short viewports (phone landscape): compress the rail and keep the console inside the fold */
+        @media (max-width: 60rem) and (max-height: 32rem) {
+            .ins-shell {
+                height: 100vh;
+                height: 100dvh;
+                min-height: 0;
+                overflow: hidden;
+            }
+
+            .ins-rail {
+                gap: 0.5rem;
+                padding: 0.625rem 1rem 0.5rem;
+            }
+
+            .ins-brand-mark {
+                width: 2rem;
+                height: 2rem;
+                font-size: 1rem;
+            }
+
+            .ins-brand-name {
+                font-size: 1rem;
+            }
+
+            .ins-brand-meta,
+            .ins-rail-note,
+            .ins-rail-foot {
+                display: none;
+            }
+
+            .ins-steps {
+                padding-top: 0.5rem;
+            }
+
+            .ins-main-head {
+                padding: 0.75rem 1rem 0.625rem;
+            }
+
+            .ins-eyebrow {
+                margin-bottom: 0.25rem;
+            }
+
+            .ins-title {
+                font-size: 1.125rem;
+            }
+
+            .ins-lead {
+                display: none;
+            }
+
+            .ins-content {
+                display: flex;
+                overflow: hidden;
+            }
+
+            .ins-pane {
+                flex: 1 1 auto;
+            }
+
+            .ins-pane-body {
+                overflow: auto;
+                padding: 0.875rem 1rem;
+            }
+
+            .ins-pane-foot {
+                position: static;
+                padding: 0.5rem 1rem;
+                padding-bottom: calc(0.5rem + env(safe-area-inset-bottom, 0px));
+            }
+        }
+
         /* short viewports (laptops in landscape): keep the console inside the fold */
         @media (min-width: 60.0625rem) and (max-height: 42rem) {
             .ins {

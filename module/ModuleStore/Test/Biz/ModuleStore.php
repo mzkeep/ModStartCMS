@@ -61,7 +61,27 @@ TestCase::describe('ModuleStore', function () {
         }
         TestCase::assertNotEmpty($localOnly, '存在仅本地模块并标记 _isLocal');
         TestCase::assertArrayHasKey('releases', $localOnly, '仅本地模块补齐 releases 字段');
+        // 仅本地模块（模块市场不存在）也必须带本地安装标记，否则前端会走远程安装并提示“模块不存在”
+        TestCase::assertArrayHasKey('_hasLocalUninstalled', $localOnly, '仅本地模块带 _hasLocalUninstalled 字段');
+        TestCase::assertArrayHasKey('_localUninstalledVersion', $localOnly, '仅本地模块带 _localUninstalledVersion 字段');
+        TestCase::assertEquals(
+            !$localOnly['_isInstalled'],
+            $localOnly['_hasLocalUninstalled'],
+            '仅本地模块的 _hasLocalUninstalled 与安装状态一致'
+        );
+        TestCase::assertEquals($localOnly['_localVersion'], $localOnly['_localUninstalledVersion'], '仅本地模块带出本地版本号');
 
+        Cache::forget('ModuleStore_Modules:0');
+    });
+
+    TestCase::test('所有本地模块都带本地安装标记', function () {
+        Cache::put('ModuleStore_Modules:0', [], 60);
+        $all = ModuleStoreUtil::all();
+        TestCase::assertNotEmpty($all['modules'], '返回本地模块列表');
+        foreach ($all['modules'] as $module) {
+            TestCase::assertArrayHasKey('_hasLocalUninstalled', $module, $module['name'] . ' 带 _hasLocalUninstalled');
+            TestCase::assertArrayHasKey('_localUninstalledVersion', $module, $module['name'] . ' 带 _localUninstalledVersion');
+        }
         Cache::forget('ModuleStore_Modules:0');
     });
 

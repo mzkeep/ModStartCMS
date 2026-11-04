@@ -7,6 +7,7 @@
 - 优化：模块截图脚本适配统一截图工具链
 - 优化：测试种子统一为单文件 Test/Seed.php
 - 新增：支持 Laravel 13 / PHP 8.5，config.json 环境声明新增 laravel13
+- 修复：多级导航的子菜单缺少 `_attr` 属性，主题渲染二级菜单时报 Undefined index: _attr（MNav::all 递归补齐每一级）
 
 ---
 

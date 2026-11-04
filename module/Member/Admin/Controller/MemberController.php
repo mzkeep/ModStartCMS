@@ -213,6 +213,8 @@ class MemberController extends Controller
         $record = MemberUtil::get(CRUDUtil::id());
         BizException::throwsIfEmpty('用户不存在', $record);
         Session::put('memberUserId', $record['id']);
+        // 登录成功后更换会话 ID，防止会话固定攻击
+        Session::regenerate();
         return Response::redirect(modstart_web_url(''));
     }
 

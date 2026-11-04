@@ -1,4 +1,5 @@
-<div class="ub-account" style="min-height:calc( 100vh - 220px );">
+{{-- 整页使用时传 fillMain=true（走 ub-page-fill 居中布局）；弹窗使用时保留原最小高度 --}}
+<div class="ub-account{{!empty($fillMain)?' ub-page-fill-main':''}}"@if(empty($fillMain)) style="min-height:calc( 100vh - 220px );"@endif>
 
     <div class="box">
 

@@ -36,6 +36,8 @@ class AuthController extends ModuleBaseController
     {
         $dialog = $input->getInteger('dialog');
         $redirect = $input->getTrimString('redirect', modstart_web_url('member'));
+        // 登录页 / 登录弹窗 / 注册页等所有入口统一校验，避免 javascript: 等危险协议进入前端跳转
+        $this->api->checkRedirectSafety($redirect);
         $redirectData = [
             'redirect' => $redirect,
         ];
@@ -49,7 +51,6 @@ class AuthController extends ModuleBaseController
     {
         $input = InputPackage::buildFromInput();
         $redirectData = $this->getRedirectData($input);
-        $this->api->checkRedirectSafety($redirectData['redirect']);
         $result = MemberAuthProvider::call('onWebLogin', $redirectData);
         if (null !== $result) {
             return $result;
@@ -90,7 +91,6 @@ class AuthController extends ModuleBaseController
         }
         $input = InputPackage::buildFromInput();
         $redirectData = $this->getRedirectData($input);
-        $this->api->checkRedirectSafety($redirectData['redirect']);
         Input::merge(['client' => Request::domainUrl() . '/sso/client']);
         $ret = $this->api->ssoClientPrepare();
         if ($ret['code']) {
@@ -107,7 +107,6 @@ class AuthController extends ModuleBaseController
     {
         $input = InputPackage::buildFromInput();
         $redirectData = $this->getRedirectData($input);
-        $this->api->checkRedirectSafety($redirectData['redirect']);
         $oauthType = 'wechat';
         if (AgentUtil::isMobile()) {
             $oauthType = 'wechatmobile';
@@ -119,7 +118,6 @@ class AuthController extends ModuleBaseController
     {
         $input = InputPackage::buildFromInput();
         $redirectData = $this->getRedirectData($input);
-        $this->api->checkRedirectSafety($redirectData['redirect']);
         $view = 'loginOther';
         if (!empty($redirectData['dialog'])) {
             $view = 'loginOtherDialog';
@@ -137,7 +135,6 @@ class AuthController extends ModuleBaseController
         BizException::throwsIf('短信验证登录未开启', !modstart_config('Member_LoginPhoneEnable', false), ['statusCode' => 403]);
         $input = InputPackage::buildFromInput();
         $redirectData = $this->getRedirectData($input);
-        $this->api->checkRedirectSafety($redirectData['redirect']);
         if (Request::isPost()) {
             $ret = $this->api->loginPhone();
             if ($ret['code']) {
@@ -169,7 +166,6 @@ class AuthController extends ModuleBaseController
     {
         $input = InputPackage::buildFromInput();
         $redirectData = $this->getRedirectData($input);
-        $this->api->checkRedirectSafety($redirectData['redirect']);
         $result = MemberAuthProvider::call('onWebLogout', $redirectData);
         if (null !== $result) {
             return $result;
@@ -231,7 +227,6 @@ class AuthController extends ModuleBaseController
         BizException::throwsIf('短信验证注册未开启', !modstart_config('Member_RegisterPhoneEnable', false), ['statusCode' => 403]);
         $input = InputPackage::buildFromInput();
         $redirectData = $this->getRedirectData($input);
-        $this->api->checkRedirectSafety($redirectData['redirect']);
         if (Request::isPost()) {
             $ret = $this->api->registerPhone();
             if ($ret['code']) {
@@ -274,6 +269,7 @@ class AuthController extends ModuleBaseController
     {
         $input = InputPackage::buildFromInput();
         $redirect = $input->getTrimString('redirect', modstart_web_url('member'));
+        $this->api->checkRedirectSafety($redirect);
         return $this->view('retrieve', [
             'redirect' => $redirect,
         ]);
@@ -283,6 +279,7 @@ class AuthController extends ModuleBaseController
     {
         $input = InputPackage::buildFromInput();
         $redirect = $input->getTrimString('redirect', modstart_web_url('member'));
+        $this->api->checkRedirectSafety($redirect);
         if (Request::isPost()) {
             $ret = $this->api->retrievePhone();
             if ($ret['code']) {
@@ -304,6 +301,7 @@ class AuthController extends ModuleBaseController
     {
         $input = InputPackage::buildFromInput();
         $redirect = $input->getTrimString('redirect', modstart_web_url('member'));
+        $this->api->checkRedirectSafety($redirect);
         if (Request::isPost()) {
             $ret = $this->api->retrieveEmail();
             if ($ret['code']) {
@@ -330,6 +328,7 @@ class AuthController extends ModuleBaseController
     {
         $input = InputPackage::buildFromInput();
         $redirect = $input->getTrimString('redirect', modstart_web_url('member'));
+        $this->api->checkRedirectSafety($redirect);
         if (Request::isPost()) {
             $ret = $this->api->retrieveReset();
             if ($ret['code']) {
@@ -549,6 +548,7 @@ class AuthController extends ModuleBaseController
             return Response::send(-1, $ret['msg']);
         }
         $redirect = $input->getTrimString('redirect', modstart_web_url(''));
+        $this->api->checkRedirectSafety($redirect);
         return Response::send(0, null, null, $redirect);
     }
 

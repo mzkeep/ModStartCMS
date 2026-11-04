@@ -5,6 +5,7 @@ namespace Module\Vendor\Web\Controller;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use ModStart\Admin\Auth\Admin;
 use ModStart\Core\Dao\ModelUtil;
@@ -106,8 +107,15 @@ class InstallController extends Controller
             return Response::jsonError('连接数据信息 ' . $dbHost . ':' . $dbPort . '.' . $dbDatabase . ' 失败!');
         }
 
-        // 替换.env文件
-        $envContent = file_get_contents(base_path('env.example'));
+        // 替换.env文件（ModStart 传统模板 env.example，Laravel 11+ 骨架为 .env.example）
+        $envExampleFile = base_path('env.example');
+        if (!file_exists($envExampleFile)) {
+            $envExampleFile = base_path('.env.example');
+        }
+        if (!file_exists($envExampleFile)) {
+            return Response::jsonError('环境模板文件 env.example 不存在，请检查程序文件是否完整');
+        }
+        $envContent = file_get_contents($envExampleFile);
 
         $envContent = preg_replace("/APP_DEBUG=(.*?)\\n/", "APP_DEBUG=false\n", $envContent);
         $envContent = preg_replace("/DB_HOST=(.*?)\\n/", "DB_HOST=" . $dbHost . "\n", $envContent);

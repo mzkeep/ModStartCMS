@@ -1,3 +1,23 @@
+## [Unreleased]
+
+- 优化：后台菜单「运营报表」更名为「运营管理」，与运营类统计菜单合并为统一入口（含注册来源归因）
+- 修复：第三方登录页 `/login/other`（含弹窗版）的「忘记密码 / 第三方登录按钮」渲染在卡片外部，且未开启任何第三方登录时出现空白卡片——结构统一收进 `.box`（新增 `inc/loginOtherPanel.blade.php` 共用），空态展示「当前未开启第三方登录方式」+「使用账号密码登录」入口，页面同样走 `ub-page-fill` 居中
+- 优化：账户整页统一「页头与页脚之间垂直居中」——除登录 / 第三方登录外，注册、手机注册、找回密码（邮箱 / 手机 / 重置）、手机登录、第三方绑定模板一并套用 `body.ub-page-fill` + `ub-page-fill-main`（去掉注册页原有的 `min-height: calc(100vh - 220px)` 内联 hack），主内容上下内边距 0.75rem，1440×900 / 1920×900 下卡片垂直居中且页脚完整在首屏内
+- 优化：登录页整体布局改为「页头与页脚之间垂直居中」——模板新增通用布局类 `body.ub-page-fill`（`@section('bodyProperties')`）+ 面板加 `ub-page-fill-main`，由 flex 分配高度并居中，桌面不再出现 105px 溢出滚动、手机整页高度从 1339px 降到 925px
+- 优化：登录页卡片宽度与注册页/找回密码页保持一致（均为砖块默认 340px，不再单独加宽）
+- 优化：账户卡片上下留白按「文字到卡片边缘」对齐（标题行 `margin-top` 1.25rem→1rem、卡片底部内边距 1.25rem→2rem），登录/注册页由「上 52px、下 36px」变为上下均 48px
+- 优化：账户页（登录 / 注册 / 找回密码）移动端卡片统一左右留 16px，不再通栏贴屏幕边，三个页面宽度保持一致（390 视口均为 358px；登录页卡片与深色页脚间距 32px）
+- 优化：输入框占位文字色由 `#98A2B3`（白底 2.6:1）改为 `--color-tertiary`（4.9:1）
+- 新增：密码框「显示/隐藏密码」切换按钮（`.field-toggle`，`icon-eye` ↔ `icon-eye-close`、`aria-pressed`、点击后焦点回到输入框），登录页与登录弹窗共用 `inc/loginScript.blade.php`
+- 优化：登录输入框补 `aria-label` 与 `autocomplete`（`username` / `current-password`），读屏与密码管理器可正确识别
+- 优化：桌面端进入登录页自动聚焦用户名（仅在 `(hover: hover)` 设备生效，手机端不自动弹出键盘）
+- 优化：登录页文案——占位「输入用户」改为「手机号 / 邮箱 / 用户名」，底部「忘记密码? 找回密码」合并为单个「忘记密码？」链接
+- 优化：登录页顶部导航右上角在登录页改为「免费注册」（`registerDisable` 开启时保持「登录」），不再出现指向自身的登录入口
+- 优化：登录/注册切换项与「忘记密码？」命中区提升到 44px；当前 tab 由 `href="javascript:;"` 死链接改为 `<span class="active" aria-current="page">`；移动端输入框与主按钮 40px→44px；主按钮补可见的键盘焦点环（2px 主色环 + 柔光环）
+- 修复：API 登录不再更换会话 ID——API / OpenApi 的会话 ID 就是客户端持有的 api_token 凭证，登录时轮换会让客户端手里的 token 立刻变成未登录（客户端再打开 `/api/app_manager/enter?api_token=xxx` 页面拿不到登录态）；浏览器 Cookie 场景（Web / 后台登录）仍更换会话 ID 防会话固定
+
+---
+
 ## 5.5.0 用户协议隐私协议与账号申诉支持文件维护，支持 Laravel 13 / PHP 8.5
 
 - 新增：用户使用协议、用户隐私协议、账号申诉支持 `public/theme/Member/{Agreement,Privacy,Appeal}.md` 文件维护（格式为「# 标题」+「---」+ 正文 Markdown），文件存在且正文非空时优先使用文件标题与内容，否则使用后台配置；前台页面 `/member/agreement`、`/member/privacy`、`/member/appeal` 与接口 `/api/member_doc/get` 同步生效

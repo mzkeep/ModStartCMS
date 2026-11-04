@@ -16,6 +16,7 @@ use ModStart\Core\Util\EventUtil;
 use ModStart\Core\Util\RandomUtil;
 use ModStart\Core\Util\SecureUtil;
 use ModStart\Core\Util\StrUtil;
+use ModStart\Core\Util\UrlUtil;
 use ModStart\Misc\Captcha\CaptchaFacade;
 use ModStart\Module\ModuleBaseController;
 use Module\Member\Auth\MemberUser;
@@ -120,25 +121,46 @@ use Module\Vendor\Util\SessionUtil;
  */
 class AuthController extends ModuleBaseController
 {
+    /**
+     * 校验登录后跳转地址是否安全
+     * 1. 无论配置是否开启，都拒绝 javascript:/data: 等危险协议、协议相对地址（//host）与域名混淆写法，避免跳转型 XSS
+     * 2. 开启 Member_LoginRedirectCheckEnable 后，额外限制只能跳转到本站域名或 Member_LoginRedirectWhiteList 白名单域名
+     * @param $redirect string 跳转地址
+     * @throws BizException
+     */
     public function checkRedirectSafety($redirect)
     {
-        if (!modstart_config('Member_LoginRedirectCheckEnable', false)) {
+        $redirect = trim((string)$redirect);
+        if ('' === $redirect) {
             return;
+        }
+        $checkHost = modstart_config('Member_LoginRedirectCheckEnable', false);
+        // 未开启域名校验时允许外部 http/https 地址，但危险协议始终拦截
+        if (UrlUtil::isSafeRedirect($redirect, !$checkHost)) {
+            return;
+        }
+        if (!$checkHost) {
+            BizException::throws("登录跳转路径异常");
         }
         $info = parse_url($redirect);
-        // ignore local url
-        if (empty($info['host'])) {
-            return;
-        }
-        if ($info['host'] == Request::domain()) {
-            return;
-        }
-        $whiteList = modstart_config('Member_LoginRedirectWhiteList', '');
-        $whiteList = explode("\n", $whiteList);
-        $whiteList = array_filter($whiteList);
-        foreach ($whiteList as $item) {
-            if ($info['host'] == $item) {
-                return;
+        $host = (is_array($info) && !empty($info['host'])) ? strtolower($info['host']) : '';
+        if ('' !== $host) {
+            $whiteList = modstart_config('Member_LoginRedirectWhiteList', '');
+            $whiteList = explode("\n", $whiteList);
+            $whiteList = array_filter($whiteList);
+            foreach ($whiteList as $item) {
+                $item = strtolower(trim($item));
+                if ('' === $item) {
+                    continue;
+                }
+                // 白名单允许填写域名或完整地址，统一比较域名
+                if (strpos($item, '://') !== false) {
+                    $itemInfo = parse_url($item);
+                    $item = (is_array($itemInfo) && !empty($itemInfo['host'])) ? strtolower($itemInfo['host']) : $item;
+                }
+                if ($host === $item) {
+                    return;
+                }
             }
         }
         BizException::throws("登录跳转路径异常");
