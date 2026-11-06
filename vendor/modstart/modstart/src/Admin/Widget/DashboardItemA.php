@@ -129,13 +129,17 @@ class DashboardItemA extends AbstractWidget
         }
         switch ($this->type) {
             case 1:
+                // Styling comes from ub-content-box (card shell) + tailwind utility
+                // classes; dashboard.less no longer exists.
                 return <<<HTML
-<a href="{$this->link}" class="ub-dashboard-item-a" data-tab-open data-tab-title="{$tabTitle}" {$this->formatAttributes()}>
-    <div class="icon" style="color:{$this->color}">
-        <i class="font {$this->icon}"></i>
-    </div>
-    <div class="title" style="color:{$this->color}">{$this->title}</div>
-    <div class="desc">{$this->desc}</div>
+<a href="{$this->link}" class="ub-content-box margin-bottom tw-flex tw-items-start tw-gap-4" style="padding:1rem;" data-tab-open data-tab-title="{$tabTitle}" {$this->formatAttributes()}>
+    <span class="tw-flex-shrink-0 tw-flex tw-items-center tw-justify-center tw-w-10 tw-h-10" style="border-radius:var(--size-radius-sm);background:var(--color-primary-light-bg);color:{$this->color};">
+        <i class="font {$this->icon}" style="font-size:1.375rem;line-height:1;"></i>
+    </span>
+    <span class="tw-flex-1 tw-min-w-0">
+        <span class="tw-block tw-font-semibold tw-truncate" style="color:{$this->color};">{$this->title}</span>
+        <span class="tw-block tw-text-xs tw-mt-1" style="color:var(--color-muted);">{$this->desc}</span>
+    </span>
 </a>
 HTML;
             case 2:
@@ -146,12 +150,14 @@ HTML;
                     $numberValue = $this->number;
                 }
                 return <<<HTML
-<a href="{$this->link}" class="ub-dashboard-item-a" data-tab-open data-tab-title="{$tabTitle}" {$this->formatAttributes()}>
-    <div class="icon" style="color:{$this->color}">
-        <i class="font {$this->icon}"></i>
-    </div>
-    <div class="number-value" data-count-up-number="$numberValue">-</div>
-    <div class="number-title">{$this->title}</div>
+<a href="{$this->link}" class="ub-content-box margin-bottom tw-flex tw-items-center tw-gap-4" style="padding:1rem;" data-tab-open data-tab-title="{$tabTitle}" {$this->formatAttributes()}>
+    <span class="tw-flex-shrink-0 tw-flex tw-items-center tw-justify-center tw-w-10 tw-h-10" style="border-radius:var(--size-radius-sm);background:var(--color-primary-light-bg);color:{$this->color};">
+        <i class="font {$this->icon}" style="font-size:1.375rem;line-height:1;"></i>
+    </span>
+    <span class="tw-min-w-0">
+        <span class="tw-block tw-text-2xl tw-font-bold tw-leading-8 tw-tabular-nums" style="color:var(--color-heading);" data-count-up-number="$numberValue">-</span>
+        <span class="tw-block tw-text-xs tw-truncate" style="color:var(--color-tertiary);">{$this->title}</span>
+    </span>
 </a>
 HTML;
             case 3:
@@ -163,12 +169,12 @@ HTML;
             case 4:
                 $numberValue = intval($this->number);
                 return <<<HTML
-<a href="{$this->link}" class="ub-dashboard-item-b" data-tab-open data-tab-title="{$tabTitle}"  style="background:{$this->color}" {$this->formatAttributes()}>
-    <div class="icon">
-        <i class="font {$this->icon}"></i>
-    </div>
-    <div class="number-value" data-count-up-number="$numberValue">{$this->number}</div>
-    <div class="number-title">{$this->title}</div>
+<a href="{$this->link}" class="ub-content-box margin-bottom tw-block tw-text-center" data-tab-open data-tab-title="{$tabTitle}" style="padding:1rem;background:{$this->color};border-color:{$this->color};" {$this->formatAttributes()}>
+    <span class="tw-block" style="color:var(--color-text-reverse);">
+        <i class="font {$this->icon}" style="font-size:1.5rem;line-height:1;"></i>
+    </span>
+    <span class="tw-block tw-text-2xl tw-font-bold tw-leading-8 tw-mt-2 tw-tabular-nums" style="color:var(--color-text-reverse);" data-count-up-number="$numberValue">{$this->number}</span>
+    <span class="tw-block tw-text-xs" style="color:var(--color-text-reverse);opacity:.85;">{$this->title}</span>
 </a>
 HTML;
             case 5:

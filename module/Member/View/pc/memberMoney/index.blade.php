@@ -10,13 +10,16 @@
         <div class="body">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="ub-dashboard-item-a">
-                        <div class="icon">
-                            <i class="font iconfont icon-pay"></i>
-                        </div>
-                        <div class="number-value">
-                            ￥{{\Module\Member\Util\MemberMoneyUtil::getTotal(\Module\Member\Auth\MemberUser::id())}}</div>
-                        <div class="number-title">我的钱包</div>
+                    <div class="ub-content-box tw-flex tw-items-center tw-gap-4" style="padding:1rem;">
+                        <span class="tw-flex-shrink-0 tw-flex tw-items-center tw-justify-center tw-w-10 tw-h-10"
+                              style="border-radius:var(--size-radius-sm);background:var(--color-primary-light-bg);color:var(--color-primary);">
+                            <i class="font iconfont icon-pay" style="font-size:1.375rem;line-height:1;"></i>
+                        </span>
+                        <span class="tw-min-w-0">
+                            <span class="tw-block tw-text-2xl tw-font-bold tw-leading-8 tw-tabular-nums"
+                                  style="color:var(--color-heading);">￥{{\Module\Member\Util\MemberMoneyUtil::getTotal(\Module\Member\Auth\MemberUser::id())}}</span>
+                            <span class="tw-block tw-text-xs" style="color:var(--color-tertiary);">我的钱包</span>
+                        </span>
                     </div>
                 </div>
             </div>

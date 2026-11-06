@@ -21,7 +21,7 @@ class ModuleStoreUtil
 {
     const REMOTE_BASE = 'https://modstart.com';
 
-    // const REMOTE_BASE = 'http://org.demo.soft.host';
+    // const REMOTE_BASE = 'http://soft-org.web.mozhong.vip';
 
     public static function remoteModuleData()
     {

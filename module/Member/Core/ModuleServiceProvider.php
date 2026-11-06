@@ -165,20 +165,33 @@ class ModuleServiceProvider extends ServiceProvider
 
         AdminWidgetDashboard::registerIcon(function (Row $row) {
             if (class_exists(DashboardItem::class)) {
+                // Primary metric is the running total so every dashboard card
+                // reads the same way; today's signups drop into the footer
+                // together with their day-over-day delta.
+                $todayStart = date('Y-m-d 00:00:00');
+                $yesterdayStart = date('Y-m-d 00:00:00', strtotime('-1 day'));
+                $yesterdayEnd = date('Y-m-d 23:59:59', strtotime('-1 day'));
+                $todayCount = \Module\Member\Model\MemberUser::where(['isDeleted' => false])
+                    ->where('created_at', '>=', $todayStart)->count();
+                $yesterdayCount = \Module\Member\Model\MemberUser::where(['isDeleted' => false])
+                    ->where('created_at', '>=', $yesterdayStart)
+                    ->where('created_at', '<=', $yesterdayEnd)->count();
                 $row->flexColumn(DashboardItem::makeTitleDataList(
                     'iconfont icon-user',
                     '用户',
                     [
                         [
-                            'title' => '今日新增',
-                            'value' => \Module\Member\Model\MemberUser::where(['isDeleted' => false])
-                                ->where('created_at', '>=', date('Y-m-d 00:00:00'))->count(),
-                            'url' => modstart_admin_url('member'),
-                        ],
-                        [
                             'title' => '总用户',
                             'value' => \Module\Member\Model\MemberUser::where(['isDeleted' => false])->count(),
+                            'format' => 'int',
                             'url' => modstart_admin_url('member')
+                        ],
+                        [
+                            'title' => '今日新增',
+                            'value' => $todayCount,
+                            'format' => 'int',
+                            'delta' => DashboardItem::deltaText($todayCount, $yesterdayCount),
+                            'url' => modstart_admin_url('member'),
                         ],
                     ]
                 ));
