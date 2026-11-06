@@ -60,7 +60,7 @@ class CmsThemeDemoUtil
                 }
                 $columns = array_map(function ($column) {
                     return $column->Field;
-                }, \DB::select('SHOW COLUMNS FROM `' . $table . '`'));
+                }, \DB::select('SHOW COLUMNS FROM `' . ModelManageUtil::table($table) . '`'));
                 $columnMap = array_flip($columns);
                 foreach ($rows as $index => $row) {
                     $data['backup'][$table][$index] = array_intersect_key($row, $columnMap);
